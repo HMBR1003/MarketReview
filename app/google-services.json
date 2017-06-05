@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "923425871569",
+    "firebase_url": "https://baseballbaedal.firebaseio.com",
+    "project_id": "baseballbaedal",
+    "storage_bucket": "baseballbaedal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923425871569:android:b22ab42273a4d36c",
+        "android_client_info": {
+          "package_name": "org.baseballbaedal.baseballbaedal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "923425871569-eqhmb3lkdcbikj7259jvkkhmc97igcnj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.baseballbaedal.baseballbaedal",
+            "certificate_hash": "9a6042ebb89e584d11d538459a4f604d35f4a789"
+          }
+        },
+        {
+          "client_id": "923425871569-vqi9qeuhlldersvjuo84ief9iepmukf1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFNIrfLOU9bOIJgigiTwFXFN5IW6069t8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "923425871569-vqi9qeuhlldersvjuo84ief9iepmukf1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

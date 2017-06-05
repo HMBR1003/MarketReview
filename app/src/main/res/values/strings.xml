@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">야구장 배달</string>
+    <string name="facebook_app_id">1952940698271098</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!--구글 광고 아이디-->
+    <!--<string name="banner_ad_unit_id">ca-app-pub-4432641899551083/5047684451</string>-->
+
+</resources>

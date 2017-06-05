@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="red_wine">
+        <item>#ff670729</item>
+        <item>#ff7a0c2d</item>
+        <item>#ff96092d</item>
+        <item>#ffa10a37</item>
+        <item>#ffbf013b</item>
+    </string-array>
+
+    <string-array name="polluted_waves">
+        <item>#394948</item>
+        <item>#5a7874</item>
+        <item>#499092</item>
+        <item>#43abae</item>
+        <item>#6ecfd2</item>
+    </string-array>
+
+    <string-array name="medical_express">
+        <item>#a3a3a3</item>
+        <item>#bbbbbb</item>
+        <item>#cccccc</item>
+        <item>#dddddd</item>
+        <item>#eeeeee</item>
+    </string-array>
+
+    <string-array name="vertical_ntb">
+        <item>#df5a55</item>
+        <item>#f9bb72</item>
+        <item>#76afcf</item>
+        <item>#dd6495</item>
+        <item>#72d3b4</item>
+        <item>#563d91</item>
+        <item>#56342e</item>
+        <item>#8c9f58</item>
+    </string-array>
+
+    <string-array name="default_preview">
+        <item>#df5a55</item>
+        <item>#f9bb72</item>
+        <item>#76afcf</item>
+        <item>#dd6495</item>
+        <item>#72d3b4</item>
+    </string-array>
+
+    <string-array name="handleFood">
+        <item>음식종류를 선택해 주세요</item>
+        <item>치킨</item>
+        <item>피자</item>
+        <item>햄버거</item>
+        <item>족발</item>
+        <item>테이크아웃</item>
+        <item>기타</item>
+    </string-array>
+
+    <string-array name="col">
+        <item>경기장을 선택해 주세요</item>
+        <item>잠실 야구장(두산,LG)</item>
+        <item>고척 스카이돔(넥센)</item>
+        <item>SK 행복드림구장</item>
+        <item>한화 이글스파크</item>
+        <item>삼성 라이온즈파크</item>
+        <item>기아 챔피언스필드</item>
+        <item>사직 야구장(롯데)</item>
+        <item>KT 위즈파크</item>
+        <item>마산 야구장(NC)</item>
+    </string-array>
+</resources>
