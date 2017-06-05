@@ -6,6 +6,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="org.baseballbaedal.baseballbaedal.BusinessMan.BusinessSignupActivity">
 
     <android.support.v7.widget.Toolbar
@@ -50,8 +52,10 @@
                     android:layout_height="wrap_content"
                     android:text="사업자명 : "
                     android:textSize="15sp"/>
-                <EditText
+                <org.baseballbaedal.baseballbaedal.CustomEditText
                     android:id="@+id/manName"
+                    android:lines="1"
+                    android:maxLines="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
@@ -68,7 +72,9 @@
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:text="사업자 등록번호 : "/>
-                <EditText
+                <org.baseballbaedal.baseballbaedal.CustomEditText
+                    android:lines="1"
+                    android:maxLines="1"
                     android:id="@+id/businessRegisterNum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -86,7 +92,9 @@
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:text="사업자 전화번호 : "/>
-                <EditText
+                <org.baseballbaedal.baseballbaedal.CustomEditText
+                    android:lines="1"
+                    android:maxLines="1"
                     android:id="@+id/manTel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -104,7 +112,9 @@
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:text="매장명 : "/>
-                <EditText
+                <org.baseballbaedal.baseballbaedal.CustomEditText
+                    android:lines="1"
+                    android:maxLines="1"
                     android:id="@+id/marketName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -182,7 +192,9 @@
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:text="상세 주소 : "/>
-                <EditText
+                <org.baseballbaedal.baseballbaedal.CustomEditText
+                    android:lines="1"
+                    android:maxLines="1"
                     android:id="@+id/marketAddress2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -200,7 +212,9 @@
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
                 android:text="매장 전화번호 : "/>
-            <EditText
+            <org.baseballbaedal.baseballbaedal.CustomEditText
+                android:lines="1"
+                android:maxLines="1"
                 android:id="@+id/marketTel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -259,7 +273,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
-                        android:text="1:1 비율의 이미지를 등록해주세요\n(정사각형)"
+                        android:text="1:1 비율의 로고 사진을 등록해주세요\n(정사각형)"
                         />
                 </LinearLayout>
             </FrameLayout>

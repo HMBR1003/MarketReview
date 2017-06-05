@@ -81,10 +81,6 @@ public class BusinessSignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_business_signup);
 
-
-        Log.d("환경 : ",Environment.getExternalStorageDirectory().getAbsolutePath());
-        Log.d("파일 : ",getTempFile().getAbsolutePath());
-
         //주소찾기 란 입력하지 못하게 하기 위해 설정
         dataBinding.marketAddress1.setInputType(0);
         dataBinding.marketAddress1.setFocusable(false);
@@ -258,7 +254,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
 
         //확인창 만들기
         AlertDialog.Builder builder = new AlertDialog.Builder(BusinessSignupActivity.this);
-        builder.setTitle("확인창");
+        builder.setTitle("제출 확인");
         builder.setMessage("이대로 제출하시겠습니까?");
         //확인 버튼설정 및 버튼을 눌렀을 때 동작 설정
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -635,7 +631,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(BusinessSignupActivity.this);
-        builder.setTitle("확인창");
+        builder.setTitle("종료 확인");
         builder.setMessage("나가시겠습니까? 작성중이던 내용이 사라집니다.");
         builder.setPositiveButton("확인(나가기)", new DialogInterface.OnClickListener() {
                     @Override
