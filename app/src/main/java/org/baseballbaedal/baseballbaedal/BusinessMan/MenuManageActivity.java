@@ -7,15 +7,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityMenuManageBinding;
 
 public class MenuManageActivity extends AppCompatActivity {
-
+    public static final int MENU_ADD_REQUEST = 555;
     ActivityMenuManageBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_menu_manage);
 
@@ -30,9 +33,17 @@ public class MenuManageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),MenuAddActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,MENU_ADD_REQUEST);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==MENU_ADD_REQUEST&&resultCode==RESULT_OK){
+            Toast.makeText(this, "메뉴가 추가되었습니다.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     //뒤로가기 버튼 기능 설정

@@ -1,6 +1,7 @@
 package org.baseballbaedal.baseballbaedal.BusinessMan;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -24,14 +26,20 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityMenuAddBinding;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 public class MenuAddActivity extends AppCompatActivity {
@@ -43,13 +51,16 @@ public class MenuAddActivity extends AppCompatActivity {
     AlertDialog exitDialog;
     AlertDialog checkDialog;
     AlertDialog submitDialog;
+    ProgressDialog uploadDialog;
     InputMethodManager imm;
     DatabaseReference myRef;
     String uid;
+    String menuKey;
     Uri sendUri;
     private Uri tempImageUri;
     private Uri imageCropUri;
     Bitmap bitmap = null;
+
 
     TextWatcher watcher = new TextWatcher() {
         @Override
@@ -83,7 +94,10 @@ public class MenuAddActivity extends AppCompatActivity {
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         //메뉴설명란 입력문자 수 읽어오기
         binding.menuExplain.addTextChangedListener(watcher);
+
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        uploadDialog = new ProgressDialog(MenuAddActivity.this);
 
         //이미지뷰 클릭설정
         binding.menuImageView.setOnClickListener(new View.OnClickListener() {
@@ -241,6 +255,10 @@ public class MenuAddActivity extends AppCompatActivity {
     }
 
     public boolean textCheck(){
+        if(bitmap==null){
+            Toast.makeText(this, "사진을 등록해주세요.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         if(binding.menuName.length()<=0){
             Toast.makeText(this, "메뉴 이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return false;
@@ -300,30 +318,31 @@ public class MenuAddActivity extends AppCompatActivity {
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String key = myRef.child("market").child(uid).child("menu").push().getKey();
-                myRef.child("market").child(uid).child("menu").child(key).child("menuName").setValue(binding.menuName.getText().toString());
-                myRef.child("market").child(uid).child("menu").child(key).child("menuPrice").setValue(binding.menuPrice.getText().toString());
-                myRef.child("market").child(uid).child("menu").child(key).child("menuExplain").setValue(binding.menuExplain.getText().toString());
+                menuKey = myRef.child("market").child(uid).child("menu").push().getKey();
+                myRef.child("market").child(uid).child("menu").child(menuKey).child("menuName").setValue(binding.menuName.getText().toString());
+                myRef.child("market").child(uid).child("menu").child(menuKey).child("menuPrice").setValue(binding.menuPrice.getText().toString());
+                myRef.child("market").child(uid).child("menu").child(menuKey).child("menuExplain").setValue(binding.menuExplain.getText().toString());
                 if(optionIndex==1||optionIndex==2||optionIndex==3||optionIndex==4||optionIndex==5) {
-                    myRef.child("market").child(uid).child("menu").child(key).child("optionName1").setValue(binding.optionName1.getText().toString());
-                    myRef.child("market").child(uid).child("menu").child(key).child("optionPrice1").setValue(binding.optionPrice1.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionName1").setValue(binding.optionName1.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionPrice1").setValue(binding.optionPrice1.getText().toString());
                 }
                 if(optionIndex==2||optionIndex==3||optionIndex==4||optionIndex==5){
-                    myRef.child("market").child(uid).child("menu").child(key).child("optionName2").setValue(binding.optionName2.getText().toString());
-                    myRef.child("market").child(uid).child("menu").child(key).child("optionPrice2").setValue(binding.optionPrice2.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionName2").setValue(binding.optionName2.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionPrice2").setValue(binding.optionPrice2.getText().toString());
                 }
                 if(optionIndex==3||optionIndex==4||optionIndex==5){
-                    myRef.child("market").child(uid).child("menu").child(key).child("optionName3").setValue(binding.optionName3.getText().toString());
-                    myRef.child("market").child(uid).child("menu").child(key).child("optionPrice3").setValue(binding.optionPrice3.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionName3").setValue(binding.optionName3.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionPrice3").setValue(binding.optionPrice3.getText().toString());
                 }
                 if(optionIndex==4||optionIndex==5){
-                    myRef.child("market").child(uid).child("menu").child(key).child("optionName4").setValue(binding.optionName4.getText().toString());
-                    myRef.child("market").child(uid).child("menu").child(key).child("optionPrice4").setValue(binding.optionPrice4.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionName4").setValue(binding.optionName4.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionPrice4").setValue(binding.optionPrice4.getText().toString());
                 }
                 if(optionIndex==5){
-                    myRef.child("market").child(uid).child("menu").child(key).child("optionName5").setValue(binding.optionName5.getText().toString());
-                    myRef.child("market").child(uid).child("menu").child(key).child("optionPrice5").setValue(binding.optionPrice5.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionName5").setValue(binding.optionName5.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionPrice5").setValue(binding.optionPrice5.getText().toString());
                 }
+                uploadImage();
             }
         });
         builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -398,6 +417,48 @@ public class MenuAddActivity extends AppCompatActivity {
             intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
             startActivityForResult(intent, GET_MARKET_IMAGE);
         }
+    }
+
+    public void uploadImage(){
+        //데이터 저장하는 중이라고 알림창 띄우기
+        uploadDialog.setProgress(ProgressDialog.STYLE_SPINNER);
+        uploadDialog.setMessage("데이터를 저장하는 중입니다...");
+        uploadDialog.setCancelable(false);
+        uploadDialog.show();
+
+        //저장소에 대한 참조 만들기
+        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+        //실제로 이미지가 저장될 곳의 참조
+        StorageReference mountainsRef = mStorageRef.child("market").child(uid).child("menu").child(menuKey).child("menu.jpg");
+
+        //비트맵을 jpg로 변환시켜서 변수에 저장
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        //jpg형식으로 저장된 변수를 저장소에 업로드하는 함수
+        UploadTask uploadTask = mountainsRef.putBytes(data);
+        //성공했을 시와 실패했을 시를 받아오는 리스너 부착
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                uploadDialog.dismiss();
+                Toast.makeText(MenuAddActivity.this, "제출 실패.", Toast.LENGTH_SHORT).show();
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @SuppressWarnings("VisibleForTests")
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                String photoUri =  String.valueOf(downloadUrl);
+                myRef.child("market").child(uid).child("menu").child(menuKey).child("menuImageURL").setValue(photoUri);
+                uploadDialog.dismiss();
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
     }
 
     //뒤로가기 버튼 기능 설정
