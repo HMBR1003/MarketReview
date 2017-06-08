@@ -41,6 +41,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.baseballbaedal.baseballbaedal.GlideTestActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityBusinessSignupBinding;
 
@@ -73,6 +74,8 @@ public class BusinessSignupActivity extends AppCompatActivity {
     ProgressDialog dialog;
     AlertDialog checkDialog;
     AlertDialog submitDialog;
+    //이미지 불러오기용
+    String marketImageURL=null;
     String isMarket;
 
 
@@ -99,16 +102,18 @@ public class BusinessSignupActivity extends AppCompatActivity {
         });
 
 
-        //uid 가져오기
+        //uid,사업자여부,이메일,이름 가져오기
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
         isBusiness = intent.getIntExtra("isBusiness", -1);
         email = intent.getStringExtra("email");
         name = intent.getStringExtra("name");
 
+        //대표 로고 사진 불러오기 버튼 동작 설정
         dataBinding.loadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //갤러리에서 이미지 불러오기
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
                 startActivityForResult(intent, GET_MARKET_IMAGE);
@@ -149,7 +154,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
             }
         });
 
-        //이미지뷰 클릭설정
+        //이미지뷰 클릭 시 확대해서 보여주는 창 띄움
         dataBinding.marketImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,6 +170,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
             dataBinding.toolBar.setTitleTextColor(Color.WHITE);
             dataBinding.inputBusinessInfo.setText("사업자로 신청할 정보를 입력해 주세요");
             dataBinding.businessSubmit.setText("작성 완료");
+            isMarket = "tmp";
         }
 
         //사업자 등록신청 승인을 기다리는 고객의 경우 화면 설정(임시 데이터베이스에 저장된 내용을 불러와서 세팅함)
@@ -173,9 +179,9 @@ public class BusinessSignupActivity extends AppCompatActivity {
             dataBinding.toolBar.setTitleTextColor(Color.WHITE);
             dataBinding.inputBusinessInfo.setText("신청한 정보를 수정합니다.");
             dataBinding.businessSubmit.setText("수정 완료");
-
+            isMarket = "tmp";
             //데이터베이스에 저장된 데이터 가져오기 함수
-            loadData("tmp");
+            loadData();
         }
 
         //사업자 승인이 난 고객의 경우 화면 설정(확정 데이터베이스에 저장된 내용을 불러와서 세팅함)
@@ -184,8 +190,9 @@ public class BusinessSignupActivity extends AppCompatActivity {
             dataBinding.toolBar.setTitleTextColor(Color.WHITE);
             dataBinding.inputBusinessInfo.setText("등록된 사업자 정보를 수정합니다.");
             dataBinding.businessSubmit.setText("수정 완료");
-
-            loadData("market");
+            isMarket = "market";
+            //데이터베이스에 저장된 데이터 가져오기 함수
+            loadData();
         }
 
         //인텐트 값이 제대로 넘어오지 않았을 경우
@@ -199,17 +206,21 @@ public class BusinessSignupActivity extends AppCompatActivity {
         setSupportActionBar(dataBinding.toolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //하단의 완료 버튼을 눌렀을 때의 동작 설정
+
+        //하단의 신청 완료 버튼을 눌렀을 때의 동작 설정
         dataBinding.businessSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //작성하지 않은 부분이 있나 확인
                 if (textCheck()) {
+                    //디비와 저장소에 데이터를 넣는 함수 실행
                     submitAlert();
                 }
             }
         });
     }
 
+    //빈공간 체크 함수
     public boolean textCheck(){
         if(dataBinding.manName.length()<=0){
             Toast.makeText(this, "사업자명을 입력해주세요.", Toast.LENGTH_SHORT).show();
@@ -249,9 +260,9 @@ public class BusinessSignupActivity extends AppCompatActivity {
         }
         return true;
     }
+
     //유저에게 최종확인후 데이터 넣는 작업을 하는 함수
     public void submitAlert(){
-
         //확인창 만들기
         AlertDialog.Builder builder = new AlertDialog.Builder(BusinessSignupActivity.this);
         builder.setTitle("제출 확인");
@@ -260,49 +271,30 @@ public class BusinessSignupActivity extends AppCompatActivity {
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, int which) {
-                myRef = FirebaseDatabase.getInstance().getReference();
-                if(isBusiness==0||isBusiness==1) {
-                    isMarket="tmp";
-                    //데이터베이스 초기화
-                    myRef = FirebaseDatabase.getInstance().getReference();
-                    myRef.child("tmp").child(uid).child("accountEmail").setValue(email);
-                    myRef.child("tmp").child(uid).child("accountName").setValue(name);
-
-                    myRef.child("tmp").child(uid).child("manName").setValue(dataBinding.manName.getText().toString());
-                    myRef.child("tmp").child(uid).child("manTel").setValue(dataBinding.manTel.getText().toString());
-                    myRef.child("tmp").child(uid).child("businessRegisterNum").setValue(dataBinding.businessRegisterNum.getText().toString());
-                    myRef.child("tmp").child(uid).child("marketName").setValue(dataBinding.marketName.getText().toString());
-                    myRef.child("tmp").child(uid).child("selectedCol").setValue(selectedCol);
-                    myRef.child("tmp").child(uid).child("handleFood").setValue(handleFood);
-                    myRef.child("tmp").child(uid).child("marketAddress1").setValue(dataBinding.marketAddress1.getText().toString());
-                    myRef.child("tmp").child(uid).child("marketAddress2").setValue(dataBinding.marketAddress2.getText().toString());
-                    myRef.child("tmp").child(uid).child("marketTel").setValue(dataBinding.marketTel.getText().toString());
-                    myRef.child("users").child(uid).child("isBusiness(0(not),1(applying),2(finish))").setValue(1);
-                    uploadImage(isMarket);
-                }
-
-                //사장 고객이 매장 정보를 수정하는 경우
-                else  if(isBusiness==2){
-                    //데이터베이스 초기화
-                    isMarket="market";
-                    myRef = FirebaseDatabase.getInstance().getReference();
-                    myRef.child("market").child(uid).child("accountEmail").setValue(email);
-                    myRef.child("market").child(uid).child("accountName").setValue(name);
-
-                    myRef.child("market").child(uid).child("manName").setValue(dataBinding.manName.getText().toString());
-                    myRef.child("market").child(uid).child("manTel").setValue(dataBinding.manTel.getText().toString());
-                    myRef.child("market").child(uid).child("businessRegisterNum").setValue(dataBinding.businessRegisterNum.getText().toString());
-                    myRef.child("market").child(uid).child("marketName").setValue(dataBinding.marketName.getText().toString());
-                    myRef.child("market").child(uid).child("selectedCol").setValue(selectedCol);
-                    myRef.child("market").child(uid).child("handleFood").setValue(handleFood);
-                    myRef.child("market").child(uid).child("marketAddress1").setValue(dataBinding.marketAddress1.getText().toString());
-                    myRef.child("market").child(uid).child("marketAddress2").setValue(dataBinding.marketAddress2.getText().toString());
-                    myRef.child("market").child(uid).child("marketTel").setValue(dataBinding.marketTel.getText().toString());
-                    uploadImage(isMarket);
-                }
-                else{
+                if(!(isBusiness==0||isBusiness==1||isBusiness==2)) {
                     Toast.makeText(BusinessSignupActivity.this, "데이터 저장 시 사업자 여부 데이터 오류", Toast.LENGTH_SHORT).show();
                 }
+                myRef = FirebaseDatabase.getInstance().getReference();
+                //데이터베이스 초기화
+                myRef = FirebaseDatabase.getInstance().getReference();
+                myRef.child(isMarket).child(uid).child("accountEmail").setValue(email);
+                myRef.child(isMarket).child(uid).child("accountName").setValue(name);
+
+                myRef.child(isMarket).child(uid).child("manName").setValue(dataBinding.manName.getText().toString());
+                myRef.child(isMarket).child(uid).child("manTel").setValue(dataBinding.manTel.getText().toString());
+                myRef.child(isMarket).child(uid).child("businessRegisterNum").setValue(dataBinding.businessRegisterNum.getText().toString());
+                myRef.child(isMarket).child(uid).child("marketName").setValue(dataBinding.marketName.getText().toString());
+                myRef.child(isMarket).child(uid).child("selectedCol").setValue(selectedCol);
+                myRef.child(isMarket).child(uid).child("handleFood").setValue(handleFood);
+                myRef.child(isMarket).child(uid).child("marketAddress1").setValue(dataBinding.marketAddress1.getText().toString());
+                myRef.child(isMarket).child(uid).child("marketAddress2").setValue(dataBinding.marketAddress2.getText().toString());
+                myRef.child(isMarket).child(uid).child("marketTel").setValue(dataBinding.marketTel.getText().toString());
+                if(isBusiness==0||isBusiness==1) {
+                    myRef.child("users").child(uid).child("isBusiness(0(not),1(applying),2(finish))").setValue(1);
+                }
+                uploadImage();
+
+
                 //고객이 사업자 등록 신청을 하는경우와 신청 중인 고객이 수정을 하는 경우, 임시 데이터베이스로 입력된 정보를 넣는다.
 
             }
@@ -445,15 +437,23 @@ public class BusinessSignupActivity extends AppCompatActivity {
         else if(requestCode==GET_MARKET_IMAGE&&resultCode==RESULT_OK) {
 
             imageCropUri = data.getData(); //인텐트에서 이미지에 대한 데이터 추출
+            //크롭하는 화면 띄움
             cropImage();
         }
+        //이미지를 크롭한 뒤의 동작
         else if(requestCode==REQUEST_CROP&&resultCode==RESULT_OK){
+            //크롭한 이미지가 저장된 파일을 가져와서 할당함
             File tempFile = getTempFile();
+
+            //크롭에 성공하여 이미지가 존재하면
             if (tempFile.exists()) {
+                //이미지뷰에 이미지를 세팅하는 작업을 함
                 bitmap = BitmapFactory.decodeFile(tempFile.toString());
                 dataBinding.imageViewContainer.setVisibility(View.VISIBLE);
                 dataBinding.textViewContainer.setVisibility(View.INVISIBLE);
                 dataBinding.marketImageView.setImageBitmap(bitmap);
+
+                //크게보기 했을 때 보내줄 uri에 값을 저장
                 sendUri = Uri.fromFile(getTempFile());
 
 //                tempFile.delete();
@@ -481,6 +481,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
 //                e.printStackTrace();
 //            }
         }
+        //크롭하다가 취소했을 경우 다시 갤러리선택화면을 띄움
         else if(requestCode==REQUEST_CROP&&resultCode!=RESULT_OK){
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
@@ -490,6 +491,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
         }
     }
 
+    //크롭한 이미지를 저장하고 불러올때 쓰일 함수
     private File getTempFile(){
         File file = new File( Environment.getExternalStorageDirectory(), "tmpImage.jpg" );
         try{
@@ -501,6 +503,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
         return file;
     }
 
+    //이미지 크롭함수
     public void cropImage() {
 
         tempImageUri = Uri.fromFile( getTempFile() );
@@ -542,7 +545,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
 
 
     //데이터베이스에서 데이터를 로드해서 세팅해주는 함수
-    public  void loadData(String s){
+    public  void loadData(){
         //데이터 불러오는 중이라고 알림창 띄우기
         dialog.setProgress(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("데이터를 불러오는 중입니다...");
@@ -564,13 +567,15 @@ public class BusinessSignupActivity extends AppCompatActivity {
         myRef = FirebaseDatabase.getInstance().getReference();
 
         //데이터 불러와서 화면에 세팅하기
-        myRef.child(s).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child(isMarket).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
                     dataBinding.imageViewContainer.setVisibility(View.VISIBLE);
                     dataBinding.textViewContainer.setVisibility(View.INVISIBLE);
+
                     final MarketInfo data = dataSnapshot.getValue(MarketInfo.class);
+
                     dataBinding.manName.setText(data.manName);
                     dataBinding.businessRegisterNum.setText(data.businessRegisterNum);
                     dataBinding.manTel.setText(data.manTel);
@@ -583,35 +588,53 @@ public class BusinessSignupActivity extends AppCompatActivity {
                     dataBinding.marketAddress2.setText(data.marketAddress2);
                     dataBinding.marketTel.setText(data.marketTel);
 
-                    sendUrl = data.marketImageUrl;
-                    //피카소를 이용하여 저장소에 저장된 사진을 url로 이미지뷰에 연결하기
-                    Picasso.with(getApplicationContext())
-                            .load(data.marketImageUrl)
-                            .fit()
-                            .centerInside()
-                            .into(dataBinding.marketImageView, new Callback.EmptyCallback() {
-                                @Override
-                                public void onSuccess() {
-                                    BitmapDrawable d = (BitmapDrawable) dataBinding.marketImageView.getDrawable();
-                                    bitmap = d.getBitmap();
-                                    try{
-                                        FileOutputStream out = new FileOutputStream(getTempFile().getPath());
-                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                                        out.close();
-                                    }
-                                    catch(FileNotFoundException e)
-                                    {
-                                        e.printStackTrace();
-                                    }
-                                    catch (IOException e){
-                                        e.printStackTrace();
-                                    }
-                                    sendUri = Uri.fromFile(getTempFile());
-                                    dialog.dismiss();
-                                }
-                            });
+                    StorageReference ref = FirebaseStorage.getInstance().getReference().child(isMarket).child(uid).child("market.jpg");
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            sendUri = uri;
+                            marketImageURL = String.valueOf(uri);
+                            Log.d("다운로드 URL", marketImageURL);
+                            //피카소를 이용하여 저장소에 저장된 사진을 url로 이미지뷰에 연결하기
+                            Picasso.with(getApplicationContext())
+                                    .load(marketImageURL)
+                                    .fit()
+                                    .centerInside()
+                                    .into(dataBinding.marketImageView, new Callback.EmptyCallback() {
+                                        @Override
+                                        public void onSuccess() {
+                                            BitmapDrawable d = (BitmapDrawable) dataBinding.marketImageView.getDrawable();
+                                            bitmap = d.getBitmap();
+                                            try {
+                                                FileOutputStream out = new FileOutputStream(getTempFile().getPath());
+                                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                                                out.close();
+                                            } catch (FileNotFoundException e) {
+                                                e.printStackTrace();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                            sendUri = Uri.fromFile(getTempFile());
+                                            dialog.dismiss();
+                                        }
+                                        @Override
+                                        public void onError() {
+                                            super.onError();
+                                            Toast.makeText(BusinessSignupActivity.this, "이미지 표시 에러", Toast.LENGTH_SHORT).show();
+                                            dialog.dismiss();
+                                        }
+                                    });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            Toast.makeText(BusinessSignupActivity.this, "저장소 이미지 주소 가져오기 실패", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                    });
+                    if(marketImageURL!=null) {
 
-
+                    }
 //                    Toast.makeText(BusinessSignupActivity.this, "데이터 가져오기 성공", Toast.LENGTH_SHORT).show();
                 }
                 else{
@@ -625,7 +648,6 @@ public class BusinessSignupActivity extends AppCompatActivity {
                 Toast.makeText(BusinessSignupActivity.this, "데이터 가져오기 실패 에러 내용 : "+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     @Override
@@ -660,17 +682,15 @@ public class BusinessSignupActivity extends AppCompatActivity {
         checkDialog.show();
     }
 
-    public void uploadImage(String s){
+    public void uploadImage(){
         //데이터 저장하는 중이라고 알림창 띄우기
         dialog.setProgress(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("데이터를 저장하는 중입니다...");
         dialog.setCancelable(false);
         dialog.show();
 
-        //저장소에 대한 참조 만들기
-        StorageReference  mStorageRef = FirebaseStorage.getInstance().getReference();
         //실제로 이미지가 저장될 곳의 참조
-        StorageReference mountainsRef = mStorageRef.child(s).child(uid).child("market.jpg");
+        StorageReference saveRef = FirebaseStorage.getInstance().getReference().child(isMarket).child(uid).child("market.jpg");
 
         //비트맵을 jpg로 변환시켜서 변수에 저장
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -678,7 +698,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
         byte[] data = baos.toByteArray();
 
         //jpg형식으로 저장된 변수를 저장소에 업로드하는 함수
-        UploadTask uploadTask = mountainsRef.putBytes(data);
+        UploadTask uploadTask = saveRef.putBytes(data);
         //성공했을 시와 실패했을 시를 받아오는 리스너 부착
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override

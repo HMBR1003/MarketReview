@@ -88,7 +88,7 @@
                         android:layout_height="wrap_content"
                         android:text="메뉴 이름 : "
                         android:textSize="15sp"/>
-                    <org.baseballbaedal.baseballbaedal.CustomEditText
+                    <EditText
                         android:id="@+id/menuName"
                         android:lines="1"
                         android:maxLines="1"
@@ -109,7 +109,7 @@
                         android:layout_height="wrap_content"
                         android:text="가격 : "
                         android:textSize="15sp"/>
-                    <org.baseballbaedal.baseballbaedal.CustomEditText
+                    <EditText
                         android:id="@+id/menuPrice"
                         android:lines="1"
                         android:maxLines="1"
@@ -139,7 +139,7 @@
                             android:layout_height="wrap_content"
                             android:text="1번 옵션 이름 : "
                             android:textSize="15sp"/>
-                        <org.baseballbaedal.baseballbaedal.CustomEditText
+                        <EditText
                             android:id="@+id/optionName1"
                             android:lines="1"
                             android:maxLines="1"
@@ -159,7 +159,7 @@
                             android:layout_height="wrap_content"
                             android:text="1번 옵션 가격 : "
                             android:textSize="15sp"/>
-                        <org.baseballbaedal.baseballbaedal.CustomEditText
+                        <EditText
                             android:id="@+id/optionPrice1"
                             android:lines="1"
                             android:maxLines="1"
@@ -190,7 +190,7 @@
                             android:layout_height="wrap_content"
                             android:text="2번 옵션 이름 : "
                             android:textSize="15sp"/>
-                        <org.baseballbaedal.baseballbaedal.CustomEditText
+                        <EditText
                             android:id="@+id/optionName2"
                             android:lines="1"
                             android:maxLines="1"
@@ -210,7 +210,7 @@
                             android:layout_height="wrap_content"
                             android:text="2번 옵션 가격 : "
                             android:textSize="15sp"/>
-                        <org.baseballbaedal.baseballbaedal.CustomEditText
+                        <EditText
                             android:id="@+id/optionPrice2"
                             android:lines="1"
                             android:maxLines="1"
@@ -241,7 +241,7 @@
                             android:layout_height="wrap_content"
                             android:text="3번 옵션 이름 : "
                             android:textSize="15sp"/>
-                        <org.baseballbaedal.baseballbaedal.CustomEditText
+                        <EditText
                             android:id="@+id/optionName3"
                             android:lines="1"
                             android:maxLines="1"
@@ -261,7 +261,7 @@
                             android:layout_height="wrap_content"
                             android:text="3번 옵션 가격 : "
                             android:textSize="15sp"/>
-                        <org.baseballbaedal.baseballbaedal.CustomEditText
+                        <EditText
                             android:id="@+id/optionPrice3"
                             android:lines="1"
                             android:maxLines="1"
@@ -292,7 +292,7 @@
                             android:layout_height="wrap_content"
                             android:text="4번 옵션 이름 : "
                             android:textSize="15sp"/>
-                        <org.baseballbaedal.baseballbaedal.CustomEditText
+                        <EditText
                             android:id="@+id/optionName4"
                             android:lines="1"
                             android:maxLines="1"
@@ -312,7 +312,7 @@
                             android:layout_height="wrap_content"
                             android:text="4번 옵션 가격 : "
                             android:textSize="15sp"/>
-                        <org.baseballbaedal.baseballbaedal.CustomEditText
+                        <EditText
                             android:id="@+id/optionPrice4"
                             android:lines="1"
                             android:maxLines="1"
@@ -343,7 +343,7 @@
                             android:layout_height="wrap_content"
                             android:text="5번 옵션 이름 : "
                             android:textSize="15sp"/>
-                        <org.baseballbaedal.baseballbaedal.CustomEditText
+                        <EditText
                             android:id="@+id/optionName5"
                             android:lines="1"
                             android:maxLines="1"
@@ -363,7 +363,7 @@
                             android:layout_height="wrap_content"
                             android:text="5번 옵션 가격 : "
                             android:textSize="15sp"/>
-                        <org.baseballbaedal.baseballbaedal.CustomEditText
+                        <EditText
                             android:id="@+id/optionPrice5"
                             android:lines="1"
                             android:maxLines="1"
@@ -420,7 +420,7 @@
                         android:layout_height="wrap_content"
                         android:text="0/80자"/>
 
-                    <org.baseballbaedal.baseballbaedal.CustomEditText
+                    <EditText
                         android:id="@+id/menuExplain"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

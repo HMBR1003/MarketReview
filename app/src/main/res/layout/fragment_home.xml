@@ -58,6 +58,17 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="160dp" />
 
+    <Button
+        android:id="@+id/testButtonHome3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="글라이드테스트"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/testButtonHome"
+        android:layout_marginStart="150dp" />
+
 
 </android.support.constraint.ConstraintLayout>
 </layout>

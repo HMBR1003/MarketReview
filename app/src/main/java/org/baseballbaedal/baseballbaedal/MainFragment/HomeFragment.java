@@ -10,6 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.baseballbaedal.baseballbaedal.BusinessMan.MarketInfo;
+import org.baseballbaedal.baseballbaedal.GlideTestActivity;
 import org.baseballbaedal.baseballbaedal.MainActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.Test.DBTestActivity;
@@ -74,6 +79,14 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 viewPager = (ViewPager) mainActivity.findViewById(R.id.vp_horizontal_ntb);
                 viewPager.setCurrentItem(3);
+            }
+        });
+        homeBinding.testButtonHome3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity activity = (MainActivity)getActivity();
+                Intent intent = new Intent(activity,GlideTestActivity.class);
+                startActivity(intent);
             }
         });
     }

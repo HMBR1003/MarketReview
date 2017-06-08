@@ -67,8 +67,10 @@
         <activity
             android:name=".ColSelectActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".BusinessMan.LogoViewActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".BusinessMan.LogoViewActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".GlideTestActivity"></activity>
     </application>
 
 </manifest>

@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:text="사업자명 : "
                     android:textSize="15sp"/>
-                <org.baseballbaedal.baseballbaedal.CustomEditText
+                <EditText
                     android:id="@+id/manName"
                     android:lines="1"
                     android:maxLines="1"
@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:text="사업자 등록번호 : "/>
-                <org.baseballbaedal.baseballbaedal.CustomEditText
+                <EditText
                     android:lines="1"
                     android:maxLines="1"
                     android:id="@+id/businessRegisterNum"
@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:text="사업자 전화번호 : "/>
-                <org.baseballbaedal.baseballbaedal.CustomEditText
+                <EditText
                     android:lines="1"
                     android:maxLines="1"
                     android:id="@+id/manTel"
@@ -112,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:text="매장명 : "/>
-                <org.baseballbaedal.baseballbaedal.CustomEditText
+                <EditText
                     android:lines="1"
                     android:maxLines="1"
                     android:id="@+id/marketName"
@@ -192,7 +192,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:text="상세 주소 : "/>
-                <org.baseballbaedal.baseballbaedal.CustomEditText
+                <EditText
                     android:lines="1"
                     android:maxLines="1"
                     android:id="@+id/marketAddress2"
@@ -212,7 +212,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
                 android:text="매장 전화번호 : "/>
-            <org.baseballbaedal.baseballbaedal.CustomEditText
+            <EditText
                 android:lines="1"
                 android:maxLines="1"
                 android:id="@+id/marketTel"
