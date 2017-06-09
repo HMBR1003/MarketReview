@@ -52,7 +52,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.baseballbaedal.baseballbaedal.BusinessMan.BusinessSignupActivity;
-import org.baseballbaedal.baseballbaedal.BusinessMan.MenuManageActivity;
+import org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuManageActivity;
 import org.baseballbaedal.baseballbaedal.MainFragment.BaseInfoFragment;
 import org.baseballbaedal.baseballbaedal.MainFragment.DeliveryFragment;
 import org.baseballbaedal.baseballbaedal.MainFragment.HomeFragment;
@@ -119,6 +119,9 @@ public class MainActivity extends AppCompatActivity
         takeoutFragment = new TakeoutFragment();
         baseInfoFragment = new BaseInfoFragment();
 
+
+
+
 //        //구글 광고 초기화 및 세팅
 //        MobileAds.initialize(getApplicationContext(), "ca-app-pub-4432641899551083~2094218055");
 //        AdView mAdView = (AdView) findViewById(R.id.adView);
@@ -128,7 +131,19 @@ public class MainActivity extends AppCompatActivity
 //        mAdView.loadAd(adRequest);
 
         initUI();  //하단 UI 세팅
-
+        //페이스북 해시 키 가져오기
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo( "org.baseballbaedal.baseballbaedal", PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.d("KeyHash:", "name not found");
+        } catch (NoSuchAlgorithmException e) {
+            Log.d("KeyHash:", "no such");
+        }
 
 
         //상단 UI 세팅
@@ -370,8 +385,12 @@ public class MainActivity extends AppCompatActivity
             else {
                 if(isBusiness==2){
                     Intent intent = new Intent(this, MenuManageActivity.class);
+                    intent.putExtra("uid",uid);
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivityForResult(intent, BUSINESS_SIGNUP_REQUEST);
+                }
+                else{
+                    Toast.makeText(this, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         } else if (id == R.id.nav_changeCol) {  //왼쪽 슬라이드메뉴 경기장 변경 부분

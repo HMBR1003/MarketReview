@@ -1,20 +1,23 @@
-package org.baseballbaedal.baseballbaedal.BusinessMan;
+package org.baseballbaedal.baseballbaedal.BusinessMan.Menu;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -29,13 +32,13 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.baseballbaedal.baseballbaedal.BusinessMan.LogoViewActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityMenuAddBinding;
 
@@ -60,6 +63,8 @@ public class MenuAddActivity extends AppCompatActivity {
     private Uri tempImageUri;
     private Uri imageCropUri;
     Bitmap bitmap = null;
+
+    File tempFile;
 
 
     TextWatcher watcher = new TextWatcher() {
@@ -108,6 +113,8 @@ public class MenuAddActivity extends AppCompatActivity {
                 startActivity(zoomIntent);
             }
         });
+
+        //메뉴 이미지 불러오기 버튼
         binding.loadMenuImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -323,24 +330,24 @@ public class MenuAddActivity extends AppCompatActivity {
                 myRef.child("market").child(uid).child("menu").child(menuKey).child("menuPrice").setValue(binding.menuPrice.getText().toString());
                 myRef.child("market").child(uid).child("menu").child(menuKey).child("menuExplain").setValue(binding.menuExplain.getText().toString());
                 if(optionIndex==1||optionIndex==2||optionIndex==3||optionIndex==4||optionIndex==5) {
-                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionName1").setValue(binding.optionName1.getText().toString());
-                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionPrice1").setValue(binding.optionPrice1.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("option1Name").setValue(binding.optionName1.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("option1Price").setValue(binding.optionPrice1.getText().toString());
                 }
                 if(optionIndex==2||optionIndex==3||optionIndex==4||optionIndex==5){
-                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionName2").setValue(binding.optionName2.getText().toString());
-                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionPrice2").setValue(binding.optionPrice2.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("option2Name").setValue(binding.optionName2.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("option2Price").setValue(binding.optionPrice2.getText().toString());
                 }
                 if(optionIndex==3||optionIndex==4||optionIndex==5){
-                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionName3").setValue(binding.optionName3.getText().toString());
-                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionPrice3").setValue(binding.optionPrice3.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("option3Name").setValue(binding.optionName3.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("option3Price").setValue(binding.optionPrice3.getText().toString());
                 }
                 if(optionIndex==4||optionIndex==5){
-                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionName4").setValue(binding.optionName4.getText().toString());
-                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionPrice4").setValue(binding.optionPrice4.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("option4Name").setValue(binding.optionName4.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("option4Price").setValue(binding.optionPrice4.getText().toString());
                 }
                 if(optionIndex==5){
-                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionName5").setValue(binding.optionName5.getText().toString());
-                    myRef.child("market").child(uid).child("menu").child(menuKey).child("optionPrice5").setValue(binding.optionPrice5.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("option5Name").setValue(binding.optionName5.getText().toString());
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("option5Price").setValue(binding.optionPrice5.getText().toString());
                 }
                 uploadImage();
             }
@@ -368,7 +375,7 @@ public class MenuAddActivity extends AppCompatActivity {
         submitDialog.show();
     }
     private File getTempFile(){
-        File file = new File( Environment.getExternalStorageDirectory(), "tmpImage.jpg" );
+        File file = new File( getExternalCacheDir(), "menuTmpImage.jpg" );
         try{
             file.createNewFile();
         }
@@ -378,8 +385,8 @@ public class MenuAddActivity extends AppCompatActivity {
         return file;
     }
     public void cropImage() {
-
-        tempImageUri = Uri.fromFile(getTempFile());
+        tempFile = getTempFile();
+        tempImageUri = Uri.fromFile(tempFile);
 
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(imageCropUri, "image/*");
@@ -403,13 +410,13 @@ public class MenuAddActivity extends AppCompatActivity {
             cropImage();
         }
         else if(requestCode==REQUEST_CROP&&resultCode==RESULT_OK){
-            File tempFile = getTempFile();
+//            File tempFile = getTempFile();
             if (tempFile.exists()) {
                 bitmap = BitmapFactory.decodeFile(tempFile.toString());
                 binding.menuImageViewContainer.setVisibility(View.VISIBLE);
                 binding.menuTextViewContainer.setVisibility(View.INVISIBLE);
                 binding.menuImageView.setImageBitmap(bitmap);
-                sendUri = Uri.fromFile(getTempFile());
+                sendUri = Uri.fromFile(tempFile);
             }
         }
         else if(requestCode==REQUEST_CROP&&resultCode!=RESULT_OK){
@@ -450,7 +457,7 @@ public class MenuAddActivity extends AppCompatActivity {
             @SuppressWarnings("VisibleForTests")
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+//                 taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 String photoUri =  String.valueOf(downloadUrl);
                 myRef.child("market").child(uid).child("menu").child(menuKey).child("menuImageURL").setValue(photoUri);
@@ -501,5 +508,96 @@ public class MenuAddActivity extends AppCompatActivity {
             }
         });
         exitDialog.show();
+    }
+    //저장소 접근권한 묻기 설정
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        int permissionCheck1 = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+        int permissionCheck = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(permissionCheck== PackageManager.PERMISSION_DENIED) {
+
+            //사용자가 권한을 한번 이라도 거부 했던 경우
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                //알림창을 띄운다
+                AlertDialog.Builder builder = new AlertDialog.Builder(MenuAddActivity.this);
+                builder.setTitle("알림");
+                builder.setMessage("메뉴 사진을 업로드 하기 위해 저장소 권한을 허용해주세요.");
+
+                //앱 설정으로 이동하는 버튼
+                builder.setPositiveButton("설정으로 이동", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent();
+                        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        i.addCategory(Intent.CATEGORY_DEFAULT);
+                        i.setData(Uri.parse("package:" + getApplication().getPackageName()));
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                        startActivityForResult(i, 2);
+                        finish();
+                    }
+                });
+                //닫기
+                builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.setCancelable(false);
+                dialog.show();
+                //처음 권한을 묻는 경우
+            } else {
+//                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            }
+        }
+    }
+
+    //권한요청 후 결과를 받았을 때 실행되는 메소드
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+            case 2:
+                //사용자가 권한을 허가했을 때
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    //사용자가 권한을 거부했을 때
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MenuAddActivity.this);
+                    builder.setTitle("알림");
+                    builder.setMessage("저장소 권한을 허용해주세요.");
+
+                    builder.setPositiveButton("설정으로 이동", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent i = new Intent();
+                            i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            i.addCategory(Intent.CATEGORY_DEFAULT);
+                            i.setData(Uri.parse("package:" + getApplication().getPackageName()));
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                            i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                            startActivityForResult(i, 2);
+                        }
+                    });
+
+                    //닫기
+                    builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.setCancelable(false);
+                    dialog.show();
+                }
+                return;
+        }
     }
 }

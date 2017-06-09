@@ -41,7 +41,6 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import org.baseballbaedal.baseballbaedal.GlideTestActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityBusinessSignupBinding;
 
@@ -64,6 +63,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
     int selectedCol=0;
     ActivityBusinessSignupBinding dataBinding;  //데이터 바인딩
     DatabaseReference myRef;
+    File tempFile;
 
     private Uri tempImageUri;
     private Uri imageCropUri;
@@ -108,6 +108,45 @@ public class BusinessSignupActivity extends AppCompatActivity {
         isBusiness = intent.getIntExtra("isBusiness", -1);
         email = intent.getStringExtra("email");
         name = intent.getStringExtra("name");
+        //임시파일 생성
+        tempFile = getTempFile();
+
+        //유저가 고객이고 사업자 등록신청을 하는 경우 화면 설정
+        if (isBusiness == 0) {
+            dataBinding.toolBar.setTitle("사업자 신규등록 신청");
+            dataBinding.toolBar.setTitleTextColor(Color.WHITE);
+            dataBinding.inputBusinessInfo.setText("사업자로 신청할 정보를 입력해 주세요");
+            dataBinding.businessSubmit.setText("작성 완료");
+            isMarket = "tmp";
+        }
+
+        //사업자 등록신청 승인을 기다리는 고객의 경우 화면 설정(임시 데이터베이스에 저장된 내용을 불러와서 세팅함)
+        else if (isBusiness == 1) {
+            dataBinding.toolBar.setTitle("사업자 신청정보 수정");
+            dataBinding.toolBar.setTitleTextColor(Color.WHITE);
+            dataBinding.inputBusinessInfo.setText("신청한 정보를 수정합니다.");
+            dataBinding.businessSubmit.setText("수정 완료");
+            isMarket = "tmp";
+            //데이터베이스에 저장된 데이터 가져오기 함수
+            loadData();
+        }
+
+        //사업자 승인이 난 고객의 경우 화면 설정(확정 데이터베이스에 저장된 내용을 불러와서 세팅함)
+        else if (isBusiness == 2) {
+            dataBinding.toolBar.setTitle("매장 정보 수정");
+            dataBinding.toolBar.setTitleTextColor(Color.WHITE);
+            dataBinding.inputBusinessInfo.setText("등록된 사업자 정보를 수정합니다.");
+            dataBinding.businessSubmit.setText("수정 완료");
+            isMarket = "market";
+            //데이터베이스에 저장된 데이터 가져오기 함수
+            loadData();
+        }
+
+        //인텐트 값이 제대로 넘어오지 않았을 경우
+        else {
+            Toast.makeText(this, "사업자 여부 불러오기 오류", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
         //대표 로고 사진 불러오기 버튼 동작 설정
         dataBinding.loadImage.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +193,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
             }
         });
 
-        //이미지뷰 클릭 시 확대해서 보여주는 창 띄움
+        //이미지뷰 클릭 시 확대해서 보여주는 창 띄우기
         dataBinding.marketImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,44 +202,6 @@ public class BusinessSignupActivity extends AppCompatActivity {
                 startActivity(zoomIntent);
             }
         });
-
-        //유저가 고객이고 사업자 등록신청을 하는 경우 화면 설정
-        if (isBusiness == 0) {
-            dataBinding.toolBar.setTitle("사업자 신규등록 신청");
-            dataBinding.toolBar.setTitleTextColor(Color.WHITE);
-            dataBinding.inputBusinessInfo.setText("사업자로 신청할 정보를 입력해 주세요");
-            dataBinding.businessSubmit.setText("작성 완료");
-            isMarket = "tmp";
-        }
-
-        //사업자 등록신청 승인을 기다리는 고객의 경우 화면 설정(임시 데이터베이스에 저장된 내용을 불러와서 세팅함)
-        else if (isBusiness == 1) {
-            dataBinding.toolBar.setTitle("사업자 신청정보 수정");
-            dataBinding.toolBar.setTitleTextColor(Color.WHITE);
-            dataBinding.inputBusinessInfo.setText("신청한 정보를 수정합니다.");
-            dataBinding.businessSubmit.setText("수정 완료");
-            isMarket = "tmp";
-            //데이터베이스에 저장된 데이터 가져오기 함수
-            loadData();
-        }
-
-        //사업자 승인이 난 고객의 경우 화면 설정(확정 데이터베이스에 저장된 내용을 불러와서 세팅함)
-        else if (isBusiness == 2) {
-            dataBinding.toolBar.setTitle("매장 정보 수정");
-            dataBinding.toolBar.setTitleTextColor(Color.WHITE);
-            dataBinding.inputBusinessInfo.setText("등록된 사업자 정보를 수정합니다.");
-            dataBinding.businessSubmit.setText("수정 완료");
-            isMarket = "market";
-            //데이터베이스에 저장된 데이터 가져오기 함수
-            loadData();
-        }
-
-        //인텐트 값이 제대로 넘어오지 않았을 경우
-        else {
-            Toast.makeText(this, "사업자 여부 불러오기 오류", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-
 
         //뒤로가기 버튼 만들기
         setSupportActionBar(dataBinding.toolBar);
@@ -271,29 +272,29 @@ public class BusinessSignupActivity extends AppCompatActivity {
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, int which) {
-                if(!(isBusiness==0||isBusiness==1||isBusiness==2)) {
+                if (!(isBusiness == 0 || isBusiness == 1 || isBusiness == 2)) {
                     Toast.makeText(BusinessSignupActivity.this, "데이터 저장 시 사업자 여부 데이터 오류", Toast.LENGTH_SHORT).show();
-                }
-                myRef = FirebaseDatabase.getInstance().getReference();
-                //데이터베이스 초기화
-                myRef = FirebaseDatabase.getInstance().getReference();
-                myRef.child(isMarket).child(uid).child("accountEmail").setValue(email);
-                myRef.child(isMarket).child(uid).child("accountName").setValue(name);
+                } else {
+                    myRef = FirebaseDatabase.getInstance().getReference();
+                    //데이터베이스 초기화
+                    myRef = FirebaseDatabase.getInstance().getReference();
+                    myRef.child(isMarket).child(uid).child("accountEmail").setValue(email);
+                    myRef.child(isMarket).child(uid).child("accountName").setValue(name);
 
-                myRef.child(isMarket).child(uid).child("manName").setValue(dataBinding.manName.getText().toString());
-                myRef.child(isMarket).child(uid).child("manTel").setValue(dataBinding.manTel.getText().toString());
-                myRef.child(isMarket).child(uid).child("businessRegisterNum").setValue(dataBinding.businessRegisterNum.getText().toString());
-                myRef.child(isMarket).child(uid).child("marketName").setValue(dataBinding.marketName.getText().toString());
-                myRef.child(isMarket).child(uid).child("selectedCol").setValue(selectedCol);
-                myRef.child(isMarket).child(uid).child("handleFood").setValue(handleFood);
-                myRef.child(isMarket).child(uid).child("marketAddress1").setValue(dataBinding.marketAddress1.getText().toString());
-                myRef.child(isMarket).child(uid).child("marketAddress2").setValue(dataBinding.marketAddress2.getText().toString());
-                myRef.child(isMarket).child(uid).child("marketTel").setValue(dataBinding.marketTel.getText().toString());
-                if(isBusiness==0||isBusiness==1) {
-                    myRef.child("users").child(uid).child("isBusiness(0(not),1(applying),2(finish))").setValue(1);
+                    myRef.child(isMarket).child(uid).child("manName").setValue(dataBinding.manName.getText().toString());
+                    myRef.child(isMarket).child(uid).child("manTel").setValue(dataBinding.manTel.getText().toString());
+                    myRef.child(isMarket).child(uid).child("businessRegisterNum").setValue(dataBinding.businessRegisterNum.getText().toString());
+                    myRef.child(isMarket).child(uid).child("marketName").setValue(dataBinding.marketName.getText().toString());
+                    myRef.child(isMarket).child(uid).child("selectedCol").setValue(selectedCol);
+                    myRef.child(isMarket).child(uid).child("handleFood").setValue(handleFood);
+                    myRef.child(isMarket).child(uid).child("marketAddress1").setValue(dataBinding.marketAddress1.getText().toString());
+                    myRef.child(isMarket).child(uid).child("marketAddress2").setValue(dataBinding.marketAddress2.getText().toString());
+                    myRef.child(isMarket).child(uid).child("marketTel").setValue(dataBinding.marketTel.getText().toString());
+                    if (isBusiness == 0 || isBusiness == 1) {
+                        myRef.child("users").child(uid).child("isBusiness(0(not),1(applying),2(finish))").setValue(1);
+                    }
+                    uploadImage();
                 }
-                uploadImage();
-
 
                 //고객이 사업자 등록 신청을 하는경우와 신청 중인 고객이 수정을 하는 경우, 임시 데이터베이스로 입력된 정보를 넣는다.
 
@@ -306,8 +307,12 @@ public class BusinessSignupActivity extends AppCompatActivity {
 
             }
         });
+
+        //확인창 생성하기
         submitDialog = builder.create();
+        //취소 불가능 하게하기
         submitDialog.setCancelable(false);
+        //뒤로가기 키 눌렀을 때는 사라지게 하기
         submitDialog.setOnKeyListener(new Dialog.OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface arg0, int keyCode,
@@ -318,6 +323,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
                 return true;
             }
         });
+        //확인창 보여주기
         submitDialog.show();
     }
 
@@ -435,15 +441,13 @@ public class BusinessSignupActivity extends AppCompatActivity {
         }
         //매장 대표사진 설정에서 결과를 받아왔을 경우
         else if(requestCode==GET_MARKET_IMAGE&&resultCode==RESULT_OK) {
-
-            imageCropUri = data.getData(); //인텐트에서 이미지에 대한 데이터 추출
+            //인텐트에서 이미지에 대한 데이터 추출
+            imageCropUri = data.getData();
             //크롭하는 화면 띄움
             cropImage();
         }
         //이미지를 크롭한 뒤의 동작
         else if(requestCode==REQUEST_CROP&&resultCode==RESULT_OK){
-            //크롭한 이미지가 저장된 파일을 가져와서 할당함
-            File tempFile = getTempFile();
 
             //크롭에 성공하여 이미지가 존재하면
             if (tempFile.exists()) {
@@ -454,7 +458,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
                 dataBinding.marketImageView.setImageBitmap(bitmap);
 
                 //크게보기 했을 때 보내줄 uri에 값을 저장
-                sendUri = Uri.fromFile(getTempFile());
+                sendUri = Uri.fromFile(tempFile);
 
 //                tempFile.delete();
             }
@@ -493,7 +497,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
 
     //크롭한 이미지를 저장하고 불러올때 쓰일 함수
     private File getTempFile(){
-        File file = new File( Environment.getExternalStorageDirectory(), "tmpImage.jpg" );
+        File file = new File( getExternalCacheDir(), "marketTmpImage.jpg" );
         try{
             file.createNewFile();
         }
@@ -505,8 +509,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
 
     //이미지 크롭함수
     public void cropImage() {
-
-        tempImageUri = Uri.fromFile( getTempFile() );
+        tempImageUri = Uri.fromFile(tempFile);
 
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(imageCropUri, "image/*");
@@ -550,17 +553,17 @@ public class BusinessSignupActivity extends AppCompatActivity {
         dialog.setProgress(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("데이터를 불러오는 중입니다...");
         dialog.setCancelable(false);
-        dialog.setOnKeyListener(new Dialog.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface arg0, int keyCode,
-                                 KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    dialog.dismiss();
-                    finish();
-                }
-                return true;
-            }
-        });
+//        dialog.setOnKeyListener(new Dialog.OnKeyListener() {
+//            @Override
+//            public boolean onKey(DialogInterface arg0, int keyCode,
+//                                 KeyEvent event) {
+//                if (keyCode == KeyEvent.KEYCODE_BACK) {
+//                    dialog.dismiss();
+//                    finish();
+//                }
+//                return true;
+//            }
+//        });
         dialog.show();
 
         //데이터베이스 초기화
@@ -606,7 +609,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
                                             BitmapDrawable d = (BitmapDrawable) dataBinding.marketImageView.getDrawable();
                                             bitmap = d.getBitmap();
                                             try {
-                                                FileOutputStream out = new FileOutputStream(getTempFile().getPath());
+                                                FileOutputStream out = new FileOutputStream(tempFile.getPath());
                                                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
                                                 out.close();
                                             } catch (FileNotFoundException e) {
@@ -614,7 +617,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
-                                            sendUri = Uri.fromFile(getTempFile());
+                                            sendUri = Uri.fromFile(tempFile);
                                             dialog.dismiss();
                                         }
                                         @Override
@@ -712,9 +715,9 @@ public class BusinessSignupActivity extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                String photoUri =  String.valueOf(downloadUrl);
-                myRef.child(isMarket).child(uid).child("marketImageUrl").setValue(photoUri);
+//                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//                String photoUri =  String.valueOf(downloadUrl);
+//                myRef.child(isMarket).child(uid).child("marketImageUrl").setValue(photoUri);
                 dialog.dismiss();
                 if(isBusiness!=2)
                     setResult(RESULT_OK);

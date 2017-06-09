@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp">
+
+    <ImageView
+        android:id="@+id/menuDataImage"
+        android:layout_width="0dp"
+        android:layout_weight="4"
+        android:layout_height="match_parent"
+        android:background="@drawable/black_teduri"
+        />
+    <TextView
+        android:id="@+id/menuDataName"
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:layout_weight="3"
+        android:layout_height="match_parent"
+        android:background="@drawable/black_teduri"
+        android:hint="이름"/>
+    <TextView
+        android:id="@+id/menuDataPrice"
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:layout_weight="3"
+        android:textColor="#000000"
+        android:layout_height="match_parent"
+        android:background="@drawable/black_teduri"
+        android:hint="가격"/>
+    <TextView
+        android:id="@+id/menuDataExplain"
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:layout_weight="5"
+        android:textColor="#000000"
+        android:layout_height="match_parent"
+        android:background="@drawable/black_teduri"
+        android:hint="메뉴설명"/>
 
 </LinearLayout>

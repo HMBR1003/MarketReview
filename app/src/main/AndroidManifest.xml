@@ -59,10 +59,10 @@
         </service>
 
         <activity
-            android:name=".BusinessMan.MenuManageActivity"
+            android:name=".BusinessMan.Menu.MenuManageActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".BusinessMan.MenuAddActivity"
+            android:name=".BusinessMan.Menu.MenuAddActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ColSelectActivity"
@@ -70,7 +70,6 @@
         <activity
             android:name=".BusinessMan.LogoViewActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".GlideTestActivity"></activity>
     </application>
 
 </manifest>
