@@ -1,42 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="120dp">
 
     <ImageView
         android:id="@+id/menuDataImage"
         android:layout_width="0dp"
-        android:layout_weight="4"
         android:layout_height="match_parent"
-        android:background="@drawable/black_teduri"
-        />
+        android:layout_weight="4"
+        android:background="@drawable/black_teduri" />
+
     <TextView
         android:id="@+id/menuDataName"
         android:layout_width="0dp"
-        android:gravity="center"
-        android:textColor="#000000"
-        android:layout_weight="3"
         android:layout_height="match_parent"
+        android:layout_weight="3"
         android:background="@drawable/black_teduri"
-        android:hint="이름"/>
+        android:gravity="center"
+        android:hint="이름"
+        android:textColor="#000000" />
+
     <TextView
         android:id="@+id/menuDataPrice"
         android:layout_width="0dp"
-        android:gravity="center"
+        android:layout_height="match_parent"
         android:layout_weight="3"
-        android:textColor="#000000"
-        android:layout_height="match_parent"
         android:background="@drawable/black_teduri"
-        android:hint="가격"/>
-    <TextView
-        android:id="@+id/menuDataExplain"
-        android:layout_width="0dp"
         android:gravity="center"
-        android:layout_weight="5"
-        android:textColor="#000000"
+        android:hint="가격"
+        android:textColor="#000000" />
+
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:background="@drawable/black_teduri"
-        android:hint="메뉴설명"/>
+        android:layout_weight="5"
+        android:orientation="vertical"
+        android:background="@drawable/black_teduri">
+
+        <TextView
+            android:id="@+id/isMainText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="대표메뉴 입니다"
+            android:visibility="gone"
+            android:textColor="@color/isMainColor" />
+        <TextView
+            android:id="@+id/menuDataExplain"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:gravity="center"
+            android:hint="메뉴설명"
+            android:textColor="#000000" />
+    </LinearLayout>
 
 </LinearLayout>

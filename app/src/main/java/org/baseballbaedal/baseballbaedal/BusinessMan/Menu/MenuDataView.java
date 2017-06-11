@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ public class MenuDataView extends LinearLayout{
     TextView menuDataPrice;
     TextView menuDataExplain;
     ImageView menuDataImage;
+    TextView isMainText;
     public MenuDataView(Context context) {
         super(context);
         init(context);
@@ -37,6 +39,7 @@ public class MenuDataView extends LinearLayout{
         menuDataPrice=(TextView)findViewById(R.id.menuDataPrice);
         menuDataExplain=(TextView)findViewById(R.id.menuDataExplain);
         menuDataImage=(ImageView)findViewById(R.id.menuDataImage);
+        isMainText = (TextView)findViewById(R.id.isMainText);
     }
 
     public void setMenuDataName(String menuDataName){
@@ -47,7 +50,11 @@ public class MenuDataView extends LinearLayout{
         this.menuDataPrice.setText(menuDataPrice);
     }
 
-    public void setMenuDataExplain(String menuDataExplain){
+    public void setMenuDataExplain(String menuDataExplain) {
         this.menuDataExplain.setText(menuDataExplain);
+    }
+
+    public void VisibleIsMainText(){
+        isMainText.setVisibility(View.VISIBLE);
     }
 }

@@ -38,9 +38,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuAddActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityBusinessSignupBinding;
 
@@ -49,6 +52,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class BusinessSignupActivity extends AppCompatActivity {
     private static final int SEARCH_ADDRESS_ACTIVITY = 10000;
@@ -83,6 +87,28 @@ public class BusinessSignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_business_signup);
+
+        //저장소 권한 묻기
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Toast.makeText(BusinessSignupActivity.this, "저장소 권한이 없어 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        };
+        new TedPermission(getApplicationContext())
+                .setPermissionListener(permissionlistener)
+                .setRationaleMessage("매장 대표 로고 사진 업로드를 위해 저장소 권한이 필요합니다.")
+                .setRationaleConfirmText("확인")
+                .setDeniedMessage("설정으로 가셔서 저장소 권한을 허용해주세요.")
+                .setDeniedCloseButtonText("닫기")
+                .setGotoSettingButtonText("설정하러 가기")
+                .setPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .check();
 
         //주소찾기 란 입력하지 못하게 하기 위해 설정
         dataBinding.marketAddress1.setInputType(0);
@@ -339,96 +365,96 @@ public class BusinessSignupActivity extends AppCompatActivity {
     }
 
     //저장소 접근권한 묻기 설정
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        int permissionCheck1 = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
-        int permissionCheck = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if(permissionCheck== PackageManager.PERMISSION_DENIED) {
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+////        int permissionCheck1 = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+//        int permissionCheck = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//        if(permissionCheck== PackageManager.PERMISSION_DENIED) {
+//
+//            //사용자가 권한을 한번 이라도 거부 했던 경우
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+//                //알림창을 띄운다
+//                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessSignupActivity.this);
+//                builder.setTitle("알림");
+//                builder.setMessage("매장 사진을 업로드 하기 위해 저장소 권한을 허용해주세요.");
+//
+//                //앱 설정으로 이동하는 버튼
+//                builder.setPositiveButton("설정으로 이동", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Intent i = new Intent();
+//                        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                        i.addCategory(Intent.CATEGORY_DEFAULT);
+//                        i.setData(Uri.parse("package:" + getApplication().getPackageName()));
+//                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//                        i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+//                        startActivityForResult(i, 2);
+//                        finish();
+//                    }
+//                });
+//                //닫기
+//                builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        finish();
+//                    }
+//                });
+//                AlertDialog dialog = builder.create();
+//                dialog.setCancelable(false);
+//                dialog.show();
+//            //처음 권한을 묻는 경우
+//            } else {
+////                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+//                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+//            }
+//        }
+//    }
 
-            //사용자가 권한을 한번 이라도 거부 했던 경우
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                //알림창을 띄운다
-                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessSignupActivity.this);
-                builder.setTitle("알림");
-                builder.setMessage("매장 사진을 업로드 하기 위해 저장소 권한을 허용해주세요.");
-
-                //앱 설정으로 이동하는 버튼
-                builder.setPositiveButton("설정으로 이동", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent i = new Intent();
-                        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        i.addCategory(Intent.CATEGORY_DEFAULT);
-                        i.setData(Uri.parse("package:" + getApplication().getPackageName()));
-                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                        i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                        startActivityForResult(i, 2);
-                        finish();
-                    }
-                });
-                //닫기
-                builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.setCancelable(false);
-                dialog.show();
-            //처음 권한을 묻는 경우
-            } else {
-//                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            }
-        }
-    }
-
-    //권한요청 후 결과를 받았을 때 실행되는 메소드
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1:
-            case 2:
-                //사용자가 권한을 허가했을 때
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    //사용자가 권한을 거부했을 때
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(BusinessSignupActivity.this);
-                    builder.setTitle("알림");
-                    builder.setMessage("저장소 권한을 허용해주세요.");
-
-                    builder.setPositiveButton("설정으로 이동", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent i = new Intent();
-                            i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                            i.addCategory(Intent.CATEGORY_DEFAULT);
-                            i.setData(Uri.parse("package:" + getApplication().getPackageName()));
-                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                            i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                            startActivityForResult(i, 2);
-                        }
-                    });
-
-                    //닫기
-                    builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.setCancelable(false);
-                    dialog.show();
-                }
-                return;
-        }
-    }
+//    //권한요청 후 결과를 받았을 때 실행되는 메소드
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+//        switch (requestCode) {
+//            case 1:
+//            case 2:
+//                //사용자가 권한을 허가했을 때
+//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//
+//                    //사용자가 권한을 거부했을 때
+//                } else {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(BusinessSignupActivity.this);
+//                    builder.setTitle("알림");
+//                    builder.setMessage("저장소 권한을 허용해주세요.");
+//
+//                    builder.setPositiveButton("설정으로 이동", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            Intent i = new Intent();
+//                            i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                            i.addCategory(Intent.CATEGORY_DEFAULT);
+//                            i.setData(Uri.parse("package:" + getApplication().getPackageName()));
+//                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//                            i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+//                            startActivityForResult(i, 2);
+//                        }
+//                    });
+//
+//                    //닫기
+//                    builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            finish();
+//                        }
+//                    });
+//                    AlertDialog dialog = builder.create();
+//                    dialog.setCancelable(false);
+//                    dialog.show();
+//                }
+//                return;
+//        }
+//    }
 
     //주소찾기나 사진 불러오기 결과를 받아왔을 때의 동작 설정
     @Override
@@ -635,9 +661,6 @@ public class BusinessSignupActivity extends AppCompatActivity {
                             dialog.dismiss();
                         }
                     });
-                    if(marketImageURL!=null) {
-
-                    }
 //                    Toast.makeText(BusinessSignupActivity.this, "데이터 가져오기 성공", Toast.LENGTH_SHORT).show();
                 }
                 else{

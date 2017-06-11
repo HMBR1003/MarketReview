@@ -9,12 +9,14 @@ public class MenuData {
     String menuDataPrice;
     String menuDataExplain;
     String menuDataImage;
+    boolean isMain;
 
-    public MenuData(String menuDataName, String menuDataPrice, String menuDataExplain, String menuDataImage){
+    public MenuData(String menuDataName, String menuDataPrice, String menuDataExplain, String menuDataImage, boolean isMain){
         this.menuDataName=menuDataName;
         this.menuDataPrice=menuDataPrice;
         this.menuDataExplain=menuDataExplain;
         this.menuDataImage=menuDataImage;
+        this.isMain = isMain;
     }
 
     public String getMenuDataName(){
@@ -40,5 +42,8 @@ public class MenuData {
     }
     public void setMenuDataImage(String menuDataImage){
         this.menuDataImage=menuDataImage;
+    }
+    public boolean getIsMain(){
+        return isMain;
     }
 }

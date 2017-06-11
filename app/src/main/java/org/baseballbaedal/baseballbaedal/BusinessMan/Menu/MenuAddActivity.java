@@ -10,6 +10,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -32,18 +33,31 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
+import org.baseballbaedal.baseballbaedal.BusinessMan.BusinessSignupActivity;
 import org.baseballbaedal.baseballbaedal.BusinessMan.LogoViewActivity;
+import org.baseballbaedal.baseballbaedal.Manifest;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityMenuAddBinding;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class MenuAddActivity extends AppCompatActivity {
     private static final int REQUEST_CROP = 6000;
@@ -55,15 +69,17 @@ public class MenuAddActivity extends AppCompatActivity {
     AlertDialog checkDialog;
     AlertDialog submitDialog;
     ProgressDialog uploadDialog;
+    ProgressDialog loadDialog;
     InputMethodManager imm;
     DatabaseReference myRef;
     String uid;
     String menuKey;
+    String menuImageUrl;
     Uri sendUri;
     private Uri tempImageUri;
     private Uri imageCropUri;
     Bitmap bitmap = null;
-
+    boolean isEdit;
     File tempFile;
 
 
@@ -80,7 +96,7 @@ public class MenuAddActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-            binding.explainLimit.setText(binding.menuExplain.length()+" / 80자");
+            binding.explainLimit.setText(binding.menuExplain.length()+" / 50자");
 
         }
     };
@@ -88,8 +104,47 @@ public class MenuAddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_menu_add);
-        //타이틀 설정
-        binding.toolBar.setTitle("메뉴 추가");
+
+        //저장소 권한 묻기
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Toast.makeText(MenuAddActivity.this, "저장소 권한이 없어 메뉴를 추가할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        };
+        new TedPermission(getApplicationContext())
+                .setPermissionListener(permissionlistener)
+                .setRationaleMessage("메뉴 사진 업로드를 위해 저장소 권한이 필요합니다.")
+                .setRationaleConfirmText("확인")
+                .setDeniedMessage("설정으로 가셔서 저장소 권한을 허용해주세요.")
+                .setDeniedCloseButtonText("닫기")
+                .setGotoSettingButtonText("설정하러 가기")
+                .setPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .check();
+
+
+        myRef = FirebaseDatabase.getInstance().getReference();
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        tempFile = getTempFile();
+
+        Intent intent = getIntent();
+        isEdit = intent.getBooleanExtra("isEdit",false);
+        if(isEdit) {
+            menuKey = intent.getStringExtra("menuId");
+            //타이틀 설정
+            binding.toolBar.setTitle("메뉴 수정");
+            loadData();
+
+        }else{
+            //타이틀 설정
+            binding.toolBar.setTitle("메뉴 추가");
+        }
+
         binding.toolBar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(binding.toolBar);
         //뒤로가기 버튼 만들기
@@ -99,8 +154,6 @@ public class MenuAddActivity extends AppCompatActivity {
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         //메뉴설명란 입력문자 수 읽어오기
         binding.menuExplain.addTextChangedListener(watcher);
-
-        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         uploadDialog = new ProgressDialog(MenuAddActivity.this);
 
@@ -248,9 +301,6 @@ public class MenuAddActivity extends AppCompatActivity {
             }
         });
 
-
-        myRef = FirebaseDatabase.getInstance().getReference();
-
         binding.menuSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -318,14 +368,126 @@ public class MenuAddActivity extends AppCompatActivity {
         return true;
     }
 
+    public void loadData(){
+        //데이터 불러오는 중이라고 알림창 띄우기
+        loadDialog = new ProgressDialog(MenuAddActivity.this);
+        loadDialog.setProgress(ProgressDialog.STYLE_SPINNER);
+        loadDialog.setMessage("데이터를 불러오는 중입니다...");
+        loadDialog.setCancelable(false);
+        loadDialog.show();
+
+        myRef.child("market").child(uid).child("menu").child(menuKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot!=null){
+                    MenuInfo data = dataSnapshot.getValue(MenuInfo.class);
+                    binding.menuName.setText(data.menuName);
+                    binding.menuPrice.setText(data.menuPrice);
+                    binding.menuExplain.setText(data.menuExplain);
+                    if(data.option1Name!=null){
+                        binding.optionName1.setText(data.option1Name);
+                        binding.optionPrice1.setText(data.option1Price);
+                        binding.optionSet1.setVisibility(View.VISIBLE);
+                    }
+                    if(data.option2Name!=null){
+                        binding.optionName2.setText(data.option2Name);
+                        binding.optionPrice2.setText(data.option2Price);
+                        binding.optionSet2.setVisibility(View.VISIBLE);
+                    }
+                    if(data.option3Name!=null){
+                        binding.optionName3.setText(data.option3Name);
+                        binding.optionPrice3.setText(data.option3Price);
+                        binding.optionSet3.setVisibility(View.VISIBLE);
+                    }
+                    if(data.option4Name!=null){
+                        binding.optionName4.setText(data.option4Name);
+                        binding.optionPrice4.setText(data.option4Price);
+                        binding.optionSet4.setVisibility(View.VISIBLE);
+                    }
+                    if(data.option5Name!=null){
+                        binding.optionName5.setText(data.option5Name);
+                        binding.optionPrice5.setText(data.option5Price);
+                        binding.optionSet5.setVisibility(View.VISIBLE);
+                    }
+
+                    StorageReference ref = FirebaseStorage.getInstance().getReference().child("market").child(uid).child("menu").child(menuKey).child("menu.jpg");
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            sendUri = uri;
+                            menuImageUrl = String.valueOf(uri);
+                            Log.d("다운로드 URL", menuImageUrl);
+                            //피카소를 이용하여 저장소에 저장된 사진을 url로 이미지뷰에 연결하기
+                            Picasso.with(getApplicationContext())
+                                    .load(menuImageUrl)
+                                    .fit()
+                                    .centerInside()
+                                    .into(binding.menuImageView, new Callback.EmptyCallback() {
+                                        @Override
+                                        public void onSuccess() {
+                                            binding.menuImageViewContainer.setVisibility(View.VISIBLE);
+                                            binding.menuTextViewContainer.setVisibility(View.INVISIBLE);
+                                            BitmapDrawable d = (BitmapDrawable) binding.menuImageView.getDrawable();
+                                            bitmap = d.getBitmap();
+                                            try {
+                                                FileOutputStream out = new FileOutputStream(tempFile.getPath());
+                                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                                                out.close();
+                                            } catch (FileNotFoundException e) {
+                                                e.printStackTrace();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                            sendUri = Uri.fromFile(tempFile);
+                                            loadDialog.dismiss();
+                                        }
+                                        @Override
+                                        public void onError() {
+                                            super.onError();
+                                            Toast.makeText(MenuAddActivity.this, "이미지 표시 에러", Toast.LENGTH_SHORT).show();
+                                            loadDialog.dismiss();
+                                        }
+                                    });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            Toast.makeText(MenuAddActivity.this, "저장소 이미지 주소 가져오기 실패", Toast.LENGTH_SHORT).show();
+                            loadDialog.dismiss();
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(MenuAddActivity.this, "불러올 데이터가 없습니다.", Toast.LENGTH_SHORT).show();
+                    loadDialog.dismiss();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(MenuAddActivity.this, "데이터 가져오기 실패 : "+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                loadDialog.dismiss();
+            }
+        });
+
+    }
+
     public  void submit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(MenuAddActivity.this);
-        builder.setTitle("메뉴 추가 확인");
-        builder.setMessage("작성하신 내용대로 메뉴를 추가하시겠습니까?");
+        if(isEdit){
+            builder.setTitle("메뉴 수정 확인");
+            builder.setMessage("작성하신 내용대로 메뉴를 수정하시겠습니까?");
+        }
+        else {
+            builder.setTitle("메뉴 추가 확인");
+            builder.setMessage("작성하신 내용대로 메뉴를 추가하시겠습니까?");
+        }
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                menuKey = myRef.child("market").child(uid).child("menu").push().getKey();
+                if(!isEdit) {
+                    menuKey = myRef.child("market").child(uid).child("menu").push().getKey();
+                }
+                myRef.child("market").child(uid).child("menu").child(menuKey).child("isMain").setValue(false);
                 myRef.child("market").child(uid).child("menu").child(menuKey).child("menuName").setValue(binding.menuName.getText().toString());
                 myRef.child("market").child(uid).child("menu").child(menuKey).child("menuPrice").setValue(binding.menuPrice.getText().toString());
                 myRef.child("market").child(uid).child("menu").child(menuKey).child("menuExplain").setValue(binding.menuExplain.getText().toString());
@@ -385,7 +547,6 @@ public class MenuAddActivity extends AppCompatActivity {
         return file;
     }
     public void cropImage() {
-        tempFile = getTempFile();
         tempImageUri = Uri.fromFile(tempFile);
 
         Intent intent = new Intent("com.android.camera.action.CROP");
@@ -508,96 +669,5 @@ public class MenuAddActivity extends AppCompatActivity {
             }
         });
         exitDialog.show();
-    }
-    //저장소 접근권한 묻기 설정
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        int permissionCheck1 = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
-        int permissionCheck = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if(permissionCheck== PackageManager.PERMISSION_DENIED) {
-
-            //사용자가 권한을 한번 이라도 거부 했던 경우
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                //알림창을 띄운다
-                AlertDialog.Builder builder = new AlertDialog.Builder(MenuAddActivity.this);
-                builder.setTitle("알림");
-                builder.setMessage("메뉴 사진을 업로드 하기 위해 저장소 권한을 허용해주세요.");
-
-                //앱 설정으로 이동하는 버튼
-                builder.setPositiveButton("설정으로 이동", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent i = new Intent();
-                        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        i.addCategory(Intent.CATEGORY_DEFAULT);
-                        i.setData(Uri.parse("package:" + getApplication().getPackageName()));
-                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                        i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                        startActivityForResult(i, 2);
-                        finish();
-                    }
-                });
-                //닫기
-                builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.setCancelable(false);
-                dialog.show();
-                //처음 권한을 묻는 경우
-            } else {
-//                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            }
-        }
-    }
-
-    //권한요청 후 결과를 받았을 때 실행되는 메소드
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1:
-            case 2:
-                //사용자가 권한을 허가했을 때
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    //사용자가 권한을 거부했을 때
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MenuAddActivity.this);
-                    builder.setTitle("알림");
-                    builder.setMessage("저장소 권한을 허용해주세요.");
-
-                    builder.setPositiveButton("설정으로 이동", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent i = new Intent();
-                            i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                            i.addCategory(Intent.CATEGORY_DEFAULT);
-                            i.setData(Uri.parse("package:" + getApplication().getPackageName()));
-                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                            i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                            startActivityForResult(i, 2);
-                        }
-                    });
-
-                    //닫기
-                    builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.setCancelable(false);
-                    dialog.show();
-                }
-                return;
-        }
     }
 }

@@ -88,7 +88,7 @@
                         android:layout_height="wrap_content"
                         android:text="메뉴 이름 : "
                         android:textSize="15sp"/>
-                    <EditText
+                    <org.baseballbaedal.baseballbaedal.CustomEditText
                         android:id="@+id/menuName"
                         android:lines="1"
                         android:maxLines="1"
@@ -109,7 +109,7 @@
                         android:layout_height="wrap_content"
                         android:text="가격 : "
                         android:textSize="15sp"/>
-                    <EditText
+                    <org.baseballbaedal.baseballbaedal.CustomEditText
                         android:id="@+id/menuPrice"
                         android:lines="1"
                         android:maxLines="1"
@@ -411,16 +411,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="메뉴에 대해 설명해주세요(80자 입력가능) "
+                        android:text="메뉴에 대해 설명해주세요(50자 입력가능) "
                         android:textSize="15sp"/>
                     <TextView
                         android:id="@+id/explainLimit"
                         android:layout_gravity="right"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0/80자"/>
+                        android:text="0/50자"/>
 
-                    <EditText
+                    <org.baseballbaedal.baseballbaedal.CustomEditText
                         android:id="@+id/menuExplain"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -430,7 +430,7 @@
                         android:lines="5"
                         android:background="@null"
                         android:maxLines="4"
-                        android:maxLength="80"
+                        android:maxLength="50"
                         android:singleLine="true"
                         android:inputType="textMultiLine"
                         />

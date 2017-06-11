@@ -1,173 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuManageActivity">
 
-    <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/toolBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:theme="@style/ToolbarStyle">
-
-    </android.support.v7.widget.Toolbar>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="메뉴 정보"
-        android:textSize="20sp"
-        android:layout_margin="10dp"
-        android:textAlignment="center"
-        android:background="@drawable/black_teduri"/>
-    <LinearLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/black_teduri">
-
-        <TextView
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="메뉴 사진"
-            android:textAlignment="center"
-            android:layout_weight="4"
-            android:background="@drawable/black_teduri"/>
-        <TextView
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="이름"
-            android:textAlignment="center"
-            android:layout_weight="3"
-            android:background="@drawable/black_teduri"/>
-        <TextView
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="가격"
-            android:textAlignment="center"
-            android:layout_weight="3"
-            android:background="@drawable/black_teduri"/>
-        <TextView
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="메뉴 설명"
-            android:textAlignment="center"
-            android:layout_weight="5"
-            android:background="@drawable/black_teduri"/>
-    </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/black_teduri">
-    <ListView
-        android:id="@+id/menuListView"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:choiceMode="multipleChoice"
-        android:visibility="gone">
-    </ListView>
-        <TextView
-            android:id="@+id/menuListText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="아직 메뉴가 없습니다.\n하단의 버튼을 눌러 추가해주세요"
-            android:textSize="15sp"/>
-    </FrameLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center">
-                    <Button
-                        android:id="@+id/addMenuButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="메뉴 추가하기"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center">
-                    <Button
-                        android:id="@+id/selectMainMenuButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="대표메뉴 선택(필수)"/>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp">
+        tools:context="org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuManageActivity">
+
+        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:theme="@style/ToolbarStyle">
+
+        </android.support.v7.widget.Toolbar>
+
+        <TextView
+            android:id="@+id/infoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/black_teduri"
+            android:text="메뉴 정보"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/black_teduri">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="@drawable/black_teduri"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="메뉴 사진"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:background="@drawable/black_teduri"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="이름"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:background="@drawable/black_teduri"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="가격"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:background="@drawable/black_teduri"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="메뉴 설명"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/black_teduri">
+
+            <ListView
+                android:id="@+id/menuListView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:choiceMode="multipleChoice"
+                android:visibility="gone"></ListView>
+
+            <TextView
+                android:id="@+id/menuListText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="아직 메뉴가 없습니다.\n하단의 버튼을 눌러 추가해주세요"
+                android:textSize="15sp" />
+        </FrameLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
-            <LinearLayout
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
+
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/commonContainer"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:gravity="center">
-                    <Button
-                        android:id="@+id/editMenuButton"
-                        android:layout_width="wrap_content"
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="수정하기"/>
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/addMenuButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="메뉴 추가하기" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/deleteStartButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="삭제하기" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/selectMainMenuButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="대표메뉴 선택(필수)" />
+                    </LinearLayout>
+
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/deleteModeContainer"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center">
-                    <Button
-                        android:id="@+id/deleteMenuButton"
-                        android:layout_width="wrap_content"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="삭제하기"/>
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/deleteCancelButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="삭제 취소" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/deleteFinishButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="선택항목 삭제하기" />
+                    </LinearLayout>
+
                 </LinearLayout>
-            </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/mainModeContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/mainFinishButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="대표메뉴 선택 완료" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </FrameLayout>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
 </layout>
