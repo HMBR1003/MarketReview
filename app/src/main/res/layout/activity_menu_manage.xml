@@ -155,7 +155,7 @@
                             android:id="@+id/selectMainMenuButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="대표메뉴 선택(필수)" />
+                            android:text="대표메뉴 선택" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -199,6 +199,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/mainCancelButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="대표메뉴 선택 취소" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"

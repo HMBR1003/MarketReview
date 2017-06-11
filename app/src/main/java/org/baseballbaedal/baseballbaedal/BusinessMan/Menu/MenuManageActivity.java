@@ -74,11 +74,34 @@ public class MenuManageActivity extends AppCompatActivity {
     int i;
 
     int checkedItem = -1;
-    int oldPosition = 0;
 
     AlertDialog deleteDialog;
 
     String uid;
+
+    @Override
+    public void onBackPressed() {
+        if (isDeleteMode) {
+            binding.commonContainer.setVisibility(View.VISIBLE);
+            binding.deleteModeContainer.setVisibility(View.GONE);
+//                for(int i = 0 ;i < adapter.getCount() ; i++){
+//                    getViewByPosition(i,binding.menuListView).setBackgroundColor(Color.rgb(255, 255, 255));
+////                    binding.menuListView.getChildAt(i).setBackgroundColor(Color.rgb(255, 255, 255));
+//                }
+            isDeleteMode = false;
+            adapter.notifyDataSetChanged();
+            binding.infoText.setText("메뉴 정보");
+        } else if (isMainSelect) {
+            binding.commonContainer.setVisibility(View.VISIBLE);
+            binding.mainModeContainer.setVisibility(View.GONE);
+            binding.infoText.setText("메뉴 정보");
+            isMainSelect = false;
+            adapter.notifyDataSetChanged();
+            checkedItem = -1;
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,11 +136,26 @@ public class MenuManageActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getChildrenCount() > 0) {
+                    int count = 0;
                     binding.menuListView.setVisibility(View.VISIBLE);
                     binding.menuListText.setVisibility(View.GONE);
                     adapter.clear();
                     key = new String[(int) dataSnapshot.getChildrenCount()];
-
+                    i=0;
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        key[i] = data.getKey();
+                        Iterator<DataSnapshot> it1 = data.getChildren().iterator();
+                        boolean isMain = it1.next().getValue(Boolean.class);
+                        if (isMain)
+                            break;
+                        else {
+                            count++;
+                        }
+                        i++;
+                    }
+                    if(count==dataSnapshot.getChildrenCount()){
+                        ref.child(uid).child("menu").child(key[0]).child("isMain").setValue(true);
+                    }
                     i = 0;
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         key[i] = data.getKey();
@@ -148,7 +186,7 @@ public class MenuManageActivity extends AppCompatActivity {
                             menuExplain += ", " + it.next().getValue(String.class);
                             it.next().getValue(String.class);
                         }
-                        adapter.addItem(new MenuData(menuName, menuPrice, menuExplain, menuImageURL,isMain));
+                        adapter.addItem(new MenuData(menuName, menuPrice, menuExplain, menuImageURL, isMain));
                         adapter.notifyDataSetChanged();
 //                        Log.d("다운로드 URL", menuImageURL);
                         i++;
@@ -205,30 +243,41 @@ public class MenuManageActivity extends AppCompatActivity {
                 binding.commonContainer.setVisibility(View.GONE);
                 binding.mainModeContainer.setVisibility(View.VISIBLE);
                 binding.infoText.setText("대표로 지정할 메뉴를 선택해 주세요");
-                isMainSelect=true;
+                isMainSelect = true;
             }
         });
 
         binding.mainFinishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(checkedItem<0){
+                if (checkedItem < 0) {
                     Toast.makeText(MenuManageActivity.this, "아무것도 선택하지 않았습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    binding.commonContainer.setVisibility(View.VISIBLE);
+                    binding.mainModeContainer.setVisibility(View.GONE);
+                    binding.infoText.setText("메뉴 정보");
+                    isMainSelect = false;
+                    adapter.notifyDataSetChanged();
+                    for (int i = 0; i < adapter.getCount(); i++) {
+                        ref.child(uid).child("menu").child(key[i]).child("isMain").setValue(false);
+                    }
+                    ref.child(uid).child("menu").child(key[checkedItem]).child("isMain").setValue(true);
+                    checkedItem = -1;
                 }
-                binding.commonContainer.setVisibility(View.VISIBLE);
-                binding.mainModeContainer.setVisibility(View.GONE);
-                binding.infoText.setText("메뉴 정보");
-                isMainSelect=false;
-                adapter.notifyDataSetChanged();
-                for(int i = 0; i<adapter.getCount(); i++){
-                    ref.child(uid).child("menu").child(key[i]).child("isMain").setValue(false);
-                }
-                ref.child(uid).child("menu").child(key[checkedItem]).child("isMain").setValue(true);
-                checkedItem=-1;
             }
         });
 
-
+        binding.mainCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.commonContainer.setVisibility(View.VISIBLE);
+                binding.mainModeContainer.setVisibility(View.GONE);
+                binding.infoText.setText("메뉴 정보");
+                isMainSelect = false;
+                adapter.notifyDataSetChanged();
+                checkedItem = -1;
+            }
+        });
 
         binding.deleteStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -389,12 +438,14 @@ public class MenuManageActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+//            if (items.size() == 1)
+//                ref.child(uid).child("menu").child(key[0]).child("isMain").setValue(true);
             final MenuDataView view = new MenuDataView(getApplicationContext());
             MenuData item = items.get(position);
             view.setMenuDataName(item.getMenuDataName());
             view.setMenuDataPrice(item.getMenuDataPrice());
             view.setMenuDataExplain(item.getMenuDataExplain());
-            if(item.getIsMain()){
+            if (item.getIsMain()) {
                 view.VisibleIsMainText();
             }
             //이미지 url
@@ -433,9 +484,8 @@ public class MenuManageActivity extends AppCompatActivity {
                 } else {
                     view.setBackgroundColor(Color.rgb(255, 255, 255));
                 }
-            }
-            else if(isMainSelect){
-                if(position==checkedItem){
+            } else if (isMainSelect) {
+                if (position == checkedItem) {
                     view.setBackgroundColor(Color.rgb(103, 153, 255));
                 }
             }
