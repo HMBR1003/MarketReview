@@ -119,9 +119,6 @@ public class MainActivity extends AppCompatActivity
         takeoutFragment = new TakeoutFragment();
         baseInfoFragment = new BaseInfoFragment();
 
-
-
-
 //        //구글 광고 초기화 및 세팅
 //        MobileAds.initialize(getApplicationContext(), "ca-app-pub-4432641899551083~2094218055");
 //        AdView mAdView = (AdView) findViewById(R.id.adView);

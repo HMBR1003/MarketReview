@@ -258,10 +258,12 @@ public class MenuManageActivity extends AppCompatActivity {
                     binding.infoText.setText("메뉴 정보");
                     isMainSelect = false;
                     adapter.notifyDataSetChanged();
+                    ref.child(uid).child("menu").child(key[checkedItem]).child("isMain").setValue(true);
                     for (int i = 0; i < adapter.getCount(); i++) {
+                        if(i==checkedItem)
+                            continue;
                         ref.child(uid).child("menu").child(key[i]).child("isMain").setValue(false);
                     }
-                    ref.child(uid).child("menu").child(key[checkedItem]).child("isMain").setValue(true);
                     checkedItem = -1;
                 }
             }
