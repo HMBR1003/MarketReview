@@ -3,7 +3,6 @@
     package="org.baseballbaedal.baseballbaedal">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
@@ -72,7 +71,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainFragment.Weather.WeatherActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MarketDetailViewActivity"></activity>
     </application>
 
 </manifest>

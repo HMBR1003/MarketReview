@@ -410,7 +410,7 @@ public class MenuAddActivity extends AppCompatActivity {
                         binding.optionSet5.setVisibility(View.VISIBLE);
                     }
 
-                    StorageReference ref = FirebaseStorage.getInstance().getReference().child("market").child(uid).child("menu").child(menuKey).child("menu.jpg");
+                    StorageReference ref = FirebaseStorage.getInstance().getReference().child("market").child(uid).child("menu").child(menuKey+".jpg");
                     ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
@@ -597,7 +597,7 @@ public class MenuAddActivity extends AppCompatActivity {
         //저장소에 대한 참조 만들기
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         //실제로 이미지가 저장될 곳의 참조
-        StorageReference mountainsRef = mStorageRef.child("market").child(uid).child("menu").child(menuKey).child("menu.jpg");
+        StorageReference mountainsRef = mStorageRef.child("market").child(uid).child("menu").child(menuKey+".jpg");
 
         //비트맵을 jpg로 변환시켜서 변수에 저장
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -619,9 +619,9 @@ public class MenuAddActivity extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 //                 taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                String photoUri =  String.valueOf(downloadUrl);
-                myRef.child("market").child(uid).child("menu").child(menuKey).child("menuImageURL").setValue(photoUri);
+//                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//                String photoUri =  String.valueOf(downloadUrl);
+//                myRef.child("market").child(uid).child("menu").child(menuKey).child("menuImageURL").setValue(photoUri);
                 uploadDialog.dismiss();
                 setResult(RESULT_OK);
                 finish();

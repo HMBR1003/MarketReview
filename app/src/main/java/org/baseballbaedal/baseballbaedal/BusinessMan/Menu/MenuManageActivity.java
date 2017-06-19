@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -31,6 +33,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -43,11 +46,8 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import org.baseballbaedal.baseballbaedal.BusinessMan.BusinessSignupActivity;
-import org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuAddActivity;
+
 import org.baseballbaedal.baseballbaedal.R;
-import org.baseballbaedal.baseballbaedal.Test.DataTestView;
-import org.baseballbaedal.baseballbaedal.Test.TestData;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityMenuManageBinding;
 
 import java.io.BufferedInputStream;
@@ -141,7 +141,7 @@ public class MenuManageActivity extends AppCompatActivity {
                     binding.menuListText.setVisibility(View.GONE);
                     adapter.clear();
                     key = new String[(int) dataSnapshot.getChildrenCount()];
-                    i=0;
+                    i = 0;
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         key[i] = data.getKey();
                         Iterator<DataSnapshot> it1 = data.getChildren().iterator();
@@ -153,7 +153,7 @@ public class MenuManageActivity extends AppCompatActivity {
                         }
                         i++;
                     }
-                    if(count==dataSnapshot.getChildrenCount()){
+                    if (count == dataSnapshot.getChildrenCount()) {
                         ref.child(uid).child("menu").child(key[0]).child("isMain").setValue(true);
                     }
                     i = 0;
@@ -162,7 +162,6 @@ public class MenuManageActivity extends AppCompatActivity {
                         it = data.getChildren().iterator();
                         boolean isMain = it.next().getValue(Boolean.class);
                         String menuExplain = it.next().getValue(String.class);
-                        String menuImageURL = it.next().getValue(String.class);
                         String menuName = it.next().getValue(String.class);
                         String menuPrice = it.next().getValue(String.class) + "원";
 
@@ -186,7 +185,7 @@ public class MenuManageActivity extends AppCompatActivity {
                             menuExplain += ", " + it.next().getValue(String.class);
                             it.next().getValue(String.class);
                         }
-                        adapter.addItem(new MenuData(menuName, menuPrice, menuExplain, menuImageURL, isMain));
+                        adapter.addItem(new MenuData(menuName, menuPrice, menuExplain, isMain, uid, key[i]));
                         adapter.notifyDataSetChanged();
 //                        Log.d("다운로드 URL", menuImageURL);
                         i++;
@@ -260,7 +259,7 @@ public class MenuManageActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                     ref.child(uid).child("menu").child(key[checkedItem]).child("isMain").setValue(true);
                     for (int i = 0; i < adapter.getCount(); i++) {
-                        if(i==checkedItem)
+                        if (i == checkedItem)
                             continue;
                         ref.child(uid).child("menu").child(key[i]).child("isMain").setValue(false);
                     }
@@ -328,7 +327,7 @@ public class MenuManageActivity extends AppCompatActivity {
                                 if (selectedPosition[i]) {
                                     ref.child(uid).child("menu").child(key[i]).setValue(null);
                                     StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-                                    StorageReference deleteRef = mStorageRef.child("market").child(uid).child("menu").child(key[i]).child("menu.jpg");
+                                    StorageReference deleteRef = mStorageRef.child("market").child(uid).child("menu").child(key[i]+".jpg");
                                     deleteRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
@@ -451,35 +450,43 @@ public class MenuManageActivity extends AppCompatActivity {
                 view.VisibleIsMainText();
             }
             //이미지 url
-            imageUrl = item.getMenuDataImage();
+            StorageReference ref = FirebaseStorage.getInstance().getReference().child("market").child(item.getUid()).child("menu").child(item.getMenuKey()+".jpg");
+            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    imageUrl = String.valueOf(uri);
 
-            Picasso.with(getApplicationContext())
-                    .load(imageUrl)
-                    .fit()
-                    .placeholder(R.drawable.jamsil)
-                    .centerInside()
-                    .into(view.menuDataImage, new Callback.EmptyCallback() {
-                        @Override
-                        public void onSuccess() {
-//                            try {
-//                                FileOutputStream out = new FileOutputStream(getTempFile().getPath());
-//                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-//                                out.close();
-//                            } catch (FileNotFoundException e) {
-//                                e.printStackTrace();
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//                            sendUri = Uri.fromFile(getTempFile());
-//                            dialog.dismiss();
-                        }
+                    Glide
+                            .with(MenuManageActivity.this)
+                            .load(imageUrl)
+                            .placeholder(R.drawable.jamsil)
+                            .thumbnail(0.1f)
+                            .into(view.menuDataImage);
+//                    Picasso.with(getApplicationContext())
+//                            .load(imageUrl)
+//                            .fit()
+//                            .placeholder(R.drawable.jamsil)
+//                            .centerInside()
+//                            .into(view.menuDataImage, new Callback.EmptyCallback() {
+//                                @Override
+//                                public void onSuccess() {
+//
+//                                }
+//
+//                                @Override
+//                                public void onError() {
+//                                    super.onError();
+//                                    Toast.makeText(MenuManageActivity.this, "이미지 표시 에러", Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(MenuManageActivity.this, "저장소 이미지 주소 가져오기 실패", Toast.LENGTH_SHORT).show();
+                }
+            });
 
-                        @Override
-                        public void onError() {
-                            super.onError();
-                            Toast.makeText(MenuManageActivity.this, "이미지 표시 에러", Toast.LENGTH_SHORT).show();
-                        }
-                    });
             if (isDeleteMode) {
                 if (selectedPosition[position]) {
                     view.setBackgroundColor(Color.rgb(103, 153, 255));
@@ -494,51 +501,7 @@ public class MenuManageActivity extends AppCompatActivity {
             return view;
 
 
-            //url로부터 이미지 비트맵을 가져와 이미지뷰에 세팅하는핸들러 설정
-//            handler = new Handler() {
-//                public void handleMessage(Message msg) {
-//                    view.setMenuDataImage((Bitmap)msg.obj);
-//                }
-//            };
-//
-//            //url에서 비트맵 추출하는 작업을 스레드로 실행
-//            new Thread() {
-//                public void run() {
-//                    Bitmap b = getBitmap(imageUrl);
-//                    Message msg = Message.obtain(handler, 1111, b);
-//                    handler.sendMessage(msg);
-//                }
-//            }.start();
-
         }
-//    public static Bitmap getBitmap(String imageURL) {
-//        Bitmap imgBitmap = null;
-//        HttpURLConnection conn = null;
-//        BufferedInputStream bis = null;
-//
-//        try {
-//            URL url = new URL(imageURL);
-//            conn = (HttpURLConnection) url.openConnection();
-//            conn.connect();
-//
-//            int nSize = conn.getContentLength();
-//            bis = new BufferedInputStream(conn.getInputStream(), nSize);
-//            imgBitmap = BitmapFactory.decodeStream(bis);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (bis != null) {
-//                try {
-//                    bis.close();
-//                } catch (IOException e) {
-//                }
-//            }
-//            if (conn != null) {
-//                conn.disconnect();
-//            }
-//        }
-//
-//        return imgBitmap;
-//    }
+
     }
 }

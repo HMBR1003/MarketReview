@@ -17,7 +17,7 @@ public class MarketInfo {
     public String marketAddress2;
     public String marketName;
     public String marketTel;
-    public String marketImageUrl;
+    public String minPrice;
     public long handleFood;
     public long selectedCol;
 

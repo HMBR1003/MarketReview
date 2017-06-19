@@ -95,10 +95,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
-                        android:imeOptions="actionNext"
+                        android:inputType="text"
                         android:hint="ex)00치킨"
                         />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -109,6 +110,7 @@
                         android:layout_height="wrap_content"
                         android:text="가격 : "
                         android:textSize="15sp"/>
+
                     <org.baseballbaedal.baseballbaedal.CustomEditText
                         android:id="@+id/menuPrice"
                         android:lines="1"
@@ -143,6 +145,7 @@
                             android:id="@+id/optionName1"
                             android:lines="1"
                             android:maxLines="1"
+                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
@@ -194,6 +197,7 @@
                             android:id="@+id/optionName2"
                             android:lines="1"
                             android:maxLines="1"
+                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
@@ -245,6 +249,7 @@
                             android:id="@+id/optionName3"
                             android:lines="1"
                             android:maxLines="1"
+                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
@@ -296,6 +301,7 @@
                             android:id="@+id/optionName4"
                             android:lines="1"
                             android:maxLines="1"
+                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
@@ -347,6 +353,7 @@
                             android:id="@+id/optionName5"
                             android:lines="1"
                             android:maxLines="1"
+                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
@@ -433,6 +440,7 @@
                         android:maxLength="50"
                         android:singleLine="true"
                         android:inputType="textMultiLine"
+                        android:imeOptions="actionDone"
                         />
                 </LinearLayout>
                 <LinearLayout

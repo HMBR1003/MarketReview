@@ -10,12 +10,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -28,6 +30,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -56,15 +62,15 @@ import java.util.ArrayList;
 
 public class BusinessSignupActivity extends AppCompatActivity {
     private static final int SEARCH_ADDRESS_ACTIVITY = 10000;
-    private static final int GET_MARKET_IMAGE = 7000 ;
+    private static final int GET_MARKET_IMAGE = 7000;
     private static final int REQUEST_CROP = 6000;
 
     String email;
     String name;
     String uid;
     int isBusiness;     //사업자 구분하기 위해 선언
-    int handleFood=0;
-    int selectedCol=0;
+    int handleFood = 0;
+    int selectedCol = 0;
     ActivityBusinessSignupBinding dataBinding;  //데이터 바인딩
     DatabaseReference myRef;
     File tempFile;
@@ -74,12 +80,12 @@ public class BusinessSignupActivity extends AppCompatActivity {
     Uri sendUri;
     String sendUrl;
 
-    Bitmap bitmap=null;
+    Bitmap bitmap = null;
     ProgressDialog dialog;
     AlertDialog checkDialog;
     AlertDialog submitDialog;
     //이미지 불러오기용
-    String marketImageURL=null;
+    String marketImageURL = null;
     String isMarket;
 
 
@@ -116,7 +122,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
         dataBinding.marketAddress1.setClickable(false);
 
         //프로그레스 다이얼로그 동적할당
-        dialog=new ProgressDialog(BusinessSignupActivity.this);
+        dialog = new ProgressDialog(BusinessSignupActivity.this);
 
         //주소찾기 버튼 클릭 시 Daum에서 지원하는 주소찾기 창을 띄움
         dataBinding.searchAddress.setOnClickListener(new View.OnClickListener() {
@@ -188,13 +194,13 @@ public class BusinessSignupActivity extends AppCompatActivity {
         });
 
         //취급음식 스피너
-        ArrayAdapter handleFoodAdapter = ArrayAdapter.createFromResource(this,R.array.handleFood,android.R.layout.simple_spinner_item);
+        ArrayAdapter handleFoodAdapter = ArrayAdapter.createFromResource(this, R.array.handleFood, android.R.layout.simple_spinner_item);
         handleFoodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dataBinding.handleFoodSpinner.setAdapter(handleFoodAdapter);
         dataBinding.handleFoodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                handleFood=position;
+                handleFood = position;
             }
 
             @Override
@@ -204,7 +210,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
         });
 
         //경기장 선택 스피너
-        ArrayAdapter colAdapter = ArrayAdapter.createFromResource(this,R.array.col,android.R.layout.simple_spinner_item);
+        ArrayAdapter colAdapter = ArrayAdapter.createFromResource(this, R.array.col, android.R.layout.simple_spinner_item);
         colAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dataBinding.colSpinner.setAdapter(colAdapter);
         dataBinding.colSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -224,7 +230,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent zoomIntent = new Intent(BusinessSignupActivity.this, LogoViewActivity.class);
-                zoomIntent.putExtra("imageUri",sendUri);
+                zoomIntent.putExtra("imageUri", sendUri);
                 startActivity(zoomIntent);
             }
         });
@@ -248,40 +254,44 @@ public class BusinessSignupActivity extends AppCompatActivity {
     }
 
     //빈공간 체크 함수
-    public boolean textCheck(){
-        if(dataBinding.manName.length()<=0){
+    public boolean textCheck() {
+        if (dataBinding.manName.length() <= 0) {
             Toast.makeText(this, "사업자명을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(dataBinding.manTel.length()<=0){
+        if (dataBinding.manTel.length() <= 0) {
             Toast.makeText(this, "사업자 전화번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(dataBinding.marketName.length()<=0){
+        if (dataBinding.marketName.length() <= 0) {
             Toast.makeText(this, "매장명을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(selectedCol==0){
+        if (selectedCol == 0) {
             Toast.makeText(this, "근처 경기장을 선택해주세요", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(handleFood==0){
+        if (handleFood == 0) {
             Toast.makeText(this, "취급 음식을 선택해주세요", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(dataBinding.marketAddress1.length()<=0){
+        if (dataBinding.marketAddress1.length() <= 0) {
             Toast.makeText(this, "주소를 검색하여 주세요.", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(dataBinding.marketAddress2.length()<=0){
+        if (dataBinding.marketAddress2.length() <= 0) {
             Toast.makeText(this, "상세 주소를 입력해주세요.", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(dataBinding.marketTel.length()<=0){
+        if (dataBinding.marketTel.length() <= 0) {
             Toast.makeText(this, "매장 전화번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(bitmap==null){
+        if (dataBinding.minPrice.length() <= 0) {
+            Toast.makeText(this, "최소 주문가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (bitmap == null) {
             Toast.makeText(this, "매장 사진을 등록해주세요.", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -289,7 +299,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
     }
 
     //유저에게 최종확인후 데이터 넣는 작업을 하는 함수
-    public void submitAlert(){
+    public void submitAlert() {
         //확인창 만들기
         AlertDialog.Builder builder = new AlertDialog.Builder(BusinessSignupActivity.this);
         builder.setTitle("제출 확인");
@@ -316,14 +326,12 @@ public class BusinessSignupActivity extends AppCompatActivity {
                     myRef.child(isMarket).child(uid).child("marketAddress1").setValue(dataBinding.marketAddress1.getText().toString());
                     myRef.child(isMarket).child(uid).child("marketAddress2").setValue(dataBinding.marketAddress2.getText().toString());
                     myRef.child(isMarket).child(uid).child("marketTel").setValue(dataBinding.marketTel.getText().toString());
+                    myRef.child(isMarket).child(uid).child("minPrice").setValue(dataBinding.minPrice.getText().toString());
                     if (isBusiness == 0 || isBusiness == 1) {
                         myRef.child("users").child(uid).child("isBusiness(0(not),1(applying),2(finish))").setValue(1);
                     }
                     uploadImage();
                 }
-
-                //고객이 사업자 등록 신청을 하는경우와 신청 중인 고객이 수정을 하는 경우, 임시 데이터베이스로 입력된 정보를 넣는다.
-
             }
         });
         //닫기
@@ -364,116 +372,24 @@ public class BusinessSignupActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //저장소 접근권한 묻기 설정
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-////        int permissionCheck1 = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
-//        int permissionCheck = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-//        if(permissionCheck== PackageManager.PERMISSION_DENIED) {
-//
-//            //사용자가 권한을 한번 이라도 거부 했던 경우
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-//                //알림창을 띄운다
-//                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessSignupActivity.this);
-//                builder.setTitle("알림");
-//                builder.setMessage("매장 사진을 업로드 하기 위해 저장소 권한을 허용해주세요.");
-//
-//                //앱 설정으로 이동하는 버튼
-//                builder.setPositiveButton("설정으로 이동", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Intent i = new Intent();
-//                        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-//                        i.addCategory(Intent.CATEGORY_DEFAULT);
-//                        i.setData(Uri.parse("package:" + getApplication().getPackageName()));
-//                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-//                        i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-//                        startActivityForResult(i, 2);
-//                        finish();
-//                    }
-//                });
-//                //닫기
-//                builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        finish();
-//                    }
-//                });
-//                AlertDialog dialog = builder.create();
-//                dialog.setCancelable(false);
-//                dialog.show();
-//            //처음 권한을 묻는 경우
-//            } else {
-////                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-//                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-//            }
-//        }
-//    }
-
-//    //권한요청 후 결과를 받았을 때 실행되는 메소드
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-//        switch (requestCode) {
-//            case 1:
-//            case 2:
-//                //사용자가 권한을 허가했을 때
-//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//                    //사용자가 권한을 거부했을 때
-//                } else {
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(BusinessSignupActivity.this);
-//                    builder.setTitle("알림");
-//                    builder.setMessage("저장소 권한을 허용해주세요.");
-//
-//                    builder.setPositiveButton("설정으로 이동", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            Intent i = new Intent();
-//                            i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-//                            i.addCategory(Intent.CATEGORY_DEFAULT);
-//                            i.setData(Uri.parse("package:" + getApplication().getPackageName()));
-//                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                            i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-//                            i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-//                            startActivityForResult(i, 2);
-//                        }
-//                    });
-//
-//                    //닫기
-//                    builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            finish();
-//                        }
-//                    });
-//                    AlertDialog dialog = builder.create();
-//                    dialog.setCancelable(false);
-//                    dialog.show();
-//                }
-//                return;
-//        }
-//    }
-
     //주소찾기나 사진 불러오기 결과를 받아왔을 때의 동작 설정
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         //주소찾기 화면에서 결과를 받아왔을 경우
-        if(requestCode==SEARCH_ADDRESS_ACTIVITY&&resultCode==RESULT_OK){
+        if (requestCode == SEARCH_ADDRESS_ACTIVITY && resultCode == RESULT_OK) {
             dataBinding.marketAddress1.setText(data.getStringExtra("data"));   //인텐트로 받아온 주소값을 텍스트에 설정한다
         }
         //매장 대표사진 설정에서 결과를 받아왔을 경우
-        else if(requestCode==GET_MARKET_IMAGE&&resultCode==RESULT_OK) {
+        else if (requestCode == GET_MARKET_IMAGE && resultCode == RESULT_OK) {
             //인텐트에서 이미지에 대한 데이터 추출
             imageCropUri = data.getData();
             //크롭하는 화면 띄움
             cropImage();
         }
         //이미지를 크롭한 뒤의 동작
-        else if(requestCode==REQUEST_CROP&&resultCode==RESULT_OK){
+        else if (requestCode == REQUEST_CROP && resultCode == RESULT_OK) {
 
             //크롭에 성공하여 이미지가 존재하면
             if (tempFile.exists()) {
@@ -485,34 +401,10 @@ public class BusinessSignupActivity extends AppCompatActivity {
 
                 //크게보기 했을 때 보내줄 uri에 값을 저장
                 sendUri = Uri.fromFile(tempFile);
-
-//                tempFile.delete();
             }
-
-//            final Bundle extras = data.getExtras();
-//            if(extras != null) {
-//                bitmap = extras.getParcelable("data");
-//                dataBinding.imageViewContainer.setVisibility(View.VISIBLE);
-//                dataBinding.textViewContainer.setVisibility(View.INVISIBLE);
-//                dataBinding.marketImageView.setImageBitmap(bitmap);
-//            }
-
-//            Uri imageCrop = data.getData(); //인텐트에서 이미지에 대한 데이터 추출
-//            try {
-//                //이미지를 비트맵 변수로 저장
-//                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageCrop);
-//                //이미지뷰에 비트맵 변수를 세팅
-//                dataBinding.imageViewContainer.setVisibility(View.VISIBLE);
-//                dataBinding.textViewContainer.setVisibility(View.INVISIBLE);
-//                dataBinding.marketImageView.setImageBitmap(bitmap);
-//
-//                //예외 처리 문장
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
         }
         //크롭하다가 취소했을 경우 다시 갤러리선택화면을 띄움
-        else if(requestCode==REQUEST_CROP&&resultCode!=RESULT_OK){
+        else if (requestCode == REQUEST_CROP && resultCode != RESULT_OK) {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
             startActivityForResult(intent, GET_MARKET_IMAGE);
@@ -522,13 +414,12 @@ public class BusinessSignupActivity extends AppCompatActivity {
     }
 
     //크롭한 이미지를 저장하고 불러올때 쓰일 함수
-    private File getTempFile(){
-        File file = new File( getExternalCacheDir(), "marketTmpImage.jpg" );
-        try{
+    private File getTempFile() {
+        File file = new File(getExternalCacheDir(), "marketTmpImage.jpg");
+        try {
             file.createNewFile();
-        }
-        catch( Exception e ){
-            Log.e("파일 생성", "실패" );
+        } catch (Exception e) {
+            Log.e("파일 생성", "실패");
         }
         return file;
     }
@@ -539,57 +430,23 @@ public class BusinessSignupActivity extends AppCompatActivity {
 
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(imageCropUri, "image/*");
-        intent.putExtra( "crop", "true" );
+        intent.putExtra("crop", "true");
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
         intent.putExtra("scale", true);
         intent.putExtra("return-data", true);
-        intent.putExtra( MediaStore.EXTRA_OUTPUT, tempImageUri );
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, tempImageUri);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString()); //Bitmap 형태로 받기 위해 해당 작업 진행
         startActivityForResult(intent, REQUEST_CROP);
-
-//        Intent intent = new Intent("com.android.camera.action.CROP");
-//        intent.setDataAndType(imageCropUri, "image/*");
-
-
-
-//            intent.putExtra("aspectX", 1);
-//            intent.putExtra("aspectY", 1);
-//            intent.putExtra("scale", true);
-//            intent.putExtra("return-data", true);
-//            startActivityForResult(intent,REQUEST_CROP);
-
-//            intent.putExtra("output", tmpImageUri);
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//            intent.putExtra("return-data", false);
-//            intent.putExtra(MediaStore.EXTRA_OUTPUT, tmpImageUri);
-
-//            ResolveInfo res = list.get(0);
-//            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-//        }
-
     }
 
 
     //데이터베이스에서 데이터를 로드해서 세팅해주는 함수
-    public  void loadData(){
+    public void loadData() {
         //데이터 불러오는 중이라고 알림창 띄우기
         dialog.setProgress(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("데이터를 불러오는 중입니다...");
         dialog.setCancelable(false);
-//        dialog.setOnKeyListener(new Dialog.OnKeyListener() {
-//            @Override
-//            public boolean onKey(DialogInterface arg0, int keyCode,
-//                                 KeyEvent event) {
-//                if (keyCode == KeyEvent.KEYCODE_BACK) {
-//                    dialog.dismiss();
-//                    finish();
-//                }
-//                return true;
-//            }
-//        });
         dialog.show();
 
         //데이터베이스 초기화
@@ -609,15 +466,15 @@ public class BusinessSignupActivity extends AppCompatActivity {
                     dataBinding.businessRegisterNum.setText(data.businessRegisterNum);
                     dataBinding.manTel.setText(data.manTel);
                     dataBinding.marketName.setText(data.marketName);
-                    dataBinding.handleFoodSpinner.setSelection((int)data.handleFood);
-                    handleFood=(int)data.handleFood;
-                    dataBinding.colSpinner.setSelection((int)data.selectedCol);
-                    selectedCol=(int)data.selectedCol;
+                    dataBinding.handleFoodSpinner.setSelection((int) data.handleFood);
+                    handleFood = (int) data.handleFood;
+                    dataBinding.colSpinner.setSelection((int) data.selectedCol);
+                    selectedCol = (int) data.selectedCol;
                     dataBinding.marketAddress1.setText(data.marketAddress1);
                     dataBinding.marketAddress2.setText(data.marketAddress2);
                     dataBinding.marketTel.setText(data.marketTel);
-
-                    StorageReference ref = FirebaseStorage.getInstance().getReference().child(isMarket).child(uid).child("market.jpg");
+                    dataBinding.minPrice.setText(data.minPrice);
+                    StorageReference ref = FirebaseStorage.getInstance().getReference().child(isMarket).child(uid).child(uid+".jpg");
                     ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
@@ -625,14 +482,19 @@ public class BusinessSignupActivity extends AppCompatActivity {
                             marketImageURL = String.valueOf(uri);
                             Log.d("다운로드 URL", marketImageURL);
                             //피카소를 이용하여 저장소에 저장된 사진을 url로 이미지뷰에 연결하기
-                            Picasso.with(getApplicationContext())
+                            Glide.with(getApplicationContext())
                                     .load(marketImageURL)
-                                    .fit()
-                                    .centerInside()
-                                    .into(dataBinding.marketImageView, new Callback.EmptyCallback() {
+                                    .listener(new RequestListener<String, GlideDrawable>() {
                                         @Override
-                                        public void onSuccess() {
-                                            BitmapDrawable d = (BitmapDrawable) dataBinding.marketImageView.getDrawable();
+                                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                            return false;
+                                        }
+
+                                        @Override
+                                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                            Drawable a = (Drawable)resource;
+                                            BitmapDrawable d = (BitmapDrawable)a;
+//                                            BitmapDrawable d = (BitmapDrawable) dataBinding.marketImageView.getDrawable();
                                             bitmap = d.getBitmap();
                                             try {
                                                 FileOutputStream out = new FileOutputStream(tempFile.getPath());
@@ -645,14 +507,42 @@ public class BusinessSignupActivity extends AppCompatActivity {
                                             }
                                             sendUri = Uri.fromFile(tempFile);
                                             dialog.dismiss();
+                                            return false;
                                         }
-                                        @Override
-                                        public void onError() {
-                                            super.onError();
-                                            Toast.makeText(BusinessSignupActivity.this, "이미지 표시 에러", Toast.LENGTH_SHORT).show();
-                                            dialog.dismiss();
-                                        }
-                                    });
+                                    })
+                                    .into(dataBinding.marketImageView);
+
+
+
+//                            Picasso.with(getApplicationContext())
+//                                    .load(marketImageURL)
+//                                    .fit()
+//                                    .centerInside()
+//                                    .into(dataBinding.marketImageView, new Callback.EmptyCallback() {
+//                                        @Override
+//                                        public void onSuccess() {
+//                                            BitmapDrawable d = (BitmapDrawable) dataBinding.marketImageView.getDrawable();
+//                                            bitmap = d.getBitmap();
+//                                            try {
+//                                                FileOutputStream out = new FileOutputStream(tempFile.getPath());
+//                                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+//                                                out.close();
+//                                            } catch (FileNotFoundException e) {
+//                                                e.printStackTrace();
+//                                            } catch (IOException e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                            sendUri = Uri.fromFile(tempFile);
+//                                            dialog.dismiss();
+//                                        }
+//
+//                                        @Override
+//                                        public void onError() {
+//                                            super.onError();
+//                                            Toast.makeText(BusinessSignupActivity.this, "이미지 표시 에러", Toast.LENGTH_SHORT).show();
+//                                            dialog.dismiss();
+//                                        }
+//                                    });
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -662,16 +552,16 @@ public class BusinessSignupActivity extends AppCompatActivity {
                         }
                     });
 //                    Toast.makeText(BusinessSignupActivity.this, "데이터 가져오기 성공", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     dialog.dismiss();
                     Toast.makeText(BusinessSignupActivity.this, "불러올 데이터가 없습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 dialog.dismiss();
-                Toast.makeText(BusinessSignupActivity.this, "데이터 가져오기 실패 에러 내용 : "+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(BusinessSignupActivity.this, "데이터 가져오기 실패 에러 내용 : " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -682,11 +572,11 @@ public class BusinessSignupActivity extends AppCompatActivity {
         builder.setTitle("종료 확인");
         builder.setMessage("나가시겠습니까? 작성중이던 내용이 사라집니다.");
         builder.setPositiveButton("확인(나가기)", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
         builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -708,7 +598,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
         checkDialog.show();
     }
 
-    public void uploadImage(){
+    public void uploadImage() {
         //데이터 저장하는 중이라고 알림창 띄우기
         dialog.setProgress(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("데이터를 저장하는 중입니다...");
@@ -716,7 +606,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
         dialog.show();
 
         //실제로 이미지가 저장될 곳의 참조
-        StorageReference saveRef = FirebaseStorage.getInstance().getReference().child(isMarket).child(uid).child("market.jpg");
+        StorageReference saveRef = FirebaseStorage.getInstance().getReference().child(isMarket).child(uid).child(uid+".jpg");
 
         //비트맵을 jpg로 변환시켜서 변수에 저장
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -737,12 +627,8 @@ public class BusinessSignupActivity extends AppCompatActivity {
             @SuppressWarnings("VisibleForTests")
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-//                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//                String photoUri =  String.valueOf(downloadUrl);
-//                myRef.child(isMarket).child(uid).child("marketImageUrl").setValue(photoUri);
                 dialog.dismiss();
-                if(isBusiness!=2)
+                if (isBusiness != 2)
                     setResult(RESULT_OK);
                 finish();
             }

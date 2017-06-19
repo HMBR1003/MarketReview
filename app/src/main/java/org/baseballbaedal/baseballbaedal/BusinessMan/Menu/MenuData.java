@@ -8,42 +8,35 @@ public class MenuData {
     String menuDataName;
     String menuDataPrice;
     String menuDataExplain;
-    String menuDataImage;
+    String uid;
+    String menuKey;
     boolean isMain;
 
-    public MenuData(String menuDataName, String menuDataPrice, String menuDataExplain, String menuDataImage, boolean isMain){
+    public MenuData(String menuDataName, String menuDataPrice, String menuDataExplain, boolean isMain,String uid,String menuKey){
         this.menuDataName=menuDataName;
         this.menuDataPrice=menuDataPrice;
         this.menuDataExplain=menuDataExplain;
-        this.menuDataImage=menuDataImage;
         this.isMain = isMain;
+        this.uid = uid;
+        this.menuKey = menuKey;
     }
 
     public String getMenuDataName(){
         return menuDataName;
     }
-    public void setMenuDataName(String menuDataName){
-        this.menuDataName=menuDataName;
-    }
     public String getMenuDataPrice(){
         return menuDataPrice;
-    }
-    public void setMenuDataPrice(String menuDataPrice){
-        this.menuDataPrice=menuDataPrice;
     }
     public String getMenuDataExplain(){
         return menuDataExplain;
     }
-    public void setMenuDataExplain(String menuDataExplain){
-        this.menuDataExplain=menuDataExplain;
-    }
-    public String getMenuDataImage(){
-        return menuDataImage;
-    }
-    public void setMenuDataImage(String menuDataImage){
-        this.menuDataImage=menuDataImage;
-    }
     public boolean getIsMain(){
         return isMain;
+    }
+    public String getUid(){
+        return uid;
+    }
+    public String getMenuKey(){
+        return menuKey;
     }
 }
