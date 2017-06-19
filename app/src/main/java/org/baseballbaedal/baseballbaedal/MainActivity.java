@@ -53,10 +53,10 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.baseballbaedal.baseballbaedal.BusinessMan.BusinessSignupActivity;
 import org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuManageActivity;
-import org.baseballbaedal.baseballbaedal.MainFragment.BaseInfoFragment;
 import org.baseballbaedal.baseballbaedal.MainFragment.DeliveryFragment;
 import org.baseballbaedal.baseballbaedal.MainFragment.HomeFragment;
 import org.baseballbaedal.baseballbaedal.MainFragment.TakeoutFragment;
+import org.baseballbaedal.baseballbaedal.MainFragment.WeatherFragment;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityMainBinding;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
     HomeFragment homeFragment;
     DeliveryFragment deliveryFragment;
     TakeoutFragment takeoutFragment;
-    BaseInfoFragment baseInfoFragment;
+    WeatherFragment weatherFragment;
     ViewPager viewPager;
     int isBusiness;
     long backTime;
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity
         homeFragment = new HomeFragment();
         deliveryFragment = new DeliveryFragment();
         takeoutFragment = new TakeoutFragment();
-        baseInfoFragment = new BaseInfoFragment();
+        weatherFragment = new WeatherFragment();
 
 //        //구글 광고 초기화 및 세팅
 //        MobileAds.initialize(getApplicationContext(), "ca-app-pub-4432641899551083~2094218055");
@@ -467,7 +467,7 @@ public class MainActivity extends AppCompatActivity
                 case 2:
                     return new TakeoutFragment();
                 case 3:
-                    return new BaseInfoFragment();
+                    return new WeatherFragment();
                 default:
                     return null;
             }

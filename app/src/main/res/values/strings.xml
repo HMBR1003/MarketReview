@@ -4,6 +4,7 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_weather">WeatherActivity</string>
 
 
     <!--구글 광고 아이디-->

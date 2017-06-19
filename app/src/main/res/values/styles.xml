@@ -14,7 +14,7 @@
     </style>
 
     <style name="ToolbarStyle" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-    <item name="colorControlNormal">#ffffffff</item>
+        <item name="colorControlNormal">#ffffffff</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

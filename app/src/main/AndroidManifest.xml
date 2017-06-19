@@ -70,6 +70,9 @@
         <activity
             android:name=".BusinessMan.LogoViewActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MainFragment.Weather.WeatherActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
