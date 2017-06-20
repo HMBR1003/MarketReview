@@ -132,6 +132,9 @@ public class MenuAddActivity extends AppCompatActivity {
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         tempFile = getTempFile();
 
+        binding.menuExplain.setHorizontallyScrolling(false);
+        binding.menuExplain.setLines(5);
+
         Intent intent = getIntent();
         isEdit = intent.getBooleanExtra("isEdit",false);
         if(isEdit) {

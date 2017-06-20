@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -456,12 +457,16 @@ public class MenuManageActivity extends AppCompatActivity {
                 public void onSuccess(Uri uri) {
                     imageUrl = String.valueOf(uri);
 
-                    Glide
-                            .with(MenuManageActivity.this)
-                            .load(imageUrl)
-                            .placeholder(R.drawable.jamsil)
-                            .thumbnail(0.1f)
-                            .into(view.menuDataImage);
+                    try {
+                        Glide
+                                .with(MenuManageActivity.this)
+                                .load(imageUrl)
+                                .apply(RequestOptions.placeholderOf(R.drawable.jamsil))
+                                .thumbnail(0.1f)
+                                .into(view.menuDataImage);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
 //                    Picasso.with(getApplicationContext())
 //                            .load(imageUrl)
 //                            .fit()

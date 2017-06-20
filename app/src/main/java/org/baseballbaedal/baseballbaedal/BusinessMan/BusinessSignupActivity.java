@@ -31,7 +31,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -308,29 +309,33 @@ public class BusinessSignupActivity extends AppCompatActivity {
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, int which) {
-                if (!(isBusiness == 0 || isBusiness == 1 || isBusiness == 2)) {
-                    Toast.makeText(BusinessSignupActivity.this, "데이터 저장 시 사업자 여부 데이터 오류", Toast.LENGTH_SHORT).show();
-                } else {
-                    myRef = FirebaseDatabase.getInstance().getReference();
-                    //데이터베이스 초기화
-                    myRef = FirebaseDatabase.getInstance().getReference();
-                    myRef.child(isMarket).child(uid).child("accountEmail").setValue(email);
-                    myRef.child(isMarket).child(uid).child("accountName").setValue(name);
+                try {
+                    if (!(isBusiness == 0 || isBusiness == 1 || isBusiness == 2)) {
+                        Toast.makeText(BusinessSignupActivity.this, "데이터 저장 시 사업자 여부 데이터 오류", Toast.LENGTH_SHORT).show();
+                    } else {
+                        myRef = FirebaseDatabase.getInstance().getReference();
+                        //데이터베이스 초기화
+                        myRef = FirebaseDatabase.getInstance().getReference();
+                        myRef.child(isMarket).child(uid).child("accountEmail").setValue(email);
+                        myRef.child(isMarket).child(uid).child("accountName").setValue(name);
 
-                    myRef.child(isMarket).child(uid).child("manName").setValue(dataBinding.manName.getText().toString());
-                    myRef.child(isMarket).child(uid).child("manTel").setValue(dataBinding.manTel.getText().toString());
-                    myRef.child(isMarket).child(uid).child("businessRegisterNum").setValue(dataBinding.businessRegisterNum.getText().toString());
-                    myRef.child(isMarket).child(uid).child("marketName").setValue(dataBinding.marketName.getText().toString());
-                    myRef.child(isMarket).child(uid).child("selectedCol").setValue(selectedCol);
-                    myRef.child(isMarket).child(uid).child("handleFood").setValue(handleFood);
-                    myRef.child(isMarket).child(uid).child("marketAddress1").setValue(dataBinding.marketAddress1.getText().toString());
-                    myRef.child(isMarket).child(uid).child("marketAddress2").setValue(dataBinding.marketAddress2.getText().toString());
-                    myRef.child(isMarket).child(uid).child("marketTel").setValue(dataBinding.marketTel.getText().toString());
-                    myRef.child(isMarket).child(uid).child("minPrice").setValue(dataBinding.minPrice.getText().toString());
-                    if (isBusiness == 0 || isBusiness == 1) {
-                        myRef.child("users").child(uid).child("isBusiness(0(not),1(applying),2(finish))").setValue(1);
+                        myRef.child(isMarket).child(uid).child("manName").setValue(dataBinding.manName.getText().toString());
+                        myRef.child(isMarket).child(uid).child("manTel").setValue(dataBinding.manTel.getText().toString());
+                        myRef.child(isMarket).child(uid).child("businessRegisterNum").setValue(dataBinding.businessRegisterNum.getText().toString());
+                        myRef.child(isMarket).child(uid).child("marketName").setValue(dataBinding.marketName.getText().toString());
+                        myRef.child(isMarket).child(uid).child("selectedCol").setValue(selectedCol);
+                        myRef.child(isMarket).child(uid).child("handleFood").setValue(handleFood);
+                        myRef.child(isMarket).child(uid).child("marketAddress1").setValue(dataBinding.marketAddress1.getText().toString());
+                        myRef.child(isMarket).child(uid).child("marketAddress2").setValue(dataBinding.marketAddress2.getText().toString());
+                        myRef.child(isMarket).child(uid).child("marketTel").setValue(dataBinding.marketTel.getText().toString());
+                        myRef.child(isMarket).child(uid).child("minPrice").setValue(dataBinding.minPrice.getText().toString());
+                        if (isBusiness == 0 || isBusiness == 1) {
+                            myRef.child("users").child(uid).child("isBusiness(0(not),1(applying),2(finish))").setValue(1);
+                        }
+                        uploadImage();
                     }
-                    uploadImage();
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         });
@@ -474,7 +479,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
                     dataBinding.marketAddress2.setText(data.marketAddress2);
                     dataBinding.marketTel.setText(data.marketTel);
                     dataBinding.minPrice.setText(data.minPrice);
-                    StorageReference ref = FirebaseStorage.getInstance().getReference().child(isMarket).child(uid).child(uid+".jpg");
+                    StorageReference ref = FirebaseStorage.getInstance().getReference().child(isMarket).child(uid).child(uid + ".jpg");
                     ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
@@ -484,17 +489,15 @@ public class BusinessSignupActivity extends AppCompatActivity {
                             //피카소를 이용하여 저장소에 저장된 사진을 url로 이미지뷰에 연결하기
                             Glide.with(getApplicationContext())
                                     .load(marketImageURL)
-                                    .listener(new RequestListener<String, GlideDrawable>() {
+                                    .listener(new RequestListener<Drawable>() {
                                         @Override
-                                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                             return false;
                                         }
 
                                         @Override
-                                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                            Drawable a = (Drawable)resource;
-                                            BitmapDrawable d = (BitmapDrawable)a;
-//                                            BitmapDrawable d = (BitmapDrawable) dataBinding.marketImageView.getDrawable();
+                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                            BitmapDrawable d = (BitmapDrawable) resource;
                                             bitmap = d.getBitmap();
                                             try {
                                                 FileOutputStream out = new FileOutputStream(tempFile.getPath());
@@ -511,7 +514,6 @@ public class BusinessSignupActivity extends AppCompatActivity {
                                         }
                                     })
                                     .into(dataBinding.marketImageView);
-
 
 
 //                            Picasso.with(getApplicationContext())
@@ -605,34 +607,40 @@ public class BusinessSignupActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
-        //실제로 이미지가 저장될 곳의 참조
-        StorageReference saveRef = FirebaseStorage.getInstance().getReference().child(isMarket).child(uid).child(uid+".jpg");
+        try {
 
-        //비트맵을 jpg로 변환시켜서 변수에 저장
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
 
-        //jpg형식으로 저장된 변수를 저장소에 업로드하는 함수
-        UploadTask uploadTask = saveRef.putBytes(data);
-        //성공했을 시와 실패했을 시를 받아오는 리스너 부착
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                dialog.dismiss();
-                Toast.makeText(BusinessSignupActivity.this, "제출 실패.", Toast.LENGTH_SHORT).show();
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @SuppressWarnings("VisibleForTests")
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                dialog.dismiss();
-                if (isBusiness != 2)
-                    setResult(RESULT_OK);
-                finish();
-            }
-        });
+            //실제로 이미지가 저장될 곳의 참조
+            StorageReference saveRef = FirebaseStorage.getInstance().getReference().child(isMarket).child(uid).child(uid + ".jpg");
+
+            //비트맵을 jpg로 변환시켜서 변수에 저장
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+
+            //jpg형식으로 저장된 변수를 저장소에 업로드하는 함수
+            UploadTask uploadTask = saveRef.putBytes(data);
+            //성공했을 시와 실패했을 시를 받아오는 리스너 부착
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    dialog.dismiss();
+                    Toast.makeText(BusinessSignupActivity.this, "제출 실패.", Toast.LENGTH_SHORT).show();
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @SuppressWarnings("VisibleForTests")
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    dialog.dismiss();
+                    if (isBusiness != 2)
+                        setResult(RESULT_OK);
+                    finish();
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
 

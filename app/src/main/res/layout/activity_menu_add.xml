@@ -1,103 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:orientation="vertical"
         tools:context="org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuManageActivity">
 
-        <android.support.v7.widget.Toolbar
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
             app:theme="@style/ToolbarStyle">
 
         </android.support.v7.widget.Toolbar>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
             android:orientation="vertical"
             android:padding="10sp">
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/black_teduri"
-                >
+                android:background="@drawable/black_teduri">
+
                 <LinearLayout
+                    android:id="@+id/menuImageViewContainer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:id="@+id/menuImageViewContainer"
                     android:visibility="invisible">
+
                     <ImageView
                         android:id="@+id/menuImageView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        />
+                        android:layout_height="match_parent" />
                 </LinearLayout>
+
                 <LinearLayout
+                    android:id="@+id/menuTextViewContainer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:id="@+id/menuTextViewContainer">
+                    android:gravity="center">
+
                     <TextView
                         android:id="@+id/marketImageText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
                         android:text="1:1 비율의 메뉴 사진을 등록해주세요\n(정사각형)"
-                        />
+                        android:textSize="15sp" />
                 </LinearLayout>
             </FrameLayout>
+
             <Button
-                android:layout_gravity="right"
                 android:id="@+id/loadMenuImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:text="사진 불러오기" />
+                android:layout_gravity="right"
+                android:text="사진 불러오기"
+                android:textSize="15sp" />
 
         </LinearLayout>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="3sp"
                     android:layout_marginTop="3sp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="메뉴 이름 : "
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
+
                     <org.baseballbaedal.baseballbaedal.CustomEditText
                         android:id="@+id/menuName"
-                        android:lines="1"
-                        android:maxLines="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:inputType="text"
                         android:hint="ex)00치킨"
-                        />
+                        android:inputType="text"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -105,73 +112,77 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="3sp"
                     android:layout_marginTop="3sp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="가격 : "
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <org.baseballbaedal.baseballbaedal.CustomEditText
                         android:id="@+id/menuPrice"
-                        android:lines="1"
-                        android:maxLines="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
                         android:hint=""
                         android:inputType="number"
-                        />
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/optionSet1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:paddingLeft="30sp"
                     android:paddingRight="30sp"
-                    android:visibility="gone"
-                    android:orientation="vertical">
+                    android:visibility="gone">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3sp"
                         android:layout_marginTop="3sp">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1번 옵션 이름 : "
-                            android:textSize="15sp"/>
+                            android:textSize="15sp" />
+
                         <EditText
                             android:id="@+id/optionName1"
-                            android:lines="1"
-                            android:maxLines="1"
-                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
                             android:hint="ex)간장소스"
-                            />
+                            android:inputType="text"
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:textSize="15sp" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3sp"
                         android:layout_marginTop="3sp">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1번 옵션 가격 : "
-                            android:textSize="15sp"/>
+                            android:textSize="15sp" />
+
                         <EditText
                             android:id="@+id/optionPrice1"
-                            android:lines="1"
-                            android:maxLines="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
                             android:hint=""
                             android:inputType="number"
-                            />
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:textSize="15sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -179,51 +190,55 @@
                     android:id="@+id/optionSet2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:orientation="vertical"
                     android:paddingLeft="30sp"
                     android:paddingRight="30sp"
-                    android:orientation="vertical">
+                    android:visibility="gone">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3sp"
                         android:layout_marginTop="3sp">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="2번 옵션 이름 : "
-                            android:textSize="15sp"/>
+                            android:textSize="15sp" />
+
                         <EditText
                             android:id="@+id/optionName2"
-                            android:lines="1"
-                            android:maxLines="1"
-                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
                             android:hint="ex)간장소스"
-                            />
+                            android:inputType="text"
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:textSize="15sp" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3sp"
                         android:layout_marginTop="3sp">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="2번 옵션 가격 : "
-                            android:textSize="15sp"/>
+                            android:textSize="15sp" />
+
                         <EditText
                             android:id="@+id/optionPrice2"
-                            android:lines="1"
-                            android:maxLines="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
                             android:hint=""
                             android:inputType="number"
-                            />
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:textSize="15sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -231,51 +246,55 @@
                     android:id="@+id/optionSet3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:orientation="vertical"
                     android:paddingLeft="30sp"
                     android:paddingRight="30sp"
-                    android:orientation="vertical">
+                    android:visibility="gone">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3sp"
                         android:layout_marginTop="3sp">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="3번 옵션 이름 : "
-                            android:textSize="15sp"/>
+                            android:textSize="15sp" />
+
                         <EditText
                             android:id="@+id/optionName3"
-                            android:lines="1"
-                            android:maxLines="1"
-                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
                             android:hint="ex)간장소스"
-                            />
+                            android:inputType="text"
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:textSize="15sp" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3sp"
                         android:layout_marginTop="3sp">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="3번 옵션 가격 : "
-                            android:textSize="15sp"/>
+                            android:textSize="15sp" />
+
                         <EditText
                             android:id="@+id/optionPrice3"
-                            android:lines="1"
-                            android:maxLines="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
                             android:hint=""
                             android:inputType="number"
-                            />
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:textSize="15sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -283,51 +302,55 @@
                     android:id="@+id/optionSet4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:orientation="vertical"
                     android:paddingLeft="30sp"
                     android:paddingRight="30sp"
-                    android:orientation="vertical">
+                    android:visibility="gone">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3sp"
                         android:layout_marginTop="3sp">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="4번 옵션 이름 : "
-                            android:textSize="15sp"/>
+                            android:textSize="15sp" />
+
                         <EditText
                             android:id="@+id/optionName4"
-                            android:lines="1"
-                            android:maxLines="1"
-                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
                             android:hint="ex)간장소스"
-                            />
+                            android:inputType="text"
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:textSize="15sp" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3sp"
                         android:layout_marginTop="3sp">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="4번 옵션 가격 : "
-                            android:textSize="15sp"/>
+                            android:textSize="15sp" />
+
                         <EditText
                             android:id="@+id/optionPrice4"
-                            android:lines="1"
-                            android:maxLines="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
                             android:hint=""
                             android:inputType="number"
-                            />
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:textSize="15sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -335,126 +358,135 @@
                     android:id="@+id/optionSet5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:orientation="vertical"
                     android:paddingLeft="30sp"
                     android:paddingRight="30sp"
-                    android:orientation="vertical">
+                    android:visibility="gone">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3sp"
                         android:layout_marginTop="3sp">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5번 옵션 이름 : "
-                            android:textSize="15sp"/>
+                            android:textSize="15sp" />
+
                         <EditText
                             android:id="@+id/optionName5"
-                            android:lines="1"
-                            android:maxLines="1"
-                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
                             android:hint="ex)간장소스"
-                            />
+                            android:inputType="text"
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:textSize="15sp" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3sp"
                         android:layout_marginTop="3sp">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5번 옵션 가격 : "
-                            android:textSize="15sp"/>
+                            android:textSize="15sp" />
+
                         <EditText
                             android:id="@+id/optionPrice5"
-                            android:lines="1"
-                            android:maxLines="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
                             android:hint=""
                             android:inputType="number"
-                            />
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:textSize="15sp" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <LinearLayout
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="center"
-                        android:layout_height="wrap_content">
+                        android:gravity="center">
+
                         <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:id="@+id/optionAddButton"
-                            android:text="옵션 추가하기"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:gravity="center"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content">
-                        <Button
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="옵션 추가하기" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <Button
                             android:id="@+id/optionRemoveButton"
-                            android:text="옵션 삭제"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="옵션 삭제" />
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginBottom="3sp"
-                    android:layout_marginTop="3sp">
+                    android:layout_marginTop="3sp"
+                    android:orientation="vertical">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="메뉴에 대해 설명해주세요(50자 입력가능) "
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
+
                     <TextView
                         android:id="@+id/explainLimit"
-                        android:layout_gravity="right"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0/50자"/>
+                        android:layout_gravity="right"
+                        android:text="0/50자" />
 
                     <org.baseballbaedal.baseballbaedal.CustomEditText
                         android:id="@+id/menuExplain"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
+                        android:background="@null"
                         android:gravity="top"
                         android:hint="ex)최고급 기름을 사용해 튀겨내고 12가지의 향신료로 만든 소스가 맛과 풍미를 더해주는 최고의 치킨"
-                        android:lines="5"
-                        android:background="@null"
-                        android:maxLines="4"
                         android:maxLength="50"
                         android:singleLine="true"
-                        android:inputType="textMultiLine"
-                        android:imeOptions="actionDone"
+                        android:textSize="15sp"
+
                         />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_gravity="bottom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
                     android:layout_marginBottom="20dp">
 
-                <Button
-                    android:id="@+id/menuSubmitButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:textSize="20sp"
-                    android:text="완료" />
+                    <Button
+                        android:id="@+id/menuSubmitButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="완료"
+                        android:textSize="20sp" />
 
                 </LinearLayout>
             </LinearLayout>
