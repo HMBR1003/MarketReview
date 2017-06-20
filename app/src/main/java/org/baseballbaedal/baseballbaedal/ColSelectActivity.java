@@ -32,9 +32,9 @@ public class ColSelectActivity extends AppCompatActivity {
     long backTime;
     ActivityColSelectBinding binding;
     int img[] = {
-            R.drawable.jamsil,R.drawable.jamsil,R.drawable.jamsil,
-            R.drawable.jamsil,R.drawable.jamsil,R.drawable.jamsil,
-            R.drawable.jamsil,R.drawable.jamsil,R.drawable.jamsil
+            R.drawable.jamsil,R.drawable.skydom,R.drawable.munhak,
+            R.drawable.eagles,R.drawable.lions,R.drawable.champions,
+            R.drawable.giants,R.drawable.wizpark,R.drawable.masan
     };
     String colName[] = {
             "잠실 야구장(두산,LG)","고척 스카이돔(넥센)","SK 행복드림구장",
@@ -85,10 +85,13 @@ public class ColSelectActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 checkedItem = position;
-                if(oldPosition < parent.getChildCount())
-                    parent.getChildAt(oldPosition).setBackgroundColor(Color.rgb(255,255,255));
+                if(oldPosition < parent.getChildCount()) {
+                    parent.getChildAt(oldPosition).setBackgroundColor(Color.rgb(255, 255, 255));
+                    ((TextView) parent.getChildAt(oldPosition).findViewById(R.id.colText)).setTextColor(Color.BLACK);
+                }
                 oldPosition=position;
                 view.setBackgroundColor(getApplication().getResources().getColor(R.color.colorPrimary));
+                ((TextView)view.findViewById(R.id.colText)).setTextColor(Color.WHITE);
             }
         });
 

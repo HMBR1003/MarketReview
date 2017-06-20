@@ -29,21 +29,21 @@ import org.baseballbaedal.baseballbaedal.databinding.FragmentWeatherBinding;
  * Created by Administrator on 2017-06-17-017.
  */
 
-public class WeatherFragment extends Fragment{
+public class WeatherFragment extends Fragment {
 
     FragmentWeatherBinding binding;
     GridAdapter adapter;
     DisplayMetrics mMetrics;
 
     int img[] = {
-            R.drawable.jamsil,R.drawable.jamsil,R.drawable.jamsil,
-            R.drawable.jamsil,R.drawable.jamsil,R.drawable.jamsil,
-            R.drawable.jamsil,R.drawable.jamsil,R.drawable.jamsil
+            R.drawable.jamsil, R.drawable.skydom, R.drawable.munhak,
+            R.drawable.eagles, R.drawable.lions, R.drawable.champions,
+            R.drawable.giants, R.drawable.wizpark, R.drawable.masan
     };
     String colName[] = {
-            "잠실 야구장(두산,LG)","고척 스카이돔(넥센)","SK 행복드림구장",
-            "한화 이글스파크","삼성 라이온즈파크","기아 챔피언스필드",
-            "사직 야구장(롯데)","KT 위즈파크","마산 야구장(NC)"
+            "잠실 야구장(두산,LG)", "고척 스카이돔(넥센)", "SK 행복드림구장",
+            "한화 이글스파크", "삼성 라이온즈파크", "기아 챔피언스필드",
+            "사직 야구장(롯데)", "KT 위즈파크", "마산 야구장(NC)"
     };
 
     @Override
@@ -53,7 +53,7 @@ public class WeatherFragment extends Fragment{
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
 
         // 커스텀 어댑터 생성
-        adapter = new GridAdapter (
+        adapter = new GridAdapter(
                 getActivity(),
                 R.layout.item_change_col,       // GridView 항목의 레이아웃 row.xml
                 img);
@@ -104,17 +104,18 @@ public class WeatherFragment extends Fragment{
                 }
                 Intent intent = new Intent(getActivity(), WeatherActivity.class);
                 intent.putExtra("city", city);
-                intent.putExtra("colname",colname);
+                intent.putExtra("colname", colname);
                 startActivity(intent);
             }
         });
     }
+
     class GridAdapter extends BaseAdapter {
         Context context;
         int layout;
         int img[];
         LayoutInflater inf;
-        View view[]=new View[9];
+        View view[] = new View[9];
 
         public GridAdapter(Context context, int layout, int[] img) {
             this.context = context;
@@ -143,7 +144,7 @@ public class WeatherFragment extends Fragment{
         public View getView(int position, View convertView, ViewGroup parent) {
             int rowWidth = (mMetrics.widthPixels) / 3;
 
-            if(convertView==null) {
+            if (convertView == null) {
                 view[position] = convertView;
                 view[position] = inf.inflate(layout, null);
                 ImageView iv = (ImageView) view[position].findViewById(R.id.colImage);
@@ -159,7 +160,7 @@ public class WeatherFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_weather,container,false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false);
         View rootView = binding.getRoot();
         return rootView;
     }
