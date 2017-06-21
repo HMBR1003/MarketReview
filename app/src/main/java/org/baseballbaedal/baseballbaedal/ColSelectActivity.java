@@ -18,6 +18,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,39 +29,40 @@ public class ColSelectActivity extends AppCompatActivity {
 
     SharedPreferences pref;
     GridAdapter adapter;
-    int checkedItem=-1;
+    int checkedItem = -1;
     long backTime;
     ActivityColSelectBinding binding;
     int img[] = {
-            R.drawable.jamsil,R.drawable.skydom,R.drawable.munhak,
-            R.drawable.eagles,R.drawable.lions,R.drawable.champions,
-            R.drawable.giants,R.drawable.wizpark,R.drawable.masan
+            R.drawable.jamsil, R.drawable.skydom, R.drawable.munhak,
+            R.drawable.eagles, R.drawable.lions, R.drawable.champions,
+            R.drawable.giants, R.drawable.wizpark, R.drawable.masan
     };
     String colName[] = {
-            "잠실 야구장(두산,LG)","고척 스카이돔(넥센)","SK 행복드림구장",
-            "한화 이글스파크","삼성 라이온즈파크","기아 챔피언스필드",
-            "사직 야구장(롯데)","KT 위즈파크","마산 야구장(NC)"
+            "잠실 야구장(두산,LG)", "고척 스카이돔(넥센)", "SK 행복드림구장",
+            "한화 이글스파크", "삼성 라이온즈파크", "기아 챔피언스필드",
+            "사직 야구장(롯데)", "KT 위즈파크", "마산 야구장(NC)"
     };
     LinearLayout linearLayout[];
     Intent intent;
-    int oldPosition=0;
+    int oldPosition = 0;
 
     DisplayMetrics mMetrics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_col_select);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_col_select);
 
         //타이틀 설정
         binding.toolBar.setTitle("경기장 선택");
         binding.toolBar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(binding.toolBar);
         intent = getIntent();
-        if(!intent.getBooleanExtra("isFirst",true)){
+        if (!intent.getBooleanExtra("isFirst", true)) {
             //뒤로가기 버튼 만들기
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
 
         //경기장 선택 완료 시 동작 버튼
 //        binding.selectFinish.setOnClickListener(new View.OnClickListener() {
@@ -74,31 +76,124 @@ public class ColSelectActivity extends AppCompatActivity {
 
         mMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
+        int rowWidth = (mMetrics.widthPixels) / 3;
+        binding.col1.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+        binding.col2.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+        binding.col3.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+        binding.col4.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+        binding.col5.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+        binding.col6.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+        binding.col7.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+        binding.col8.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+        binding.col9.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                binding.jamsil.setBackgroundColor(Color.rgb(255, 255, 255));
+                binding.jamsilText.setTextColor(Color.BLACK);
+
+                binding.skydom.setBackgroundColor(Color.rgb(255, 255, 255));
+                binding.skydomText.setTextColor(Color.BLACK);
+
+                binding.munhak.setBackgroundColor(Color.rgb(255, 255, 255));
+                binding.munhakText.setTextColor(Color.BLACK);
+
+                binding.eagles.setBackgroundColor(Color.rgb(255, 255, 255));
+                binding.eaglesText.setTextColor(Color.BLACK);
+
+                binding.lions.setBackgroundColor(Color.rgb(255, 255, 255));
+                binding.lionsText.setTextColor(Color.BLACK);
+
+                binding.champions.setBackgroundColor(Color.rgb(255, 255, 255));
+                binding.championsText.setTextColor(Color.BLACK);
+
+                binding.giants.setBackgroundColor(Color.rgb(255, 255, 255));
+                binding.giantsText.setTextColor(Color.BLACK);
+
+                binding.wizpark.setBackgroundColor(Color.rgb(255, 255, 255));
+                binding.wizparkText.setTextColor(Color.BLACK);
+
+                binding.masan.setBackgroundColor(Color.rgb(255, 255, 255));
+                binding.masanText.setTextColor(Color.BLACK);
+
+                v.setBackgroundColor(getApplication().getResources().getColor(R.color.colorPrimary));
+                switch (v.getId()){
+                    case R.id.jamsil:
+                        checkedItem = 0;
+                        binding.jamsilText.setTextColor(Color.WHITE);
+                        break;
+                    case R.id.skydom:
+                        checkedItem = 1;
+                        binding.skydomText.setTextColor(Color.WHITE);
+                        break;
+                    case R.id.munhak:
+                        checkedItem = 2;
+                        binding.munhakText.setTextColor(Color.WHITE);
+                        break;
+                    case R.id.eagles:
+                        checkedItem = 3;
+                        binding.eaglesText.setTextColor(Color.WHITE);
+                        break;
+                    case R.id.lions:
+                        checkedItem = 4;
+                        binding.lionsText.setTextColor(Color.WHITE);
+                        break;
+                    case R.id.champions:
+                        checkedItem = 5;
+                        binding.championsText.setTextColor(Color.WHITE);
+                        break;
+                    case R.id.giants:
+                        checkedItem = 6;
+                        binding.giantsText.setTextColor(Color.WHITE);
+                        break;
+                    case R.id.wizpark:
+                        checkedItem = 7;
+                        binding.wizparkText.setTextColor(Color.WHITE);
+                        break;
+                    case R.id.masan:
+                        checkedItem = 8;
+                        binding.masanText.setTextColor(Color.WHITE);
+                        break;
+                }
+            }
+        };
+        binding.jamsil.setOnClickListener(listener);
+        binding.skydom.setOnClickListener(listener);
+        binding.munhak.setOnClickListener(listener);
+        binding.eagles.setOnClickListener(listener);
+        binding.lions.setOnClickListener(listener);
+        binding.champions.setOnClickListener(listener);
+        binding.giants.setOnClickListener(listener);
+        binding.wizpark.setOnClickListener(listener);
+        binding.masan.setOnClickListener(listener);
+
 
         // 커스텀 아답타 생성
-        adapter = new GridAdapter (
+        adapter = new GridAdapter(
                 getApplicationContext(),
                 R.layout.item_change_col,       // GridView 항목의 레이아웃 row.xml
                 img);
-        binding.gridView.setAdapter(adapter);
-        binding.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                checkedItem = position;
-                if(oldPosition < parent.getChildCount()) {
-                    parent.getChildAt(oldPosition).setBackgroundColor(Color.rgb(255, 255, 255));
-                    ((TextView) parent.getChildAt(oldPosition).findViewById(R.id.colText)).setTextColor(Color.BLACK);
-                }
-                oldPosition=position;
-                view.setBackgroundColor(getApplication().getResources().getColor(R.color.colorPrimary));
-                ((TextView)view.findViewById(R.id.colText)).setTextColor(Color.WHITE);
-            }
-        });
+//        binding.gridView.setAdapter(adapter);
+//        binding.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                checkedItem = position;
+//                if(oldPosition < parent.getChildCount()) {
+//                    parent.getChildAt(oldPosition).setBackgroundColor(Color.rgb(255, 255, 255));
+//                    ((TextView) parent.getChildAt(oldPosition).findViewById(R.id.colText)).setTextColor(Color.BLACK);
+//                }
+//                oldPosition=position;
+//                view.setBackgroundColor(getApplication().getResources().getColor(R.color.colorPrimary));
+//                ((TextView)view.findViewById(R.id.colText)).setTextColor(Color.WHITE);
+//            }
+//        });
 
         binding.selectFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(checkedItem==-1){
+                if (checkedItem == -1) {
                     Toast.makeText(ColSelectActivity.this, "경기장을 선택해주세요.", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -107,18 +202,18 @@ public class ColSelectActivity extends AppCompatActivity {
                 editor.putInt("selectedCol", checkedItem);
                 editor.commit();
                 setResult(RESULT_OK);
-                Toast.makeText(ColSelectActivity.this, colName[checkedItem]+"을(를) 선택하셨습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ColSelectActivity.this, colName[checkedItem] + "을(를) 선택하셨습니다.", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
     }
 
-    class GridAdapter extends BaseAdapter{
+    class GridAdapter extends BaseAdapter {
         Context context;
         int layout;
         int img[];
         LayoutInflater inf;
-        View view[]=new View[9];
+        View view[] = new View[9];
 
         public GridAdapter(Context context, int layout, int[] img) {
             this.context = context;
@@ -147,7 +242,7 @@ public class ColSelectActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             int rowWidth = (mMetrics.widthPixels) / 3;
 
-            if(convertView==null) {
+            if (convertView == null) {
                 view[position] = convertView;
                 view[position] = inf.inflate(layout, null);
                 ImageView iv = (ImageView) view[position].findViewById(R.id.colImage);
@@ -162,11 +257,10 @@ public class ColSelectActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(!intent.getBooleanExtra("isFirst",true)){
+        if (!intent.getBooleanExtra("isFirst", true)) {
             super.onBackPressed();
-        }
-        else{
-            if(System.currentTimeMillis()-backTime<2000){
+        } else {
+            if (System.currentTimeMillis() - backTime < 2000) {
                 ActivityCompat.finishAffinity(this);
                 System.runFinalizersOnExit(true);
                 System.exit(0);
@@ -176,6 +270,7 @@ public class ColSelectActivity extends AppCompatActivity {
 
         }
     }
+
     //뒤로가기 버튼 기능 설정
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
