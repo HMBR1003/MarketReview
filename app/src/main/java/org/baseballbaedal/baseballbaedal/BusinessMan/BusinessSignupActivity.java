@@ -31,8 +31,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -487,17 +486,41 @@ public class BusinessSignupActivity extends AppCompatActivity {
                             marketImageURL = String.valueOf(uri);
                             Log.d("다운로드 URL", marketImageURL);
                             //피카소를 이용하여 저장소에 저장된 사진을 url로 이미지뷰에 연결하기
-                            Glide.with(getApplicationContext())
-                                    .load(marketImageURL)
-                                    .listener(new RequestListener<Drawable>() {
-                                        @Override
-                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                            return false;
-                                        }
+//                            Glide.with(getApplicationContext())
+//                                    .load(marketImageURL)
+//                                    .listener(new RequestListener<String, GlideDrawable>() {
+//                                        @Override
+//                                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+//                                            return false;
+//                                        }
+//
+//                                        @Override
+//                                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+//                                            return false;
+//                                        }
+//                                    })
+//                                    .listener(new RequestListener<Drawable>() {
+//                                        @Override
+//                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                                            return false;
+//                                        }
+//
+//                                        @Override
+//                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//
+//                                        }
+//                                    })
+//                                    .into(dataBinding.marketImageView);
 
+
+                            Picasso.with(getApplicationContext())
+                                    .load(marketImageURL)
+                                    .fit()
+                                    .centerInside()
+                                    .into(dataBinding.marketImageView, new Callback.EmptyCallback() {
                                         @Override
-                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                            BitmapDrawable d = (BitmapDrawable) resource;
+                                        public void onSuccess() {
+                                            BitmapDrawable d = (BitmapDrawable) dataBinding.marketImageView.getDrawable();
                                             bitmap = d.getBitmap();
                                             try {
                                                 FileOutputStream out = new FileOutputStream(tempFile.getPath());
@@ -510,41 +533,15 @@ public class BusinessSignupActivity extends AppCompatActivity {
                                             }
                                             sendUri = Uri.fromFile(tempFile);
                                             dialog.dismiss();
-                                            return false;
                                         }
-                                    })
-                                    .into(dataBinding.marketImageView);
 
-
-//                            Picasso.with(getApplicationContext())
-//                                    .load(marketImageURL)
-//                                    .fit()
-//                                    .centerInside()
-//                                    .into(dataBinding.marketImageView, new Callback.EmptyCallback() {
-//                                        @Override
-//                                        public void onSuccess() {
-//                                            BitmapDrawable d = (BitmapDrawable) dataBinding.marketImageView.getDrawable();
-//                                            bitmap = d.getBitmap();
-//                                            try {
-//                                                FileOutputStream out = new FileOutputStream(tempFile.getPath());
-//                                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-//                                                out.close();
-//                                            } catch (FileNotFoundException e) {
-//                                                e.printStackTrace();
-//                                            } catch (IOException e) {
-//                                                e.printStackTrace();
-//                                            }
-//                                            sendUri = Uri.fromFile(tempFile);
-//                                            dialog.dismiss();
-//                                        }
-//
-//                                        @Override
-//                                        public void onError() {
-//                                            super.onError();
-//                                            Toast.makeText(BusinessSignupActivity.this, "이미지 표시 에러", Toast.LENGTH_SHORT).show();
-//                                            dialog.dismiss();
-//                                        }
-//                                    });
+                                        @Override
+                                        public void onError() {
+                                            super.onError();
+                                            Toast.makeText(BusinessSignupActivity.this, "이미지 표시 에러", Toast.LENGTH_SHORT).show();
+                                            dialog.dismiss();
+                                        }
+                                    });
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
