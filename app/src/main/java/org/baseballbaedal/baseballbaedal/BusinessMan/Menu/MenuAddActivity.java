@@ -490,6 +490,7 @@ public class MenuAddActivity extends AppCompatActivity {
                 if(!isEdit) {
                     menuKey = myRef.child("market").child(uid).child("menu").push().getKey();
                 }
+                myRef.child("market").child(uid).child("menu").child(menuKey).child("aTime").setValue(System.currentTimeMillis()+"");
                 myRef.child("market").child(uid).child("menu").child(menuKey).child("isMain").setValue(false);
                 myRef.child("market").child(uid).child("menu").child(menuKey).child("menuName").setValue(binding.menuName.getText().toString());
                 myRef.child("market").child(uid).child("menu").child(menuKey).child("menuPrice").setValue(binding.menuPrice.getText().toString());
@@ -631,6 +632,66 @@ public class MenuAddActivity extends AppCompatActivity {
             }
         });
     }
+//    public void uploadImage(){
+//        //데이터 저장하는 중이라고 알림창 띄우기
+//        uploadDialog.setProgress(ProgressDialog.STYLE_SPINNER);
+//        uploadDialog.setMessage("데이터를 저장하는 중입니다...");
+//        uploadDialog.setCancelable(false);
+//        uploadDialog.show();
+//
+//        //저장소에 대한 참조 만들기
+//        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+//        StorageReference deleteRef = mStorageRef.child("market").child(uid).child("menu").child(menuKey+".jpg");
+//        //실제로 이미지가 저장될 곳의 참조
+//        final StorageReference mountainsRef = mStorageRef.child("market").child(uid).child("menu").child(menuKey+".jpg");
+//        deleteRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid) {
+//                Log.d("메뉴이미지 삭제", "성공");
+//                //        Bitmap resize = Bitmap.createScaledBitmap(bitmap, 500, 500, true);
+//                //비트맵을 jpg로 변환시켜서 변수에 저장
+//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//                byte[] data = baos.toByteArray();
+//
+//                //jpg형식으로 저장된 변수를 저장소에 업로드하는 함수
+//                UploadTask uploadTask = mountainsRef.putBytes(data);
+//                //성공했을 시와 실패했을 시를 받아오는 리스너 부착
+//                uploadTask.addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception exception) {
+//                        uploadDialog.dismiss();
+//                        Toast.makeText(MenuAddActivity.this, "제출 실패.", Toast.LENGTH_SHORT).show();
+//                        // Handle unsuccessful uploads
+//                    }
+//                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                    @SuppressWarnings("VisibleForTests")
+//                    @Override
+//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+////                 taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+////                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+////                String photoUri =  String.valueOf(downloadUrl);
+////                myRef.child("market").child(uid).child("menu").child(menuKey).child("menuImageURL").setValue(photoUri);
+//                        uploadDialog.dismiss();
+//                        setResult(RESULT_OK);
+//                        finish();
+//                    }
+//                });
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Log.d("메뉴이미지 삭제", "실패");
+//                Toast.makeText(MenuAddActivity.this, "메뉴 이미지 업로드를 실패했습니다.", Toast.LENGTH_SHORT).show();
+//                uploadDialog.dismiss();
+//            }
+//        });
+//
+//
+//
+//
+//
+//    }
 
     //뒤로가기 버튼 기능 설정
     @Override

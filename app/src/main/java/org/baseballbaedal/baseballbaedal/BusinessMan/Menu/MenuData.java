@@ -10,15 +10,17 @@ public class MenuData {
     String menuDataExplain;
     String uid;
     String menuKey;
+    String aTime;
     boolean isMain;
 
-    public MenuData(String menuDataName, String menuDataPrice, String menuDataExplain, boolean isMain,String uid,String menuKey){
+    public MenuData(String menuDataName, String menuDataPrice, String menuDataExplain, boolean isMain,String uid,String menuKey, String aTime){
         this.menuDataName=menuDataName;
         this.menuDataPrice=menuDataPrice;
         this.menuDataExplain=menuDataExplain;
         this.isMain = isMain;
         this.uid = uid;
         this.menuKey = menuKey;
+        this.aTime = aTime;
     }
 
     public String getMenuDataName(){
@@ -38,5 +40,8 @@ public class MenuData {
     }
     public String getMenuKey(){
         return menuKey;
+    }
+    public String getATime(){
+        return aTime;
     }
 }

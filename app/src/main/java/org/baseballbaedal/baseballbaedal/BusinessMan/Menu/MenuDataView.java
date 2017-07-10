@@ -40,6 +40,7 @@ public class MenuDataView extends LinearLayout{
         menuDataExplain=(TextView)findViewById(R.id.menuDataExplain);
         menuDataImage=(ImageView)findViewById(R.id.menuDataImage);
         isMainText = (TextView)findViewById(R.id.isMainText);
+
     }
 
     public void setMenuDataName(String menuDataName){

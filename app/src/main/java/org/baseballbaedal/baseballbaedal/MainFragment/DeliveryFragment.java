@@ -1,6 +1,7 @@
 package org.baseballbaedal.baseballbaedal.MainFragment;
 
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import org.baseballbaedal.baseballbaedal.MainActivity;
+import org.baseballbaedal.baseballbaedal.MainFragment.Delivery.MarketListActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.FragmentDeliveryBinding;
 import org.baseballbaedal.baseballbaedal.databinding.FragmentHomeBinding;
@@ -34,21 +36,6 @@ public class DeliveryFragment extends Fragment {
 
     private FragmentDeliveryBinding binding;
     MainActivity mainActivity;
-    StorageReference ref;
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        binding = FragmentDeliveryBinding.bind(getView());
-
-        binding.baedalButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-    }
 
     @Nullable
     @Override
@@ -57,4 +44,39 @@ public class DeliveryFragment extends Fragment {
         mainActivity = (MainActivity)getActivity();
         return rootView;
     }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        binding = FragmentDeliveryBinding.bind(getView());
+
+        Listener listener = new Listener();
+        binding.chickenButton.setOnClickListener(listener);
+        binding.pizzaButton.setOnClickListener(listener);
+        binding.hamButton.setOnClickListener(listener);
+        binding.footButton.setOnClickListener(listener);
+
+    }
+    public class Listener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getActivity(), MarketListActivity.class);
+            if (v == binding.chickenButton) {
+                intent.putExtra("menu", "치킨");
+                startActivity(intent);
+            } else if (v == binding.pizzaButton) {
+                intent.putExtra("menu", "피자");
+                startActivity(intent);
+            } else if (v == binding.hamButton) {
+                intent.putExtra("menu", "햄버거");
+                startActivity(intent);
+            } else if (v == binding.footButton) {
+                intent.putExtra("menu", "족발");
+                startActivity(intent);
+            } else if (v == binding.etcButton) {
+                intent.putExtra("menu", "기타음식");
+                startActivity(intent);
+            }
+        }
+    }
+
 }

@@ -73,6 +73,8 @@
             android:name=".MainFragment.Weather.WeatherActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MarketDetailViewActivity"></activity>
+        <activity android:name=".MainFragment.Delivery.MarketListActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

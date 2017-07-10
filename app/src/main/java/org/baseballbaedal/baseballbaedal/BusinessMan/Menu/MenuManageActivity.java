@@ -581,6 +581,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.StringSignature;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -619,6 +620,7 @@ public class MenuManageActivity extends AppCompatActivity {
     boolean selectedPosition[];
     boolean isDeleteMode;
     boolean isMainSelect;
+    boolean refresh;
     int i;
 
     int checkedItem = -1;
@@ -651,14 +653,12 @@ public class MenuManageActivity extends AppCompatActivity {
         }
     }
 
-    void clear(){
+    void clear() {
 
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_menu_manage);
 
@@ -697,6 +697,7 @@ public class MenuManageActivity extends AppCompatActivity {
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         key[i] = data.getKey();
                         Iterator<DataSnapshot> it1 = data.getChildren().iterator();
+                        it1.next();
                         boolean isMain = it1.next().getValue(Boolean.class);
                         if (isMain)
                             break;
@@ -712,6 +713,7 @@ public class MenuManageActivity extends AppCompatActivity {
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         key[i] = data.getKey();
                         it = data.getChildren().iterator();
+                        String aTime = it.next().getValue(String.class);
                         boolean isMain = it.next().getValue(Boolean.class);
                         String menuExplain = it.next().getValue(String.class);
                         String menuName = it.next().getValue(String.class);
@@ -737,11 +739,11 @@ public class MenuManageActivity extends AppCompatActivity {
                             menuExplain += ", " + it.next().getValue(String.class);
                             it.next().getValue(String.class);
                         }
-                        adapter.addItem(new MenuData(menuName, menuPrice, menuExplain, isMain, uid, key[i]));
-                        adapter.notifyDataSetChanged();
+                        adapter.addItem(new MenuData(menuName, menuPrice, menuExplain, isMain, uid, key[i], aTime));
 //                        Log.d("다운로드 URL", menuImageURL);
                         i++;
                     }
+                    adapter.notifyDataSetChanged();
                 } else {
                     binding.menuListView.setVisibility(View.GONE);
                     binding.menuListText.setVisibility(View.VISIBLE);
@@ -791,6 +793,9 @@ public class MenuManageActivity extends AppCompatActivity {
         binding.selectMainMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                ref.child(uid).child("menu").removeEventListener(listener);
+
                 binding.commonContainer.setVisibility(View.GONE);
                 binding.mainModeContainer.setVisibility(View.VISIBLE);
                 binding.infoText.setText("대표로 지정할 메뉴를 선택해 주세요");
@@ -816,6 +821,8 @@ public class MenuManageActivity extends AppCompatActivity {
                         ref.child(uid).child("menu").child(key[i]).child("isMain").setValue(false);
                     }
                     checkedItem = -1;
+
+                    ref.child(uid).child("menu").addValueEventListener(listener);
                 }
             }
         });
@@ -829,12 +836,17 @@ public class MenuManageActivity extends AppCompatActivity {
                 isMainSelect = false;
                 adapter.notifyDataSetChanged();
                 checkedItem = -1;
+
+                ref.child(uid).child("menu").addValueEventListener(listener);
             }
         });
 
         binding.deleteStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                ref.child(uid).child("menu").removeEventListener(listener);
+
                 binding.commonContainer.setVisibility(View.GONE);
                 binding.deleteModeContainer.setVisibility(View.VISIBLE);
                 binding.infoText.setText("삭제할 메뉴를 선택해 주세요");
@@ -854,6 +866,9 @@ public class MenuManageActivity extends AppCompatActivity {
 //                }
                 isDeleteMode = false;
                 adapter.notifyDataSetChanged();
+
+                ref.child(uid).child("menu").addValueEventListener(listener);
+
                 binding.infoText.setText("메뉴 정보");
             }
         });
@@ -879,7 +894,7 @@ public class MenuManageActivity extends AppCompatActivity {
                                 if (selectedPosition[i]) {
                                     ref.child(uid).child("menu").child(key[i]).setValue(null);
                                     StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-                                    StorageReference deleteRef = mStorageRef.child("market").child(uid).child("menu").child(key[i]+".jpg");
+                                    StorageReference deleteRef = mStorageRef.child("market").child(uid).child("menu").child(key[i] + ".jpg");
                                     deleteRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
@@ -891,13 +906,16 @@ public class MenuManageActivity extends AppCompatActivity {
                                             Log.d("메뉴이미지 삭제", "실패");
                                         }
                                     });
-                                    binding.commonContainer.setVisibility(View.VISIBLE);
-                                    binding.deleteModeContainer.setVisibility(View.GONE);
-                                    isDeleteMode = false;
-                                    binding.infoText.setText("메뉴 정보");
-                                    Toast.makeText(MenuManageActivity.this, "선택한 메뉴가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+
                                 }
                             }
+                            binding.commonContainer.setVisibility(View.VISIBLE);
+                            binding.deleteModeContainer.setVisibility(View.GONE);
+                            isDeleteMode = false;
+                            binding.infoText.setText("메뉴 정보");
+                            ref.child(uid).child("menu").addValueEventListener(listener);
+                            Toast.makeText(MenuManageActivity.this, "선택한 메뉴가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+
                         }
                     });
                     builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -933,6 +951,7 @@ public class MenuManageActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        refresh = true;
         ref.child(uid).child("menu").addValueEventListener(listener);
     }
 
@@ -957,11 +976,10 @@ public class MenuManageActivity extends AppCompatActivity {
 
     class MenuListAdapter extends BaseAdapter {
 
-
-
         @Override
         public void notifyDataSetChanged() {
             super.notifyDataSetChanged();
+            refresh = false;
             Log.d("리스트뷰 데이터", "초기화됨" + isDeleteMode);
         }
 
@@ -1004,18 +1022,21 @@ public class MenuManageActivity extends AppCompatActivity {
                 view.VisibleIsMainText();
             }
 
-
             //이미지 url
-            StorageReference ref = FirebaseStorage.getInstance().getReference().child("market").child(item.getUid()).child("menu").child(item.getMenuKey()+".jpg");
+            StorageReference ref = FirebaseStorage.getInstance().getReference().child("market").child(item.getUid()).child("menu").child(item.getMenuKey() + ".jpg");
+
             try {
                 Glide
                         .with(MenuManageActivity.this)
                         .using(new FirebaseImageLoader())
                         .load(ref)
+                        .override(300, 300)
+                        .signature(new StringSignature(item.getATime()))
+                        .placeholder(R.drawable.jamsil)
                         .thumbnail(0.1f)
                         .into(view.menuDataImage);
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -1030,11 +1051,7 @@ public class MenuManageActivity extends AppCompatActivity {
                     view.setBackgroundColor(Color.rgb(103, 153, 255));
                 }
             }
-
-
             return view;
-
-
         }
 
     }

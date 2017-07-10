@@ -461,13 +461,13 @@ public class MainActivity extends AppCompatActivity
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new HomeFragment();
+                    return homeFragment;
                 case 1:
-                    return new DeliveryFragment();
+                    return deliveryFragment;
                 case 2:
-                    return new TakeoutFragment();
+                    return takeoutFragment;
                 case 3:
-                    return new WeatherFragment();
+                    return weatherFragment;
                 default:
                     return null;
             }
