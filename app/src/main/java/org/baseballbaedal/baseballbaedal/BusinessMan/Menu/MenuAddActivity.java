@@ -30,6 +30,13 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.signature.StringSignature;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -388,77 +395,124 @@ public class MenuAddActivity extends AppCompatActivity {
                     binding.menuPrice.setText(data.menuPrice);
                     binding.menuExplain.setText(data.menuExplain);
                     if(data.option1Name!=null){
+                        optionIndex=1;
                         binding.optionName1.setText(data.option1Name);
                         binding.optionPrice1.setText(data.option1Price);
                         binding.optionSet1.setVisibility(View.VISIBLE);
                     }
                     if(data.option2Name!=null){
+                        optionIndex=2;
                         binding.optionName2.setText(data.option2Name);
                         binding.optionPrice2.setText(data.option2Price);
                         binding.optionSet2.setVisibility(View.VISIBLE);
                     }
                     if(data.option3Name!=null){
+                        optionIndex=3;
                         binding.optionName3.setText(data.option3Name);
                         binding.optionPrice3.setText(data.option3Price);
                         binding.optionSet3.setVisibility(View.VISIBLE);
                     }
                     if(data.option4Name!=null){
+                        optionIndex=4;
                         binding.optionName4.setText(data.option4Name);
                         binding.optionPrice4.setText(data.option4Price);
                         binding.optionSet4.setVisibility(View.VISIBLE);
                     }
                     if(data.option5Name!=null){
+                        optionIndex=5;
                         binding.optionName5.setText(data.option5Name);
                         binding.optionPrice5.setText(data.option5Price);
                         binding.optionSet5.setVisibility(View.VISIBLE);
                     }
-
                     StorageReference ref = FirebaseStorage.getInstance().getReference().child("market").child(uid).child("menu").child(menuKey+".jpg");
-                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            sendUri = uri;
-                            menuImageUrl = String.valueOf(uri);
-                            Log.d("다운로드 URL", menuImageUrl);
-                            //피카소를 이용하여 저장소에 저장된 사진을 url로 이미지뷰에 연결하기
-                            Picasso.with(getApplicationContext())
-                                    .load(menuImageUrl)
-                                    .fit()
-                                    .centerInside()
-                                    .into(binding.menuImageView, new Callback.EmptyCallback() {
-                                        @Override
-                                        public void onSuccess() {
-                                            binding.menuImageViewContainer.setVisibility(View.VISIBLE);
-                                            binding.menuTextViewContainer.setVisibility(View.INVISIBLE);
-                                            BitmapDrawable d = (BitmapDrawable) binding.menuImageView.getDrawable();
-                                            bitmap = d.getBitmap();
-                                            try {
-                                                FileOutputStream out = new FileOutputStream(tempFile.getPath());
-                                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                                                out.close();
-                                            } catch (FileNotFoundException e) {
-                                                e.printStackTrace();
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            }
-                                            sendUri = Uri.fromFile(tempFile);
-                                            loadDialog.dismiss();
+                    try {
+                        Glide
+                                .with(MenuAddActivity.this)
+                                .using(new FirebaseImageLoader())
+                                .load(ref)
+                                .listener(new RequestListener<StorageReference, GlideDrawable>() {
+                                    @Override
+                                    public boolean onException(Exception e, StorageReference model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                        Toast.makeText(MenuAddActivity.this, "이미지 표시 에러", Toast.LENGTH_SHORT).show();
+                                        Log.d("이미지 표시 에러 : ",e.getMessage());
+                                        loadDialog.dismiss();
+                                        return false;
+                                    }
+
+                                    @Override
+                                    public boolean onResourceReady(GlideDrawable resource, StorageReference model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                        binding.menuImageViewContainer.setVisibility(View.VISIBLE);
+                                        binding.menuTextViewContainer.setVisibility(View.INVISIBLE);
+
+                                        bitmap = ((GlideBitmapDrawable) resource).getBitmap();
+                                        try {
+                                            FileOutputStream out = new FileOutputStream(tempFile.getPath());
+                                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                                            out.close();
+                                        } catch (FileNotFoundException e) {
+                                            e.printStackTrace();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
                                         }
-                                        @Override
-                                        public void onError() {
-                                            super.onError();
-                                            Toast.makeText(MenuAddActivity.this, "이미지 표시 에러", Toast.LENGTH_SHORT).show();
-                                            loadDialog.dismiss();
-                                        }
-                                    });
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            Toast.makeText(MenuAddActivity.this, "저장소 이미지 주소 가져오기 실패", Toast.LENGTH_SHORT).show();
-                            loadDialog.dismiss();
-                        }
-                    });
+                                        sendUri = Uri.fromFile(tempFile);
+                                        loadDialog.dismiss();
+                                        return false;
+                                    }
+                                })
+                                .signature(new StringSignature(data.aTime)) //이미지저장시간
+                                .placeholder(R.drawable.jamsil)
+                                .thumbnail(0.1f)
+                                .crossFade()
+                                .into(binding.menuImageView);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+//                    StorageReference ref = FirebaseStorage.getInstance().getReference().child("market").child(uid).child("menu").child(menuKey+".jpg");
+//                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                        @Override
+//                        public void onSuccess(Uri uri) {
+//                            sendUri = uri;
+//                            menuImageUrl = String.valueOf(uri);
+//                            Log.d("다운로드 URL", menuImageUrl);
+//                            //피카소를 이용하여 저장소에 저장된 사진을 url로 이미지뷰에 연결하기
+//                            Picasso.with(getApplicationContext())
+//                                    .load(menuImageUrl)
+//                                    .fit()
+//                                    .centerInside()
+//                                    .into(binding.menuImageView, new Callback.EmptyCallback() {
+//                                        @Override
+//                                        public void onSuccess() {
+//                                            binding.menuImageViewContainer.setVisibility(View.VISIBLE);
+//                                            binding.menuTextViewContainer.setVisibility(View.INVISIBLE);
+//                                            BitmapDrawable d = (BitmapDrawable) binding.menuImageView.getDrawable();
+//                                            bitmap = d.getBitmap();
+//                                            try {
+//                                                FileOutputStream out = new FileOutputStream(tempFile.getPath());
+//                                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+//                                                out.close();
+//                                            } catch (FileNotFoundException e) {
+//                                                e.printStackTrace();
+//                                            } catch (IOException e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                            sendUri = Uri.fromFile(tempFile);
+//                                            loadDialog.dismiss();
+//                                        }
+//                                        @Override
+//                                        public void onError() {
+//                                            super.onError();
+//                                            Toast.makeText(MenuAddActivity.this, "이미지 표시 에러", Toast.LENGTH_SHORT).show();
+//                                            loadDialog.dismiss();
+//                                        }
+//                                    });
+//                        }
+//                    }).addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception exception) {
+//                            Toast.makeText(MenuAddActivity.this, "저장소 이미지 주소 가져오기 실패", Toast.LENGTH_SHORT).show();
+//                            loadDialog.dismiss();
+//                        }
+//                    });
                 }
                 else{
                     Toast.makeText(MenuAddActivity.this, "불러올 데이터가 없습니다.", Toast.LENGTH_SHORT).show();
@@ -490,6 +544,18 @@ public class MenuAddActivity extends AppCompatActivity {
                 if(!isEdit) {
                     menuKey = myRef.child("market").child(uid).child("menu").push().getKey();
                 }
+
+                myRef.child("market").child(uid).child("menu").child(menuKey).child("option1Name").setValue(null);
+                myRef.child("market").child(uid).child("menu").child(menuKey).child("option1Price").setValue(null);
+                myRef.child("market").child(uid).child("menu").child(menuKey).child("option2Name").setValue(null);
+                myRef.child("market").child(uid).child("menu").child(menuKey).child("option2Price").setValue(null);
+                myRef.child("market").child(uid).child("menu").child(menuKey).child("option3Name").setValue(null);
+                myRef.child("market").child(uid).child("menu").child(menuKey).child("option3Price").setValue(null);
+                myRef.child("market").child(uid).child("menu").child(menuKey).child("option4Name").setValue(null);
+                myRef.child("market").child(uid).child("menu").child(menuKey).child("option4Price").setValue(null);
+                myRef.child("market").child(uid).child("menu").child(menuKey).child("option5Name").setValue(null);
+                myRef.child("market").child(uid).child("menu").child(menuKey).child("option5Price").setValue(null);
+
                 myRef.child("market").child(uid).child("menu").child(menuKey).child("aTime").setValue(System.currentTimeMillis()+"");
                 myRef.child("market").child(uid).child("menu").child(menuKey).child("isMain").setValue(false);
                 myRef.child("market").child(uid).child("menu").child(menuKey).child("menuName").setValue(binding.menuName.getText().toString());
@@ -632,66 +698,6 @@ public class MenuAddActivity extends AppCompatActivity {
             }
         });
     }
-//    public void uploadImage(){
-//        //데이터 저장하는 중이라고 알림창 띄우기
-//        uploadDialog.setProgress(ProgressDialog.STYLE_SPINNER);
-//        uploadDialog.setMessage("데이터를 저장하는 중입니다...");
-//        uploadDialog.setCancelable(false);
-//        uploadDialog.show();
-//
-//        //저장소에 대한 참조 만들기
-//        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-//        StorageReference deleteRef = mStorageRef.child("market").child(uid).child("menu").child(menuKey+".jpg");
-//        //실제로 이미지가 저장될 곳의 참조
-//        final StorageReference mountainsRef = mStorageRef.child("market").child(uid).child("menu").child(menuKey+".jpg");
-//        deleteRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-//            @Override
-//            public void onSuccess(Void aVoid) {
-//                Log.d("메뉴이미지 삭제", "성공");
-//                //        Bitmap resize = Bitmap.createScaledBitmap(bitmap, 500, 500, true);
-//                //비트맵을 jpg로 변환시켜서 변수에 저장
-//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-//                byte[] data = baos.toByteArray();
-//
-//                //jpg형식으로 저장된 변수를 저장소에 업로드하는 함수
-//                UploadTask uploadTask = mountainsRef.putBytes(data);
-//                //성공했을 시와 실패했을 시를 받아오는 리스너 부착
-//                uploadTask.addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception exception) {
-//                        uploadDialog.dismiss();
-//                        Toast.makeText(MenuAddActivity.this, "제출 실패.", Toast.LENGTH_SHORT).show();
-//                        // Handle unsuccessful uploads
-//                    }
-//                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                    @SuppressWarnings("VisibleForTests")
-//                    @Override
-//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-////                 taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-////                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-////                String photoUri =  String.valueOf(downloadUrl);
-////                myRef.child("market").child(uid).child("menu").child(menuKey).child("menuImageURL").setValue(photoUri);
-//                        uploadDialog.dismiss();
-//                        setResult(RESULT_OK);
-//                        finish();
-//                    }
-//                });
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Log.d("메뉴이미지 삭제", "실패");
-//                Toast.makeText(MenuAddActivity.this, "메뉴 이미지 업로드를 실패했습니다.", Toast.LENGTH_SHORT).show();
-//                uploadDialog.dismiss();
-//            }
-//        });
-//
-//
-//
-//
-//
-//    }
 
     //뒤로가기 버튼 기능 설정
     @Override

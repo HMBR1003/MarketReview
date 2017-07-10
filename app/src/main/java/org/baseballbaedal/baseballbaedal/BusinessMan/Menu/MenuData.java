@@ -11,9 +11,10 @@ public class MenuData {
     String uid;
     String menuKey;
     String aTime;
+    String option;
     boolean isMain;
 
-    public MenuData(String menuDataName, String menuDataPrice, String menuDataExplain, boolean isMain,String uid,String menuKey, String aTime){
+    public MenuData(String menuDataName, String menuDataPrice, String menuDataExplain, String option, boolean isMain,String uid,String menuKey, String aTime){
         this.menuDataName=menuDataName;
         this.menuDataPrice=menuDataPrice;
         this.menuDataExplain=menuDataExplain;
@@ -21,6 +22,7 @@ public class MenuData {
         this.uid = uid;
         this.menuKey = menuKey;
         this.aTime = aTime;
+        this.option = option;
     }
 
     public String getMenuDataName(){
@@ -44,4 +46,5 @@ public class MenuData {
     public String getATime(){
         return aTime;
     }
+    public String getOption() {return option; }
 }

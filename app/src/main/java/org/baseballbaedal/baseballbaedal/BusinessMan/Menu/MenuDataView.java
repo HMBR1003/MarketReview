@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.baseballbaedal.baseballbaedal.R;
+import org.w3c.dom.Text;
 
 /**
  * Created by Administrator on 2017-06-09.
@@ -21,6 +22,7 @@ public class MenuDataView extends LinearLayout{
     TextView menuDataExplain;
     ImageView menuDataImage;
     TextView isMainText;
+    TextView option;
     public MenuDataView(Context context) {
         super(context);
         init(context);
@@ -40,6 +42,7 @@ public class MenuDataView extends LinearLayout{
         menuDataExplain=(TextView)findViewById(R.id.menuDataExplain);
         menuDataImage=(ImageView)findViewById(R.id.menuDataImage);
         isMainText = (TextView)findViewById(R.id.isMainText);
+        option = (TextView)findViewById(R.id.optionText);
 
     }
 
@@ -53,6 +56,9 @@ public class MenuDataView extends LinearLayout{
 
     public void setMenuDataExplain(String menuDataExplain) {
         this.menuDataExplain.setText(menuDataExplain);
+    }
+    public void setOption(String option) {
+        this.option.setText(" "+option);
     }
 
     public void VisibleIsMainText(){

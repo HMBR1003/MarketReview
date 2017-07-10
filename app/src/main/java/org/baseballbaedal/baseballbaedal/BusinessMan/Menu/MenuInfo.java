@@ -5,6 +5,7 @@ package org.baseballbaedal.baseballbaedal.BusinessMan.Menu;
  */
 
 public class MenuInfo {
+    public String aTime;
     public String menuExplain;
     public String menuName;
     public String menuPrice;

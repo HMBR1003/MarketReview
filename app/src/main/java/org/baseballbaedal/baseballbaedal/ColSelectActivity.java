@@ -22,13 +22,15 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import org.baseballbaedal.baseballbaedal.databinding.ActivityColSelectBinding;
 
 public class ColSelectActivity extends AppCompatActivity {
 
 
     SharedPreferences pref;
-    GridAdapter adapter;
+//    GridAdapter adapter;
     int checkedItem = -1;
     long backTime;
     ActivityColSelectBinding binding;
@@ -42,10 +44,8 @@ public class ColSelectActivity extends AppCompatActivity {
             "한화 이글스파크", "삼성 라이온즈파크", "기아 챔피언스필드",
             "사직 야구장(롯데)", "KT 위즈파크", "마산 야구장(NC)"
     };
-    LinearLayout linearLayout[];
-    Intent intent;
-    int oldPosition = 0;
 
+    Intent intent;
     DisplayMetrics mMetrics;
 
     @Override
@@ -86,6 +86,33 @@ public class ColSelectActivity extends AppCompatActivity {
         binding.col7.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
         binding.col8.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
         binding.col9.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+        Glide.with(this)
+                .load(img[0])
+                .into(binding.col1);
+        Glide.with(this)
+                .load(img[1])
+                .into(binding.col2);
+        Glide.with(this)
+                .load(img[2])
+                .into(binding.col3);
+        Glide.with(this)
+                .load(img[3])
+                .into(binding.col4);
+        Glide.with(this)
+                .load(img[4])
+                .into(binding.col5);
+        Glide.with(this)
+                .load(img[5])
+                .into(binding.col6);
+        Glide.with(this)
+                .load(img[6])
+                .into(binding.col7);
+        Glide.with(this)
+                .load(img[7])
+                .into(binding.col8);
+        Glide.with(this)
+                .load(img[8])
+                .into(binding.col9);
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -170,11 +197,11 @@ public class ColSelectActivity extends AppCompatActivity {
         binding.masan.setOnClickListener(listener);
 
 
-        // 커스텀 아답타 생성
-        adapter = new GridAdapter(
-                getApplicationContext(),
-                R.layout.item_change_col,       // GridView 항목의 레이아웃 row.xml
-                img);
+//        // 커스텀 아답타 생성
+//        adapter = new GridAdapter(
+//                getApplicationContext(),
+//                R.layout.item_change_col,       // GridView 항목의 레이아웃 row.xml
+//                img);
 //        binding.gridView.setAdapter(adapter);
 //        binding.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
@@ -208,52 +235,54 @@ public class ColSelectActivity extends AppCompatActivity {
         });
     }
 
-    class GridAdapter extends BaseAdapter {
-        Context context;
-        int layout;
-        int img[];
-        LayoutInflater inf;
-        View view[] = new View[9];
-
-        public GridAdapter(Context context, int layout, int[] img) {
-            this.context = context;
-            this.layout = layout;
-            this.img = img;
-            inf = (LayoutInflater) context.getSystemService
-                    (Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        @Override
-        public int getCount() {
-            return 9;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return view[position];
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            int rowWidth = (mMetrics.widthPixels) / 3;
-
-            if (convertView == null) {
-                view[position] = convertView;
-                view[position] = inf.inflate(layout, null);
-                ImageView iv = (ImageView) view[position].findViewById(R.id.colImage);
-                TextView tv = (TextView) view[position].findViewById(R.id.colText);
-                iv.setImageResource(img[position]);
-                tv.setText(colName[position]);
-                view[position].setLayoutParams(new GridView.LayoutParams(rowWidth, rowWidth));
-            }
-            return view[position];
-        }
-    }
+//    class GridAdapter extends BaseAdapter {
+//        Context context;
+//        int layout;
+//        int img[];
+//        LayoutInflater inf;
+//        View view[] = new View[9];
+//
+//        public GridAdapter(Context context, int layout, int[] img) {
+//            this.context = context;
+//            this.layout = layout;
+//            this.img = img;
+//            inf = (LayoutInflater) context.getSystemService
+//                    (Context.LAYOUT_INFLATER_SERVICE);
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            return 9;
+//        }
+//
+//        @Override
+//        public Object getItem(int position) {
+//            return view[position];
+//        }
+//
+//        @Override
+//        public long getItemId(int position) {
+//            return position;
+//        }
+//
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent) {
+//            int rowWidth = (mMetrics.widthPixels) / 3;
+//
+//            if (convertView == null) {
+//                view[position] = convertView;
+//                view[position] = inf.inflate(layout, null);
+//                ImageView iv = (ImageView) view[position].findViewById(R.id.colImage);
+//                TextView tv = (TextView) view[position].findViewById(R.id.colText);
+//                Glide.with(context)
+//                        .load(img[position])
+//                        .into(iv);
+//                tv.setText(colName[position]);
+//                view[position].setLayoutParams(new GridView.LayoutParams(rowWidth, rowWidth));
+//            }
+//            return view[position];
+//        }
+//    }
 
     @Override
     public void onBackPressed() {

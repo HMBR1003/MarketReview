@@ -504,6 +504,8 @@ public class BusinessSignupActivity extends AppCompatActivity {
                                 .listener(new RequestListener<StorageReference, GlideDrawable>() {
                                     @Override
                                     public boolean onException(Exception e, StorageReference model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                        Toast.makeText(BusinessSignupActivity.this, "저장소 이미지 가져오기 실패", Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
                                         return false;
                                     }
 

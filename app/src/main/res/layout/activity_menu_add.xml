@@ -20,59 +20,6 @@
 
         </android.support.v7.widget.Toolbar>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:orientation="vertical"
-            android:padding="10sp">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/black_teduri">
-
-                <LinearLayout
-                    android:id="@+id/menuImageViewContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:visibility="invisible">
-
-                    <ImageView
-                        android:id="@+id/menuImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/menuTextViewContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/marketImageText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1:1 비율의 메뉴 사진을 등록해주세요\n(정사각형)"
-                        android:textSize="15sp" />
-                </LinearLayout>
-            </FrameLayout>
-
-            <Button
-                android:id="@+id/loadMenuImageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="사진 불러오기"
-                android:textSize="15sp" />
-
-        </LinearLayout>
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -81,413 +28,481 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="3sp"
-                    android:layout_marginTop="3sp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="메뉴 이름 : "
-                        android:textSize="15sp" />
-
-                    <org.baseballbaedal.baseballbaedal.CustomEditText
-                        android:id="@+id/menuName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="ex)00치킨"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:maxLines="1"
-                        android:textSize="15sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="3sp"
-                    android:layout_marginTop="3sp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="가격 : "
-                        android:textSize="15sp" />
-
-                    <org.baseballbaedal.baseballbaedal.CustomEditText
-                        android:id="@+id/menuPrice"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint=""
-                        android:inputType="number"
-                        android:lines="1"
-                        android:maxLines="1"
-                        android:textSize="15sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/optionSet1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingLeft="30sp"
-                    android:paddingRight="30sp"
-                    android:visibility="gone">
+                    android:padding="10sp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="3sp"
-                        android:layout_marginTop="3sp">
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1번 옵션 이름 : "
-                            android:textSize="15sp" />
-
-                        <EditText
-                            android:id="@+id/optionName1"
+                        <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="ex)간장소스"
-                            android:inputType="text"
-                            android:lines="1"
-                            android:maxLines="1"
-                            android:textSize="15sp" />
+                            android:layout_height="300sp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/black_teduri">
+
+                            <LinearLayout
+                                android:id="@+id/menuImageViewContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:visibility="invisible">
+
+                                <ImageView
+                                    android:id="@+id/menuImageView"
+                                    android:layout_width="300sp"
+                                    android:layout_height="match_parent"
+                                    android:scaleType="fitXY" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/menuTextViewContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/marketImageText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="1:1 비율의 메뉴 사진을 등록해주세요\n(정사각형)"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+                        </FrameLayout>
+
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3sp"
-                        android:layout_marginTop="3sp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1번 옵션 가격 : "
-                            android:textSize="15sp" />
-
-                        <EditText
-                            android:id="@+id/optionPrice1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint=""
-                            android:inputType="number"
-                            android:lines="1"
-                            android:maxLines="1"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/optionSet2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="30sp"
-                    android:paddingRight="30sp"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3sp"
-                        android:layout_marginTop="3sp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="2번 옵션 이름 : "
-                            android:textSize="15sp" />
-
-                        <EditText
-                            android:id="@+id/optionName2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="ex)간장소스"
-                            android:inputType="text"
-                            android:lines="1"
-                            android:maxLines="1"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3sp"
-                        android:layout_marginTop="3sp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="2번 옵션 가격 : "
-                            android:textSize="15sp" />
-
-                        <EditText
-                            android:id="@+id/optionPrice2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint=""
-                            android:inputType="number"
-                            android:lines="1"
-                            android:maxLines="1"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/optionSet3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="30sp"
-                    android:paddingRight="30sp"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3sp"
-                        android:layout_marginTop="3sp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="3번 옵션 이름 : "
-                            android:textSize="15sp" />
-
-                        <EditText
-                            android:id="@+id/optionName3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="ex)간장소스"
-                            android:inputType="text"
-                            android:lines="1"
-                            android:maxLines="1"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3sp"
-                        android:layout_marginTop="3sp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="3번 옵션 가격 : "
-                            android:textSize="15sp" />
-
-                        <EditText
-                            android:id="@+id/optionPrice3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint=""
-                            android:inputType="number"
-                            android:lines="1"
-                            android:maxLines="1"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/optionSet4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="30sp"
-                    android:paddingRight="30sp"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3sp"
-                        android:layout_marginTop="3sp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="4번 옵션 이름 : "
-                            android:textSize="15sp" />
-
-                        <EditText
-                            android:id="@+id/optionName4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="ex)간장소스"
-                            android:inputType="text"
-                            android:lines="1"
-                            android:maxLines="1"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3sp"
-                        android:layout_marginTop="3sp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="4번 옵션 가격 : "
-                            android:textSize="15sp" />
-
-                        <EditText
-                            android:id="@+id/optionPrice4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint=""
-                            android:inputType="number"
-                            android:lines="1"
-                            android:maxLines="1"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/optionSet5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="30sp"
-                    android:paddingRight="30sp"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3sp"
-                        android:layout_marginTop="3sp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="5번 옵션 이름 : "
-                            android:textSize="15sp" />
-
-                        <EditText
-                            android:id="@+id/optionName5"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="ex)간장소스"
-                            android:inputType="text"
-                            android:lines="1"
-                            android:maxLines="1"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3sp"
-                        android:layout_marginTop="3sp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="5번 옵션 가격 : "
-                            android:textSize="15sp" />
-
-                        <EditText
-                            android:id="@+id/optionPrice5"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint=""
-                            android:inputType="number"
-                            android:lines="1"
-                            android:maxLines="1"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center">
-
-                        <Button
-                            android:id="@+id/optionAddButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="옵션 추가하기" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center">
-
-                        <Button
-                            android:id="@+id/optionRemoveButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="옵션 삭제" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="3sp"
-                    android:layout_marginTop="3sp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="메뉴에 대해 설명해주세요(50자 입력가능) "
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/explainLimit"
+                    <Button
+                        android:id="@+id/loadMenuImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:text="0/50자" />
+                        android:text="사진 불러오기"
+                        android:textSize="15sp" />
 
-                    <org.baseballbaedal.baseballbaedal.CustomEditText
-                        android:id="@+id/menuExplain"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:gravity="top"
-                        android:hint="ex)최고급 기름을 사용해 튀겨내고 12가지의 향신료로 만든 소스가 맛과 풍미를 더해주는 최고의 치킨"
-                        android:maxLength="50"
-                        android:singleLine="true"
-                        android:textSize="15sp"
-
-                        />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="20dp">
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/menuSubmitButton"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="완료"
-                        android:textSize="20sp" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3sp"
+                        android:layout_marginTop="3sp">
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="메뉴 이름 : "
+                            android:textSize="15sp" />
+
+                        <org.baseballbaedal.baseballbaedal.CustomEditText
+                            android:id="@+id/menuName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="ex)00치킨"
+                            android:inputType="text"
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3sp"
+                        android:layout_marginTop="3sp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="가격 : "
+                            android:textSize="15sp" />
+
+                        <org.baseballbaedal.baseballbaedal.CustomEditText
+                            android:id="@+id/menuPrice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint=""
+                            android:inputType="number"
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/optionSet1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="30sp"
+                        android:paddingRight="30sp"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3sp"
+                            android:layout_marginTop="3sp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1번 옵션 이름 : "
+                                android:textSize="15sp" />
+
+                            <EditText
+                                android:id="@+id/optionName1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="ex)간장소스"
+                                android:inputType="text"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3sp"
+                            android:layout_marginTop="3sp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1번 옵션 가격 : "
+                                android:textSize="15sp" />
+
+                            <EditText
+                                android:id="@+id/optionPrice1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint=""
+                                android:inputType="number"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/optionSet2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="30sp"
+                        android:paddingRight="30sp"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3sp"
+                            android:layout_marginTop="3sp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2번 옵션 이름 : "
+                                android:textSize="15sp" />
+
+                            <EditText
+                                android:id="@+id/optionName2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="ex)간장소스"
+                                android:inputType="text"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3sp"
+                            android:layout_marginTop="3sp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2번 옵션 가격 : "
+                                android:textSize="15sp" />
+
+                            <EditText
+                                android:id="@+id/optionPrice2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint=""
+                                android:inputType="number"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/optionSet3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="30sp"
+                        android:paddingRight="30sp"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3sp"
+                            android:layout_marginTop="3sp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="3번 옵션 이름 : "
+                                android:textSize="15sp" />
+
+                            <EditText
+                                android:id="@+id/optionName3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="ex)간장소스"
+                                android:inputType="text"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3sp"
+                            android:layout_marginTop="3sp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="3번 옵션 가격 : "
+                                android:textSize="15sp" />
+
+                            <EditText
+                                android:id="@+id/optionPrice3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint=""
+                                android:inputType="number"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/optionSet4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="30sp"
+                        android:paddingRight="30sp"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3sp"
+                            android:layout_marginTop="3sp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="4번 옵션 이름 : "
+                                android:textSize="15sp" />
+
+                            <EditText
+                                android:id="@+id/optionName4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="ex)간장소스"
+                                android:inputType="text"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3sp"
+                            android:layout_marginTop="3sp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="4번 옵션 가격 : "
+                                android:textSize="15sp" />
+
+                            <EditText
+                                android:id="@+id/optionPrice4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint=""
+                                android:inputType="number"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/optionSet5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="30sp"
+                        android:paddingRight="30sp"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3sp"
+                            android:layout_marginTop="3sp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="5번 옵션 이름 : "
+                                android:textSize="15sp" />
+
+                            <EditText
+                                android:id="@+id/optionName5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="ex)간장소스"
+                                android:inputType="text"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3sp"
+                            android:layout_marginTop="3sp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="5번 옵션 가격 : "
+                                android:textSize="15sp" />
+
+                            <EditText
+                                android:id="@+id/optionPrice5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint=""
+                                android:inputType="number"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center">
+
+                            <Button
+                                android:id="@+id/optionAddButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="옵션 추가하기" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center">
+
+                            <Button
+                                android:id="@+id/optionRemoveButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="옵션 삭제" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3sp"
+                        android:layout_marginTop="3sp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="메뉴에 대해 설명해주세요(50자 입력가능) "
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/explainLimit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:text="0/50자" />
+
+                        <org.baseballbaedal.baseballbaedal.CustomEditText
+                            android:id="@+id/menuExplain"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:gravity="top"
+                            android:hint="ex)최고급 기름을 사용해 튀겨내고 12가지의 향신료로 만든 소스가 맛과 풍미를 더해주는 최고의 치킨"
+                            android:maxLength="50"
+                            android:singleLine="true"
+                            android:textSize="15sp"
+
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginBottom="20dp">
+
+                        <Button
+                            android:id="@+id/menuSubmitButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:text="완료"
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

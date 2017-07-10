@@ -576,11 +576,15 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.signature.StringSignature;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -718,28 +722,30 @@ public class MenuManageActivity extends AppCompatActivity {
                         String menuExplain = it.next().getValue(String.class);
                         String menuName = it.next().getValue(String.class);
                         String menuPrice = it.next().getValue(String.class) + "원";
+                        String option = "없음";
 
                         if (it.hasNext()) {
-                            menuExplain += '\n' + "옵션 : " + it.next().getValue(String.class);
+                            option = "";
+                            option += it.next().getValue(String.class);
                             it.next().getValue(String.class);
                         }
                         if (it.hasNext()) {
-                            menuExplain += ", " + it.next().getValue(String.class);
+                            option += ", " + it.next().getValue(String.class);
                             it.next().getValue(String.class);
                         }
                         if (it.hasNext()) {
-                            menuExplain += ", " + it.next().getValue(String.class);
+                            option += ", " + it.next().getValue(String.class);
                             it.next().getValue(String.class);
                         }
                         if (it.hasNext()) {
-                            menuExplain += ", " + it.next().getValue(String.class);
+                            option += ", " + it.next().getValue(String.class);
                             it.next().getValue(String.class);
                         }
                         if (it.hasNext()) {
-                            menuExplain += ", " + it.next().getValue(String.class);
+                            option += ", " + it.next().getValue(String.class);
                             it.next().getValue(String.class);
                         }
-                        adapter.addItem(new MenuData(menuName, menuPrice, menuExplain, isMain, uid, key[i], aTime));
+                        adapter.addItem(new MenuData(menuName, menuPrice, menuExplain, option,isMain, uid, key[i], aTime));
 //                        Log.d("다운로드 URL", menuImageURL);
                         i++;
                     }
@@ -1018,6 +1024,7 @@ public class MenuManageActivity extends AppCompatActivity {
             view.setMenuDataName(item.getMenuDataName());
             view.setMenuDataPrice(item.getMenuDataPrice());
             view.setMenuDataExplain(item.getMenuDataExplain());
+            view.setOption(item.getOption());
             if (item.getIsMain()) {
                 view.VisibleIsMainText();
             }
@@ -1030,6 +1037,18 @@ public class MenuManageActivity extends AppCompatActivity {
                         .with(MenuManageActivity.this)
                         .using(new FirebaseImageLoader())
                         .load(ref)
+//                        .listener(new RequestListener<StorageReference, GlideDrawable>() {
+//                            @Override
+//                            public boolean onException(Exception e, StorageReference model, Target<GlideDrawable> target, boolean isFirstResource) {
+//                                return false;
+//                            }
+//
+//                            @Override
+//                            public boolean onResourceReady(GlideDrawable resource, StorageReference model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+//                                view.menuDataImage.setScaleType(ImageView.ScaleType.F);
+//                                return false;
+//                            }
+//                        })
                         .override(300, 300)
                         .signature(new StringSignature(item.getATime()))
                         .placeholder(R.drawable.jamsil)

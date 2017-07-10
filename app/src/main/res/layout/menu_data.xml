@@ -1,60 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="120dp">
-
-    <ImageView
-        android:id="@+id/menuDataImage"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="4"
-        android:src="@drawable/jamsil"
-        android:background="@drawable/black_teduri" />
-
-    <TextView
-        android:id="@+id/menuDataName"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:background="@drawable/black_teduri"
-        android:gravity="center"
-        android:hint="이름"
-        android:textColor="#000000" />
-
-    <TextView
-        android:id="@+id/menuDataPrice"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:background="@drawable/black_teduri"
-        android:gravity="center"
-        android:hint="가격"
-        android:textColor="#000000" />
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="5"
-        android:orientation="vertical"
-        android:background="@drawable/black_teduri">
+        android:layout_width="match_parent"
+        android:layout_height="110dp">
+
+        <ImageView
+            android:id="@+id/menuDataImage"
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/black_teduri"
+            android:scaleType="fitXY"
+            android:src="@drawable/jamsil" />
 
         <TextView
-            android:id="@+id/isMainText"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
+            android:id="@+id/menuDataName"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="@drawable/black_teduri"
             android:gravity="center"
-            android:text="대표메뉴 입니다"
-            android:visibility="gone"
-            android:textColor="@color/isMainColor" />
+            android:hint="이름"
+            android:textColor="#000000" />
+
         <TextView
-            android:id="@+id/menuDataExplain"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="8"
+            android:id="@+id/menuDataPrice"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="@drawable/black_teduri"
             android:gravity="center"
-            android:hint="메뉴설명"
+            android:hint="가격"
+            android:textColor="#000000" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:background="@drawable/black_teduri"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/isMainText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="대표메뉴 입니다"
+                android:textColor="@color/isMainColor"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/menuDataExplain"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="8"
+                android:gravity="center"
+                android:hint="메뉴설명"
+                android:textColor="#000000" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/black_teduri"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <TextView
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="옵션 : "
+            android:textColor="#000000" />
+        <TextView
+            android:id="@+id/optionText"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="없음"
             android:textColor="#000000" />
     </LinearLayout>
-
 </LinearLayout>

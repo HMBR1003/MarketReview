@@ -74,8 +74,7 @@
                                 android:id="@+id/col1"
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp"
-                                android:scaleType="fitXY"
-                                app:srcCompat="@drawable/jamsil" />
+                                android:scaleType="fitXY" />
 
                             <TextView
                                 android:id="@+id/jamsilText"
@@ -99,8 +98,7 @@
                                 android:id="@+id/col2"
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp"
-                                android:scaleType="fitXY"
-                                app:srcCompat="@drawable/skydom" />
+                                android:scaleType="fitXY" />
 
                             <TextView
                                 android:id="@+id/skydomText"
@@ -124,8 +122,7 @@
                                 android:id="@+id/col3"
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/munhak" />
+                                android:scaleType="fitXY" />
 
                             <TextView
                                 android:id="@+id/munhakText"
@@ -156,8 +153,7 @@
                                 android:id="@+id/col4"
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/eagles" />
+                                android:scaleType="fitXY" />
 
                             <TextView
                                 android:id="@+id/eaglesText"
@@ -181,8 +177,7 @@
                                 android:id="@+id/col5"
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/lions" />
+                                android:scaleType="fitXY" />
 
                             <TextView
                                 android:id="@+id/lionsText"
@@ -206,8 +201,7 @@
                                 android:id="@+id/col6"
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/champions" />
+                                android:scaleType="fitXY" />
 
                             <TextView
                                 android:id="@+id/championsText"
@@ -237,8 +231,7 @@
                                 android:id="@+id/col7"
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/giants" />
+                                android:scaleType="fitXY" />
 
                             <TextView
                                 android:id="@+id/giantsText"
@@ -261,8 +254,7 @@
                                 android:id="@+id/col8"
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/wizpark" />
+                                android:scaleType="fitXY" />
 
                             <TextView
                                 android:id="@+id/wizparkText"
@@ -285,8 +277,7 @@
                                 android:id="@+id/col9"
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/masan" />
+                                android:scaleType="fitXY" />
 
                             <TextView
                                 android:id="@+id/masanText"
