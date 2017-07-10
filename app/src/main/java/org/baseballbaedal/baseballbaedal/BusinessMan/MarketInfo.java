@@ -9,7 +9,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class MarketInfo {
 
-
+    public String aTime;
     public String manName;
     public String manTel;
     public String businessRegisterNum;

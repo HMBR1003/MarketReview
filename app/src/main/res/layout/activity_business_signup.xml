@@ -62,8 +62,7 @@
                         android:inputType="textPersonName"
                         android:lines="1"
                         android:maxLines="1"
-                        android:textSize="15sp"
-                        />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -296,40 +295,48 @@
                             android:textSize="15sp" />
                     </LinearLayout>
 
-                    <FrameLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/black_teduri">
+                        android:gravity="center">
 
-                        <LinearLayout
-                            android:id="@+id/imageViewContainer"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:visibility="invisible">
 
-                            <ImageView
-                                android:id="@+id/marketImageView"
+                        <FrameLayout
+                            android:layout_width="200sp"
+                            android:layout_height="200sp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/black_teduri">
+
+                            <LinearLayout
+                                android:id="@+id/imageViewContainer"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
-                        </LinearLayout>
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:visibility="invisible">
 
-                        <LinearLayout
-                            android:id="@+id/textViewContainer"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center">
+                                <ImageView
+                                    android:id="@+id/marketImageView"
+                                    android:scaleType="fitXY"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
+                            </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/marketImageText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="1:1 비율의 로고 사진을 등록해주세요\n(정사각형)"
-                                android:textSize="15sp" />
-                        </LinearLayout>
-                    </FrameLayout>
+                            <LinearLayout
+                                android:id="@+id/textViewContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/marketImageText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="1:1 비율의 로고 사진을 등록해주세요\n(정사각형)"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+                        </FrameLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <Button

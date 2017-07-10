@@ -31,9 +31,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.ImageViewTarget;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.signature.StringSignature;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -333,7 +338,7 @@ public class BusinessSignupActivity extends AppCompatActivity {
                         }
                         uploadImage();
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -456,6 +461,18 @@ public class BusinessSignupActivity extends AppCompatActivity {
         //데이터베이스 초기화
         myRef = FirebaseDatabase.getInstance().getReference();
 
+//        final ImageViewTarget<GlideDrawable> target = new ImageViewTarget<GlideDrawable>(dataBinding.marketImageView) {
+//            @Override
+//            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+//                super.onResourceReady(resource, glideAnimation);
+//                dialog.dismiss();
+//            }
+//
+//            @Override
+//            protected void setResource(GlideDrawable resource) {
+//
+//            }
+//        };
         //데이터 불러와서 화면에 세팅하기
         myRef.child(isMarket).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -479,13 +496,49 @@ public class BusinessSignupActivity extends AppCompatActivity {
                     dataBinding.marketTel.setText(data.marketTel);
                     dataBinding.minPrice.setText(data.minPrice);
                     StorageReference ref = FirebaseStorage.getInstance().getReference().child(isMarket).child(uid).child(uid + ".jpg");
-                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            sendUri = uri;
-                            marketImageURL = String.valueOf(uri);
-                            Log.d("다운로드 URL", marketImageURL);
-                            //피카소를 이용하여 저장소에 저장된 사진을 url로 이미지뷰에 연결하기
+                    try {
+                        Glide
+                                .with(BusinessSignupActivity.this)
+                                .using(new FirebaseImageLoader())
+                                .load(ref)
+                                .listener(new RequestListener<StorageReference, GlideDrawable>() {
+                                    @Override
+                                    public boolean onException(Exception e, StorageReference model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                        return false;
+                                    }
+
+                                    @Override
+                                    public boolean onResourceReady(GlideDrawable resource, StorageReference model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                        bitmap = ((GlideBitmapDrawable) resource).getBitmap();
+                                        try {
+                                            FileOutputStream out = new FileOutputStream(tempFile.getPath());
+                                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                                            out.close();
+                                        } catch (FileNotFoundException e) {
+                                            e.printStackTrace();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        sendUri = Uri.fromFile(tempFile);
+                                        dialog.dismiss();
+                                        return false;
+                                    }
+                                })
+                                .signature(new StringSignature(data.aTime)) //이미지저장시간
+                                .placeholder(R.drawable.jamsil)
+                                .thumbnail(0.1f)
+                                .crossFade()
+                                .into(dataBinding.marketImageView);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+//                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                        @Override
+//                        public void onSuccess(Uri uri) {
+//                            sendUri = uri;
+//                            marketImageURL = String.valueOf(uri);
+//                            Log.d("다운로드 URL", marketImageURL);
+                    //피카소를 이용하여 저장소에 저장된 사진을 url로 이미지뷰에 연결하기
 //                            Glide.with(getApplicationContext())
 //                                    .load(marketImageURL)
 //                                    .listener(new RequestListener<String, GlideDrawable>() {
@@ -511,45 +564,43 @@ public class BusinessSignupActivity extends AppCompatActivity {
 //                                        }
 //                                    })
 //                                    .into(dataBinding.marketImageView);
-
-
-                            Picasso.with(getApplicationContext())
-                                    .load(marketImageURL)
-                                    .fit()
-                                    .centerInside()
-                                    .into(dataBinding.marketImageView, new Callback.EmptyCallback() {
-                                        @Override
-                                        public void onSuccess() {
-                                            BitmapDrawable d = (BitmapDrawable) dataBinding.marketImageView.getDrawable();
-                                            bitmap = d.getBitmap();
-                                            try {
-                                                FileOutputStream out = new FileOutputStream(tempFile.getPath());
-                                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                                                out.close();
-                                            } catch (FileNotFoundException e) {
-                                                e.printStackTrace();
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            }
-                                            sendUri = Uri.fromFile(tempFile);
-                                            dialog.dismiss();
-                                        }
-
-                                        @Override
-                                        public void onError() {
-                                            super.onError();
-                                            Toast.makeText(BusinessSignupActivity.this, "이미지 표시 에러", Toast.LENGTH_SHORT).show();
-                                            dialog.dismiss();
-                                        }
-                                    });
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            Toast.makeText(BusinessSignupActivity.this, "저장소 이미지 주소 가져오기 실패", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        }
-                    });
+//                            Picasso.with(getApplicationContext())
+//                                    .load(marketImageURL)
+//                                    .fit()
+//                                    .centerInside()
+//                                    .into(dataBinding.marketImageView, new Callback.EmptyCallback() {
+//                                        @Override
+//                                        public void onSuccess() {
+//                                            BitmapDrawable d = (BitmapDrawable) dataBinding.marketImageView.getDrawable();
+//                                            bitmap = d.getBitmap();
+//                                            try {
+//                                                FileOutputStream out = new FileOutputStream(tempFile.getPath());
+//                                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+//                                                out.close();
+//                                            } catch (FileNotFoundException e) {
+//                                                e.printStackTrace();
+//                                            } catch (IOException e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                            sendUri = Uri.fromFile(tempFile);
+//                                            dialog.dismiss();
+//                                        }
+//
+//                                        @Override
+//                                        public void onError() {
+//                                            super.onError();
+//                                            Toast.makeText(BusinessSignupActivity.this, "이미지 표시 에러", Toast.LENGTH_SHORT).show();
+//                                            dialog.dismiss();
+//                                        }
+//                                    });
+//                        }
+//                    }).addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception exception) {
+//                            Toast.makeText(BusinessSignupActivity.this, "저장소 이미지 주소 가져오기 실패", Toast.LENGTH_SHORT).show();
+//                            dialog.dismiss();
+//                        }
+//                    });
 //                    Toast.makeText(BusinessSignupActivity.this, "데이터 가져오기 성공", Toast.LENGTH_SHORT).show();
                 } else {
                     dialog.dismiss();
@@ -606,7 +657,6 @@ public class BusinessSignupActivity extends AppCompatActivity {
 
         try {
 
-
             //실제로 이미지가 저장될 곳의 참조
             StorageReference saveRef = FirebaseStorage.getInstance().getReference().child(isMarket).child(uid).child(uid + ".jpg");
 
@@ -629,13 +679,14 @@ public class BusinessSignupActivity extends AppCompatActivity {
                 @SuppressWarnings("VisibleForTests")
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    myRef.child(isMarket).child(uid).child("aTime").setValue(System.currentTimeMillis()+"");
                     dialog.dismiss();
                     if (isBusiness != 2)
                         setResult(RESULT_OK);
                     finish();
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
