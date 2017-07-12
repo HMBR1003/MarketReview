@@ -54,6 +54,7 @@ public class DeliveryFragment extends Fragment {
         binding.pizzaButton.setOnClickListener(listener);
         binding.hamButton.setOnClickListener(listener);
         binding.footButton.setOnClickListener(listener);
+        binding.etcButton.setOnClickListener(listener);
 
     }
     public class Listener implements View.OnClickListener {

@@ -532,11 +532,13 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
+        //푸쉬 관련
         pushCount=0;
         loginCount=0;
         setBadge();
         NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         nm.cancelAll();
+
         //유저 객체를 가져옴
         user = mAuth.getCurrentUser();
 

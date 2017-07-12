@@ -5,16 +5,19 @@ package org.baseballbaedal.baseballbaedal.BusinessMan.Menu;
  */
 
 public class MenuData {
-    String menuDataName;
-    String menuDataPrice;
-    String menuDataExplain;
-    String uid;
-    String menuKey;
-    String aTime;
-    String option;
-    boolean isMain;
+    private String menuDataName;
+    private String menuDataPrice;
+    private String menuDataExplain;
+    private String uid;
+    private String menuKey;
+    private String aTime;
+    private String option;
+    private int aseq;
+    private boolean isMain;
 
-    public MenuData(String menuDataName, String menuDataPrice, String menuDataExplain, String option, boolean isMain,String uid,String menuKey, String aTime){
+    public MenuData(){}
+
+    public MenuData(String menuDataName, String menuDataPrice, String menuDataExplain, String option, boolean isMain,String uid,String menuKey, String aTime, int aseq){
         this.menuDataName=menuDataName;
         this.menuDataPrice=menuDataPrice;
         this.menuDataExplain=menuDataExplain;
@@ -23,6 +26,7 @@ public class MenuData {
         this.menuKey = menuKey;
         this.aTime = aTime;
         this.option = option;
+        this.aseq = aseq;
     }
 
     public String getMenuDataName(){
@@ -47,4 +51,5 @@ public class MenuData {
         return aTime;
     }
     public String getOption() {return option; }
+    public int getAseq() {return aseq; }
 }

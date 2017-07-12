@@ -2,6 +2,7 @@ package org.baseballbaedal.baseballbaedal.MainFragment.Delivery;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,12 +30,13 @@ public class MarketListActivity extends AppCompatActivity {
     DatabaseReference fireDB;
     MarketListAdapter adapter;
     MarketList market;
-
+    int colCheck;
     ProgressDialog progress;
     ListView listView;
 
     int menuCode;
     String userID;  //사업자아이디
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -42,13 +45,59 @@ public class MarketListActivity extends AppCompatActivity {
                 finish();
                 return true;
         }
+
         return super.onOptionsItemSelected(item);
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market_list);
+
+        SharedPreferences colCheckpref = getSharedPreferences("selectedCol", MODE_PRIVATE);
+        colCheck = colCheckpref.getInt("selectedCol", -1);
+        switch (colCheck) {
+            case 0:
+                Toast.makeText(this, "잠실 야구장(두산,LG)", Toast.LENGTH_SHORT).show();
+                break;
+            case 1:
+                Toast.makeText(this, "고척 스카이돔(넥센)", Toast.LENGTH_SHORT).show();
+                break;
+            case 2:
+                Toast.makeText(this, "SK 행복드림구장", Toast.LENGTH_SHORT).show();
+
+                break;
+            case 3:
+                Toast.makeText(this, "한화 이글스파크", Toast.LENGTH_SHORT).show();
+
+                break;
+            case 4:
+                Toast.makeText(this, "삼성 라이온즈파크", Toast.LENGTH_SHORT).show();
+
+                break;
+            case 5:
+                Toast.makeText(this, "기아 챔피언스필드", Toast.LENGTH_SHORT).show();
+
+                break;
+            case 6:
+                Toast.makeText(this, "사직 야구장(롯데)", Toast.LENGTH_SHORT).show();
+
+                break;
+            case 7:
+                Toast.makeText(this, "KT 위즈파크", Toast.LENGTH_SHORT).show();
+
+                break;
+            case 8:
+                Toast.makeText(this, "마산 야구장(NC)", Toast.LENGTH_SHORT).show();
+
+                break;
+            default:
+                Toast.makeText(this, "선택된 야구장이 없습니다.", Toast.LENGTH_SHORT).show();
+
+                break;
+        }
+
 
         listView = (ListView) findViewById(R.id.listView);
         fireDB = FirebaseDatabase.getInstance().getReference();
@@ -80,11 +129,8 @@ public class MarketListActivity extends AppCompatActivity {
             case "족발":
                 menuCode = 4;
                 break;
-            case "테이크아웃":
-                menuCode = 5;
-                break;
             case "기타":
-                menuCode = 6;
+                menuCode = 5;
                 break;
         }
 
@@ -104,13 +150,15 @@ public class MarketListActivity extends AppCompatActivity {
                     market = data.getValue(MarketList.class);
 
                     if (market.handleFood == menuCode) {
-                        userID = data.getKey();
-                        String address1 = market.marketAddress1.substring(7);
-                        adapter.addItem(userID, " " + address1 + " "+ market.marketAddress2, market.marketName, " "+market.marketTel);
-                        Log.d("handle", data.child("handleFood").getValue().toString());
-                        adapter.notifyDataSetChanged();
-                        progress.dismiss();
+                        if(market.selectedCol == colCheck+1) {
+                            userID = data.getKey();
+                            String address1 = market.marketAddress1.substring(7);
+                            adapter.addItem(userID, " " + address1 + " " + market.marketAddress2, market.marketName, " " + market.marketTel);
+                            Log.d("handle", data.child("handleFood").getValue().toString());
+                            adapter.notifyDataSetChanged();
+                        }
                     }
+                    progress.dismiss();
                 }
             }
 
@@ -133,11 +181,11 @@ public class MarketListActivity extends AppCompatActivity {
         fireDB.child("market").addValueEventListener(listener);
     }
 
-    private class ItemClickListener implements AdapterView.OnItemClickListener{
+    private class ItemClickListener implements AdapterView.OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            MarketListItem item = (MarketListItem)adapter.getItem(position);
+            MarketListItem item = (MarketListItem) adapter.getItem(position);
 
 //            Intent intent = new Intent(getApplicationContext(), MenuListActivity.class);
 //            intent.putExtra("id",item.getMarketUserID());

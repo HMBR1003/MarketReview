@@ -89,6 +89,8 @@ public class MenuAddActivity extends AppCompatActivity {
     boolean isEdit;
     File tempFile;
 
+    int menuCount;
+
 
     TextWatcher watcher = new TextWatcher() {
         @Override
@@ -144,6 +146,8 @@ public class MenuAddActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         isEdit = intent.getBooleanExtra("isEdit",false);
+        menuCount = intent.getIntExtra("menuCount",0);
+
         if(isEdit) {
             menuKey = intent.getStringExtra("menuId");
             //타이틀 설정
@@ -151,6 +155,10 @@ public class MenuAddActivity extends AppCompatActivity {
             loadData();
 
         }else{
+            if(menuCount==-1){
+                Toast.makeText(this, "메뉴 개수가 잘못 넘어왔습니다.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
             //타이틀 설정
             binding.toolBar.setTitle("메뉴 추가");
         }
@@ -543,6 +551,7 @@ public class MenuAddActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 if(!isEdit) {
                     menuKey = myRef.child("market").child(uid).child("menu").push().getKey();
+                    myRef.child("market").child(uid).child("menu").child(menuKey).child("aseq").setValue(menuCount);
                 }
 
                 myRef.child("market").child(uid).child("menu").child(menuKey).child("option1Name").setValue(null);

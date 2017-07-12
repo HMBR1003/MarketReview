@@ -626,7 +626,7 @@ public class MenuManageActivity extends AppCompatActivity {
     boolean isMainSelect;
     boolean refresh;
     int i;
-
+    int menuCount;
     int checkedItem = -1;
 
     AlertDialog deleteDialog;
@@ -681,6 +681,7 @@ public class MenuManageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MenuAddActivity.class);
                 intent.putExtra("isEdit", false);
+                intent.putExtra("menuCount", menuCount + 1);
                 startActivityForResult(intent, MENU_ADD_REQUEST);
             }
         });
@@ -691,16 +692,20 @@ public class MenuManageActivity extends AppCompatActivity {
         listener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount() > 0) {
+                menuCount = (int) dataSnapshot.getChildrenCount();
+                if (menuCount > 0) {
                     int count = 0;
                     binding.menuListView.setVisibility(View.VISIBLE);
                     binding.menuListText.setVisibility(View.GONE);
                     adapter.clear();
-                    key = new String[(int) dataSnapshot.getChildrenCount()];
+                    key = new String[menuCount];
                     i = 0;
+
+                    //메인메뉴가 있는 지 검사
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         key[i] = data.getKey();
                         Iterator<DataSnapshot> it1 = data.getChildren().iterator();
+                        it1.next();
                         it1.next();
                         boolean isMain = it1.next().getValue(Boolean.class);
                         if (isMain)
@@ -710,14 +715,20 @@ public class MenuManageActivity extends AppCompatActivity {
                         }
                         i++;
                     }
-                    if (count == dataSnapshot.getChildrenCount()) {
+
+                    //메인메뉴가 없는 경우 첫 번째 메뉴를 메인메뉴로 설정
+                    if (count == menuCount) {
                         ref.child(uid).child("menu").child(key[0]).child("isMain").setValue(true);
                     }
+
+                    MenuData menuDatas[] = new MenuData[menuCount];
+
                     i = 0;
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         key[i] = data.getKey();
                         it = data.getChildren().iterator();
                         String aTime = it.next().getValue(String.class);
+                        int aseq = it.next().getValue(Integer.class);
                         boolean isMain = it.next().getValue(Boolean.class);
                         String menuExplain = it.next().getValue(String.class);
                         String menuName = it.next().getValue(String.class);
@@ -745,9 +756,20 @@ public class MenuManageActivity extends AppCompatActivity {
                             option += ", " + it.next().getValue(String.class);
                             it.next().getValue(String.class);
                         }
-                        adapter.addItem(new MenuData(menuName, menuPrice, menuExplain, option,isMain, uid, key[i], aTime));
+
+                        menuDatas[i] = new MenuData(menuName, menuPrice, menuExplain, option, isMain, uid, key[i], aTime, aseq);
 //                        Log.d("다운로드 URL", menuImageURL);
                         i++;
+                    }
+
+                    //메뉴 순서대로 리스트에 추가
+                    for (int iii = 1; iii < menuCount + 1; iii++) {
+                        for (int jjj = 0; jjj < menuCount; jjj++) {
+                            if (menuDatas[jjj].getAseq() == iii) {
+                                adapter.addItem(menuDatas[jjj]);
+                                break;
+                            }
+                        }
                     }
                     adapter.notifyDataSetChanged();
                 } else {
@@ -820,15 +842,43 @@ public class MenuManageActivity extends AppCompatActivity {
                     binding.infoText.setText("메뉴 정보");
                     isMainSelect = false;
                     adapter.notifyDataSetChanged();
-                    ref.child(uid).child("menu").child(key[checkedItem]).child("isMain").setValue(true);
-                    for (int i = 0; i < adapter.getCount(); i++) {
-                        if (i == checkedItem)
-                            continue;
-                        ref.child(uid).child("menu").child(key[i]).child("isMain").setValue(false);
-                    }
-                    checkedItem = -1;
 
-                    ref.child(uid).child("menu").addValueEventListener(listener);
+                    ref.child(uid).child("menu").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Iterator<DataSnapshot> mit;
+                            String mainKey;
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                mainKey = data.getKey();
+                                mit = data.getChildren().iterator();
+                                mit.next();
+                                int aseq = mit.next().getValue(Integer.class);
+                                if (aseq == checkedItem+1) {
+                                    ref.child(uid).child("menu").child(mainKey).child("isMain").setValue(true);
+                                    break;
+                                }
+                            }
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                mainKey = data.getKey();
+                                mit = data.getChildren().iterator();
+                                mit.next();
+                                int aseq = mit.next().getValue(Integer.class);
+                                if (aseq == checkedItem+1) {
+                                    continue;
+                                }
+                                ref.child(uid).child("menu").child(mainKey).child("isMain").setValue(false);
+                            }
+
+                            checkedItem = -1;
+
+                            ref.child(uid).child("menu").addValueEventListener(listener);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
         });
@@ -896,32 +946,112 @@ public class MenuManageActivity extends AppCompatActivity {
                     builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            for (int i = 0; i < selectedPosition.length; i++) {
-                                if (selectedPosition[i]) {
-                                    ref.child(uid).child("menu").child(key[i]).setValue(null);
-                                    StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-                                    StorageReference deleteRef = mStorageRef.child("market").child(uid).child("menu").child(key[i] + ".jpg");
-                                    deleteRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("메뉴이미지 삭제", "성공");
+                            ref.child(uid).child("menu").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    Iterator<DataSnapshot> dit;
+                                    int count = (int) dataSnapshot.getChildrenCount();
+                                    String deleteKey[] = new String[count];
+                                    MenuData dmenuDatas[] = new MenuData[count];
+                                    int r = 0;
+                                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                        deleteKey[r] = data.getKey();
+                                        dit = data.getChildren().iterator();
+                                        String aTime = dit.next().getValue(String.class);
+                                        int aseq = dit.next().getValue(Integer.class);
+                                        dmenuDatas[r] = new MenuData("", "", "", "", false, uid, deleteKey[r], aTime, aseq);
+                                        r++;
+                                    }
+                                    for (int i = 0; i < selectedPosition.length; i++) {
+                                        if (selectedPosition[i]) {
+                                            for (int cc = 0; cc < count; cc++) {
+                                                if (dmenuDatas[cc].getAseq() == i + 1) {
+                                                    ref.child(uid).child("menu").child(dmenuDatas[cc].getMenuKey()).setValue(null);
+                                                    StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+                                                    StorageReference deleteRef = mStorageRef.child("market").child(uid).child("menu").child(dmenuDatas[cc].getMenuKey() + ".jpg");
+                                                    deleteRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d("메뉴이미지 삭제", "성공");
+                                                        }
+                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d("메뉴이미지 삭제", "실패");
+                                                        }
+                                                    });
+                                                    break;
+                                                }
+                                            }
                                         }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.d("메뉴이미지 삭제", "실패");
+                                        if (i == selectedPosition.length - 1) {
+                                            ref.child(uid).child("menu").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    int count2 = (int) dataSnapshot.getChildrenCount();
+                                                    if (count2 > 0) {
+                                                        Iterator<DataSnapshot> dit2;
+                                                        String deleteKey2[] = new String[count2];
+                                                        MenuData dmenuDatas2[] = new MenuData[count2];
+                                                        int r2 = 0;
+                                                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                                            deleteKey2[r2] = data.getKey();
+                                                            dit2 = data.getChildren().iterator();
+                                                            String aTime = dit2.next().getValue(String.class);
+                                                            int aseq = dit2.next().getValue(Integer.class);
+                                                            boolean isMain = dit2.next().getValue(Boolean.class);
+                                                            dmenuDatas2[r2] = new MenuData("", "", "", "", isMain, uid, deleteKey2[r2], aTime, aseq);
+                                                            r2++;
+                                                        }
+
+                                                        MenuData tmp;
+                                                        for (int bb = 0; bb < count2 - 1; bb++) {
+                                                            for (int cc = bb + 1; cc < count2; cc++) {
+                                                                if (dmenuDatas2[bb].getAseq() > dmenuDatas2[cc].getAseq()) {
+                                                                    tmp = dmenuDatas2[bb];
+                                                                    dmenuDatas2[bb] = dmenuDatas2[cc];
+                                                                    dmenuDatas2[cc] = tmp;
+                                                                }
+                                                            }
+                                                        }
+                                                        for (int aa = 0; aa < count2; aa++) {
+                                                            ref.child(uid).child("menu").child(dmenuDatas2[aa].getMenuKey()).child("aseq").setValue(aa + 1);
+                                                        }
+
+                                                        boolean mainExist = false;
+                                                        for (int i = 0; i < count2; i++) {
+                                                            if (dmenuDatas2[i].getIsMain()) {
+                                                                mainExist = true;
+                                                                break;
+                                                            }
+                                                        }
+                                                        if (!mainExist) {
+                                                            ref.child(uid).child("menu").child(dmenuDatas2[0].getMenuKey()).child("isMain").setValue(true);
+                                                        }
+                                                    }
+                                                    binding.commonContainer.setVisibility(View.VISIBLE);
+                                                    binding.deleteModeContainer.setVisibility(View.GONE);
+                                                    isDeleteMode = false;
+                                                    binding.infoText.setText("메뉴 정보");
+                                                    ref.child(uid).child("menu").addValueEventListener(listener);
+                                                    Toast.makeText(MenuManageActivity.this, "선택한 메뉴가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
                                         }
-                                    });
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
                                 }
-                            }
-                            binding.commonContainer.setVisibility(View.VISIBLE);
-                            binding.deleteModeContainer.setVisibility(View.GONE);
-                            isDeleteMode = false;
-                            binding.infoText.setText("메뉴 정보");
-                            ref.child(uid).child("menu").addValueEventListener(listener);
-                            Toast.makeText(MenuManageActivity.this, "선택한 메뉴가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
-
+                            });
                         }
                     });
                     builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
