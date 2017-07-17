@@ -4,6 +4,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#ffffff"
         android:orientation="vertical">
 
         <LinearLayout
@@ -15,14 +16,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@color/com_facebook_device_auth_text"
                 android:gravity="center">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="날씨를 볼 경기장을 선택해 주세요"
-                    android:textSize="20sp" />
+                <ImageView
+                    android:id="@+id/weatherTab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="날씨를 볼 경기장을 선택해 주세요"-->
+                    <!--android:textSize="20sp" />-->
 
             </LinearLayout>
 
@@ -45,6 +49,7 @@
 
                         <LinearLayout
                             android:id="@+id/jamsil"
+                            android:padding="7dp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -54,21 +59,22 @@
                             <ImageView
                                 android:id="@+id/col1"
                                 android:layout_width="match_parent"
-                                android:layout_height="100dp"
+                                android:layout_height="match_parent"
                                 android:scaleType="fitXY" />
 
-                            <TextView
-                                android:id="@+id/jamsilText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="잠실 야구장(두산,LG)" />
+                            <!--<TextView-->
+                                <!--android:id="@+id/jamsilText"-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:gravity="center"-->
+                                <!--android:text="잠실 야구장(두산,LG)" />-->
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/skydom"
+                            android:padding="7dp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -78,21 +84,22 @@
                             <ImageView
                                 android:id="@+id/col2"
                                 android:layout_width="match_parent"
-                                android:layout_height="100dp"
+                                android:layout_height="match_parent"
                                 android:scaleType="fitXY" />
 
-                            <TextView
-                                android:id="@+id/skydomText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="고척 스카이돔(넥센)" />
+                            <!--<TextView-->
+                                <!--android:id="@+id/skydomText"-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:gravity="center"-->
+                                <!--android:text="고척 스카이돔(넥센)" />-->
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/munhak"
+                            android:padding="7dp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -102,16 +109,16 @@
                             <ImageView
                                 android:id="@+id/col3"
                                 android:layout_width="match_parent"
-                                android:layout_height="100dp"
+                                android:layout_height="match_parent"
                                 android:scaleType="fitXY" />
 
-                            <TextView
-                                android:id="@+id/munhakText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="SK 행복드림구장" />
+                            <!--<TextView-->
+                                <!--android:id="@+id/munhakText"-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:gravity="center"-->
+                                <!--android:text="SK 행복드림구장" />-->
 
                         </LinearLayout>
 
@@ -124,6 +131,7 @@
 
                         <LinearLayout
                             android:id="@+id/eagles"
+                            android:padding="7dp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -133,21 +141,22 @@
                             <ImageView
                                 android:id="@+id/col4"
                                 android:layout_width="match_parent"
-                                android:layout_height="100dp"
+                                android:layout_height="match_parent"
                                 android:scaleType="fitXY" />
 
-                            <TextView
-                                android:id="@+id/eaglesText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="한화 이글스파크" />
+                            <!--<TextView-->
+                                <!--android:id="@+id/eaglesText"-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:gravity="center"-->
+                                <!--android:text="한화 이글스파크" />-->
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/lions"
+                            android:padding="7dp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -157,21 +166,22 @@
                             <ImageView
                                 android:id="@+id/col5"
                                 android:layout_width="match_parent"
-                                android:layout_height="100dp"
+                                android:layout_height="match_parent"
                                 android:scaleType="fitXY" />
 
-                            <TextView
-                                android:id="@+id/lionsText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="삼성 라이온즈파크" />
+                            <!--<TextView-->
+                                <!--android:id="@+id/lionsText"-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:gravity="center"-->
+                                <!--android:text="삼성 라이온즈파크" />-->
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/champions"
+                            android:padding="7dp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -181,16 +191,16 @@
                             <ImageView
                                 android:id="@+id/col6"
                                 android:layout_width="match_parent"
-                                android:layout_height="100dp"
+                                android:layout_height="match_parent"
                                 android:scaleType="fitXY" />
 
-                            <TextView
-                                android:id="@+id/championsText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="기아 챔피언스필드" />
+                            <!--<TextView-->
+                                <!--android:id="@+id/championsText"-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:gravity="center"-->
+                                <!--android:text="기아 챔피언스필드" />-->
 
                         </LinearLayout>
 
@@ -203,6 +213,7 @@
 
                         <LinearLayout
                             android:id="@+id/giants"
+                            android:padding="7dp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -212,21 +223,22 @@
                             <ImageView
                                 android:id="@+id/col7"
                                 android:layout_width="match_parent"
-                                android:layout_height="100dp"
+                                android:layout_height="match_parent"
                                 android:scaleType="fitXY" />
 
-                            <TextView
-                                android:id="@+id/giantsText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="사직 야구장(롯데)" />
+                            <!--<TextView-->
+                                <!--android:id="@+id/giantsText"-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:gravity="center"-->
+                                <!--android:text="사직 야구장(롯데)" />-->
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/wizpark"
+                            android:padding="7dp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -236,21 +248,22 @@
                             <ImageView
                                 android:id="@+id/col8"
                                 android:layout_width="match_parent"
-                                android:layout_height="100dp"
+                                android:layout_height="match_parent"
                                 android:scaleType="fitXY" />
 
-                            <TextView
-                                android:id="@+id/wizparkText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="KT 위즈파크" />
+                            <!--<TextView-->
+                                <!--android:id="@+id/wizparkText"-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:gravity="center"-->
+                                <!--android:text="KT 위즈파크" />-->
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/masan"
+                            android:padding="7dp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -260,16 +273,16 @@
                             <ImageView
                                 android:id="@+id/col9"
                                 android:layout_width="match_parent"
-                                android:layout_height="100dp"
+                                android:layout_height="match_parent"
                                 android:scaleType="fitXY" />
 
-                            <TextView
-                                android:id="@+id/masanText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="마산 야구장(NC)" />
+                            <!--<TextView-->
+                                <!--android:id="@+id/masanText"-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:gravity="center"-->
+                                <!--android:text="마산 야구장(NC)" />-->
 
                         </LinearLayout>
 

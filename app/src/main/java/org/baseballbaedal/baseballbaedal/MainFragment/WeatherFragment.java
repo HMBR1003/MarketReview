@@ -39,9 +39,9 @@ public class WeatherFragment extends Fragment {
     DisplayMetrics mMetrics;
 
     int img[] = {
-            R.drawable.jamsil, R.drawable.skydom, R.drawable.munhak,
-            R.drawable.eagles, R.drawable.lions, R.drawable.champions,
-            R.drawable.giants, R.drawable.wizpark, R.drawable.masan
+            R.drawable.jamsil,R.drawable.skydom,R.drawable.munhak,
+            R.drawable.eagles,R.drawable.lions,R.drawable.champions,
+            R.drawable.giants,R.drawable.wizpark,R.drawable.masan
     };
     String colName[] = {
             "잠실 야구장(두산,LG)", "고척 스카이돔(넥센)", "SK 행복드림구장",
@@ -53,18 +53,18 @@ public class WeatherFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
-        int rowWidth = (mMetrics.widthPixels) / 3;
-        binding.col1.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-        binding.col2.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-        binding.col3.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-        binding.col4.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-        binding.col5.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-        binding.col6.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-        binding.col7.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-        binding.col8.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-        binding.col9.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        mMetrics = new DisplayMetrics();
+//        getActivity().getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
+//        int rowWidth = (mMetrics.widthPixels) / 3;
+//        binding.col1.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        binding.col2.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        binding.col3.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        binding.col4.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        binding.col5.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        binding.col6.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        binding.col7.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        binding.col8.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        binding.col9.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
         Glide.with(this)
                 .load(img[0])
                 .into(binding.col1);
@@ -92,6 +92,9 @@ public class WeatherFragment extends Fragment {
         Glide.with(this)
                 .load(img[8])
                 .into(binding.col9);
+        Glide.with(this)
+                .load(R.drawable.weather_tab)
+                .into(binding.weatherTab);
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override

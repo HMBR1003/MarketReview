@@ -51,6 +51,8 @@ public class WeatherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
+        Drawable back = (findViewById(R.id.weatherContainer)).getBackground();
+        back.setAlpha(70);
         intent = getIntent();
         city = intent.getStringExtra("city");
         colname = intent.getStringExtra("colname");

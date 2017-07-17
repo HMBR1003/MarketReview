@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/weatherContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/weather_back"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
@@ -29,9 +32,9 @@
     </LinearLayout>
 
     <LinearLayout
-        android:background="@drawable/black_teduri"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/black_teduri">
 
         <TextView
             android:id="@+id/dateText"
@@ -149,11 +152,11 @@
 
 
             <LinearLayout
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/teduri_top">
+                android:background="@drawable/teduri_top"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -357,11 +360,11 @@
 
     <ListView
         android:id="@+id/listview1"
-        android:listSelector="#00000000"
-        android:dividerHeight="0dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10" />
+        android:layout_weight="10"
+        android:dividerHeight="0dp"
+        android:listSelector="#00000000" />
 
     <TextView
         android:layout_width="match_parent"
