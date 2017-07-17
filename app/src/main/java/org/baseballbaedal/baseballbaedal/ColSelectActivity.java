@@ -74,18 +74,18 @@ public class ColSelectActivity extends AppCompatActivity {
 //            }
 //        });
 
-        mMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
-        int rowWidth = (mMetrics.widthPixels) / 3;
-        binding.col1.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-        binding.col2.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-        binding.col3.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-        binding.col4.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-        binding.col5.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-        binding.col6.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-        binding.col7.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-        binding.col8.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-        binding.col9.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        mMetrics = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
+//        int rowWidth = (mMetrics.widthPixels) / 3;
+//        binding.col1.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        binding.col2.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        binding.col3.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        binding.col4.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        binding.col5.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        binding.col6.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        binding.col7.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        binding.col8.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
+//        binding.col9.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
         Glide.with(this)
                 .load(img[0])
                 .into(binding.col1);
@@ -119,69 +119,51 @@ public class ColSelectActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 binding.jamsil.setBackgroundColor(Color.rgb(255, 255, 255));
-                binding.jamsilText.setTextColor(Color.BLACK);
 
                 binding.skydom.setBackgroundColor(Color.rgb(255, 255, 255));
-                binding.skydomText.setTextColor(Color.BLACK);
 
                 binding.munhak.setBackgroundColor(Color.rgb(255, 255, 255));
-                binding.munhakText.setTextColor(Color.BLACK);
 
                 binding.eagles.setBackgroundColor(Color.rgb(255, 255, 255));
-                binding.eaglesText.setTextColor(Color.BLACK);
 
                 binding.lions.setBackgroundColor(Color.rgb(255, 255, 255));
-                binding.lionsText.setTextColor(Color.BLACK);
 
                 binding.champions.setBackgroundColor(Color.rgb(255, 255, 255));
-                binding.championsText.setTextColor(Color.BLACK);
 
                 binding.giants.setBackgroundColor(Color.rgb(255, 255, 255));
-                binding.giantsText.setTextColor(Color.BLACK);
 
                 binding.wizpark.setBackgroundColor(Color.rgb(255, 255, 255));
-                binding.wizparkText.setTextColor(Color.BLACK);
 
                 binding.masan.setBackgroundColor(Color.rgb(255, 255, 255));
-                binding.masanText.setTextColor(Color.BLACK);
 
                 v.setBackgroundColor(getApplication().getResources().getColor(R.color.colorPrimary));
                 switch (v.getId()){
                     case R.id.jamsil:
                         checkedItem = 0;
-                        binding.jamsilText.setTextColor(Color.WHITE);
                         break;
                     case R.id.skydom:
                         checkedItem = 1;
-                        binding.skydomText.setTextColor(Color.WHITE);
                         break;
                     case R.id.munhak:
                         checkedItem = 2;
-                        binding.munhakText.setTextColor(Color.WHITE);
                         break;
                     case R.id.eagles:
                         checkedItem = 3;
-                        binding.eaglesText.setTextColor(Color.WHITE);
                         break;
                     case R.id.lions:
                         checkedItem = 4;
-                        binding.lionsText.setTextColor(Color.WHITE);
                         break;
                     case R.id.champions:
                         checkedItem = 5;
-                        binding.championsText.setTextColor(Color.WHITE);
                         break;
                     case R.id.giants:
                         checkedItem = 6;
-                        binding.giantsText.setTextColor(Color.WHITE);
                         break;
                     case R.id.wizpark:
                         checkedItem = 7;
-                        binding.wizparkText.setTextColor(Color.WHITE);
                         break;
                     case R.id.masan:
                         checkedItem = 8;
-                        binding.masanText.setTextColor(Color.WHITE);
                         break;
                 }
             }

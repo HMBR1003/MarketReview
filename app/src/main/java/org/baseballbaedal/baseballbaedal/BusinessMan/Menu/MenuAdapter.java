@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuManageActivity.MENU_ADD_REQUEST;
+import static org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuManageActivity.MENU_EDIT_REQUEST;
 import static org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuManageActivity.checkedItem;
 import static org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuManageActivity.isDeleteMode;
 import static org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuManageActivity.isMainSelect;
@@ -174,9 +175,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> implements
 
         } else {
             Intent intent = new Intent(context, MenuAddActivity.class);
-            intent.putExtra("menuId", MenuManageActivity.key[position]);
+            intent.putExtra("menuId", items.get(position).getMenuKey());
             intent.putExtra("isEdit", true);
-            ((MenuManageActivity) context).startActivityForResult(intent,MENU_ADD_REQUEST);
+            ((MenuManageActivity) context).startActivityForResult(intent,MENU_EDIT_REQUEST);
         }
     }
 

@@ -21,7 +21,7 @@ public class MenuTouchCallback extends ItemTouchHelper.Callback {
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
 
         int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-        int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+        int swipeFlags = 0;
         return makeMovementFlags(dragFlags,swipeFlags);
     }
 

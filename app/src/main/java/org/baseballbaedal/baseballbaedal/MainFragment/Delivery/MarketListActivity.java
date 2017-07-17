@@ -42,10 +42,9 @@ public class MarketListActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                onBackPressed();
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
 
     }

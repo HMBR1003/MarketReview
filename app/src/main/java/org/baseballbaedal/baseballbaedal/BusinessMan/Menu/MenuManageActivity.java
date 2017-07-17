@@ -563,6 +563,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -611,7 +612,15 @@ public class MenuManageActivity extends AppCompatActivity implements MenuAdapter
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_menu_manage);
         isMoveMode = false;
-        uid = "slwVsecqtTO3RDjzPxBWrFekbEd2";
+        Intent intent = getIntent();
+        uid = intent.getStringExtra("uid");
+        //타이틀 설정
+        binding.toolBar.setTitle("메뉴 관리");
+        binding.toolBar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(binding.toolBar);
+        //뒤로가기 버튼 만들기
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         binding.addMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -786,7 +795,9 @@ public class MenuManageActivity extends AppCompatActivity implements MenuAdapter
             @Override
             public void onClick(View view) {
                 for(int i=0; i<menuCount; i++) {
-                    String s = String.valueOf(binding.menuListView.findViewHolderForAdapterPosition(i).itemView.getTag());
+                    String s = adapter.items.get(i).getMenuKey();
+//                    String s = String.valueOf(binding.menuListView.findViewHolderForAdapterPosition(i).itemView.getTag());
+//                    Toast.makeText(MenuManageActivity.this, s, Toast.LENGTH_SHORT).show();
                     ref.child(uid).child("menu").child(s).child("aseq").setValue(i+1);
                 }
                 binding.commonContainer.setVisibility(View.VISIBLE);
@@ -1058,7 +1069,16 @@ public class MenuManageActivity extends AppCompatActivity implements MenuAdapter
             }
         });
     }
-
+        //뒤로가기 버튼 기능 설정
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     protected void onStop() {
         super.onStop();
@@ -1078,7 +1098,11 @@ public class MenuManageActivity extends AppCompatActivity implements MenuAdapter
         if (requestCode == MENU_ADD_REQUEST && resultCode == RESULT_OK) {
             Toast.makeText(this, "메뉴가 추가되었습니다.", Toast.LENGTH_SHORT).show();
         }
+        else if (requestCode == MENU_EDIT_REQUEST && resultCode == RESULT_OK) {
+            Toast.makeText(this, "메뉴가 수정되었습니다.", Toast.LENGTH_SHORT).show();
+        }
     }
+
 
     @Override
     public void onStartDrag(MenuViewHolder viewHolder) {

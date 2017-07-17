@@ -55,31 +55,33 @@ public class MarketListAdapter extends BaseAdapter {
         String userID = item.getMarketUserID();
         fireStorage = FirebaseStorage.getInstance().getReference().child("market").child(userID).child(userID + ".jpg");
 
+                
 
-        fireStorage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Log.d("URI",String.valueOf(uri));
-                Picasso.with(context)
-                        .load(uri)
-                        .into(view.marketImage, new Callback() {
-                            @Override
-                            public void onSuccess() {
 
-                            }
-
-                            @Override
-                            public void onError() {
-                                Toast.makeText(context, "이미지 불러오기 실패", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "서버 연결 실패", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        fireStorage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//            @Override
+//            public void onSuccess(Uri uri) {
+//                Log.d("URI",String.valueOf(uri));
+//                Picasso.with(context)
+//                        .load(uri)
+//                        .into(view.marketImage, new Callback() {
+//                            @Override
+//                            public void onSuccess() {
+//
+//                            }
+//
+//                            @Override
+//                            public void onError() {
+//                                Toast.makeText(context, "이미지 불러오기 실패", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(context, "서버 연결 실패", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         view.marketAdressText.setText(item.getMarketAdress());
         view.marketNameText.setText(item.getMarketName());
