@@ -9,12 +9,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.StringSignature;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import org.baseballbaedal.baseballbaedal.R;
 
 import java.util.ArrayList;
 
@@ -53,39 +58,28 @@ public class MarketListAdapter extends BaseAdapter {
         MarketListItem item = list.get(position);
 
         String userID = item.getMarketUserID();
+        String stamp = item.getaTime();
         fireStorage = FirebaseStorage.getInstance().getReference().child("market").child(userID).child(userID + ".jpg");
 
-                
+        try {
+            Glide
+                    .with(context)
+                    .using(new FirebaseImageLoader())
+                    .load(fireStorage)
+                    .override(300, 300)
+                    .signature(new StringSignature(stamp))
+                    .placeholder(R.drawable.jamsil)
+                    .thumbnail(0.1f)
+                    .into(view.marketImage);
 
-
-//        fireStorage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//            @Override
-//            public void onSuccess(Uri uri) {
-//                Log.d("URI",String.valueOf(uri));
-//                Picasso.with(context)
-//                        .load(uri)
-//                        .into(view.marketImage, new Callback() {
-//                            @Override
-//                            public void onSuccess() {
-//
-//                            }
-//
-//                            @Override
-//                            public void onError() {
-//                                Toast.makeText(context, "이미지 불러오기 실패", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Toast.makeText(context, "서버 연결 실패", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         view.marketAdressText.setText(item.getMarketAdress());
         view.marketNameText.setText(item.getMarketName());
         view.tellText.setText(item.getTell());
+        view.minPriceText.setText(item.getMinPrice());
 
         return view;
     }
@@ -94,14 +88,15 @@ public class MarketListAdapter extends BaseAdapter {
         list.clear();
     }
 
-    public void addItem(String marketUserID, String marketAdress, String marketName, String tell) {
+    public void addItem(String marketUserID, String marketAdress, String marketName, String tell, String minPrice, String aTime) {
         MarketListItem item = new MarketListItem();
 
         item.setMarketAdress(marketAdress);
         item.setMarketUserID(marketUserID);
         item.setMarketName(marketName);
+        item.setMinPrice(minPrice);
         item.setTell(tell);
-
+        item.setaTime(aTime);
         list.add(item);
     }
 }

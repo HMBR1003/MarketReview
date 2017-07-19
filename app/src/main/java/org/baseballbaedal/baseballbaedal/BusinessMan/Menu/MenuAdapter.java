@@ -83,18 +83,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> implements
                     .with(context)
                     .using(new FirebaseImageLoader())
                     .load(ref)
-//                        .listener(new RequestListener<StorageReference, GlideDrawable>() {
-//                            @Override
-//                            public boolean onException(Exception e, StorageReference model, Target<GlideDrawable> target, boolean isFirstResource) {
-//                                return false;
-//                            }
-//
-//                            @Override
-//                            public boolean onResourceReady(GlideDrawable resource, StorageReference model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-//                                view.menuDataImage.setScaleType(ImageView.ScaleType.F);
-//                                return false;
-//                            }
-//                        })
                     .override(300, 300)
                     .signature(new StringSignature(item.getATime()))
                     .placeholder(R.drawable.jamsil)

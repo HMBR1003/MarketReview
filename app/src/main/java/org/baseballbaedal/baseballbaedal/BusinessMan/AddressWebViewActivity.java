@@ -7,9 +7,10 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import org.baseballbaedal.baseballbaedal.BaseActivity;
 import org.baseballbaedal.baseballbaedal.R;
 
-public class AddressWebViewActivity extends AppCompatActivity {
+public class AddressWebViewActivity extends BaseActivity {
 
     private WebView browser;
 

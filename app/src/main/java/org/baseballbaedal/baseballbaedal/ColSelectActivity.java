@@ -26,7 +26,7 @@ import com.bumptech.glide.Glide;
 
 import org.baseballbaedal.baseballbaedal.databinding.ActivityColSelectBinding;
 
-public class ColSelectActivity extends AppCompatActivity {
+public class ColSelectActivity extends BaseActivity {
 
 
     SharedPreferences pref;

@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import org.baseballbaedal.baseballbaedal.databinding.ActivityMarketDetailViewBinding;
 
-public class MarketDetailViewActivity extends AppCompatActivity {
+public class MarketDetailViewActivity extends BaseActivity  {
 
     ActivityMarketDetailViewBinding binding;
 

@@ -54,6 +54,7 @@ import com.gun0912.tedpermission.TedPermission;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.baseballbaedal.baseballbaedal.BaseActivity;
 import org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuAddActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityBusinessSignupBinding;
@@ -65,7 +66,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class BusinessSignupActivity extends AppCompatActivity {
+public class BusinessSignupActivity extends BaseActivity {
     private static final int SEARCH_ADDRESS_ACTIVITY = 10000;
     private static final int GET_MARKET_IMAGE = 7000;
     private static final int REQUEST_CROP = 6000;

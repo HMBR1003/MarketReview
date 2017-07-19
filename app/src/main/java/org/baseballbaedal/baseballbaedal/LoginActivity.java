@@ -9,11 +9,18 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.ViewTarget;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -45,11 +52,13 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.baseballbaedal.baseballbaedal.databinding.ActivityLoginBinding;
 
+import java.util.Arrays;
+
 /**
  * Created by Administrator on 2017-05-13-013.
  */
 
-public class LoginActivity extends AppCompatActivity implements
+public class LoginActivity extends BaseActivity  implements
         GoogleApiClient.OnConnectionFailedListener {
     public static final int GOOGLE_SIGN_IN = 9001;
     GoogleApiClient mGoogleApiClient;  //구글 로그인 관련
@@ -69,7 +78,90 @@ public class LoginActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());     //페이스북 SDK 연동
         activityLoginBinding = DataBindingUtil.setContentView(this,R.layout.activity_login);    //데이터바인딩
+        Glide.with(this)
+                .load(R.drawable.login_pattern)
+                .into(new ViewTarget<LinearLayout, GlideDrawable>(activityLoginBinding.loginContainer) {
+                    @Override
+                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                        LinearLayout view = this.view;
+                        view.setBackground(resource);
+                    }
+                });
+        Glide.with(this)
+                .load(R.drawable.login_top)
+                .into(activityLoginBinding.topImage);
+        Glide.with(getApplicationContext())
+                .load(R.drawable.facebook_login)
+                .into(activityLoginBinding.buttonFacebookLogin);
+        Glide.with(getApplicationContext())
+                .load(R.drawable.google_login)
+                .into(activityLoginBinding.buttonGoogleLogin);
+        activityLoginBinding.buttonFacebookLogin.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
 
+                    // if pressed
+                    case MotionEvent.ACTION_DOWN: {
+                        /* 터치하고 있는 상태 */
+                        activityLoginBinding.buttonFacebookLogin.setImageResource(R.drawable.facebook_login_push);
+//                        Glide.with(getApplicationContext())
+//                                .load(R.drawable.facebook_login_push)
+//                                .into(activityLoginBinding.buttonFacebookLogin);
+                        break;
+                    }
+
+                    // if released
+                    case MotionEvent.ACTION_CANCEL:
+                    case MotionEvent.ACTION_UP: {
+                        /* 터치가 안 되고 있는 상태 */
+                        activityLoginBinding.buttonFacebookLogin.setImageResource(R.drawable.facebook_login);
+//                        Glide.with(getApplicationContext())
+//                                .load(R.drawable.facebook_login)
+//                                .into(activityLoginBinding.buttonFacebookLogin);
+                        break;
+                    }
+
+                    default: {
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+        activityLoginBinding.buttonGoogleLogin.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    // if pressed
+                    case MotionEvent.ACTION_DOWN: {
+                        /* 터치하고 있는 상태 */
+//                        Glide.with(getApplicationContext())
+//                                .load(R.drawable.google_login_push)
+//                                .into(activityLoginBinding.buttonGoogleLogin);
+                        activityLoginBinding.buttonGoogleLogin.setImageResource(R.drawable.google_login_push);
+                        break;
+                    }
+
+                    // if released
+                    case MotionEvent.ACTION_CANCEL:
+                    case MotionEvent.ACTION_UP: {
+                        /* 터치가 안 되고 있는 상태 */
+//                        Glide.with(getApplicationContext())
+//                                .load(R.drawable.google_login)
+//                                .into(activityLoginBinding.buttonGoogleLogin);
+                        activityLoginBinding.buttonGoogleLogin.setImageResource(R.drawable.google_login);
+                        break;
+                    }
+
+                    default: {
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
         //타이틀 설정
         activityLoginBinding.toolBar.setTitle("로그인");
         activityLoginBinding.toolBar.setTitleTextColor(Color.WHITE);
@@ -94,7 +186,7 @@ public class LoginActivity extends AppCompatActivity implements
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
         //구글 로그인 버튼 클릭 시 동작
-        findViewById(R.id.button_google_login).setOnClickListener(new View.OnClickListener() {   //구글 로그인 버튼을 클릭 했을 때의 동작 설정
+        activityLoginBinding.buttonGoogleLogin.setOnClickListener(new View.OnClickListener() {   //구글 로그인 버튼을 클릭 했을 때의 동작 설정
             @Override
             public void onClick(View v) {
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
@@ -105,30 +197,60 @@ public class LoginActivity extends AppCompatActivity implements
 
         //페이스북 로그인 관련 작업
         mCallbackManager = CallbackManager.Factory.create();
-        LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.button_facebook_login);
-        facebookLoginButton.setReadPermissions("email", "public_profile");  //사용자에게서 가져올 정보 권한 설정
-        facebookLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            //페이스북 로그인을 성공했을 시
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-//                Toast.makeText(LoginActivity.this, "페이스북 계정 연결 성공", Toast.LENGTH_SHORT).show();
-                dialog=new ProgressDialog(LoginActivity.this);
-                dialog.setProgress(ProgressDialog.STYLE_SPINNER);
-                dialog.setMessage("로그인 중입니다...");
-                dialog.setCancelable(false);
-                dialog.show();
-                handleFacebookAccessToken(loginResult.getAccessToken());
-            }
-            @Override
-            public void onCancel() {
-                Toast.makeText(LoginActivity.this, "페이스북 로그인 취소", Toast.LENGTH_SHORT).show();
-            }
 
+//        LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.button_facebook_login);
+        activityLoginBinding.buttonFacebookLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onError(FacebookException e) {
-                Toast.makeText(LoginActivity.this, "페이스북 로그인 에러, 에러 내용 : "+e, Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,
+                        Arrays.asList("public_profile", "user_friends"));
+                LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+                    //페이스북 로그인을 성공했을 시
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+//                Toast.makeText(LoginActivity.this, "페이스북 계정 연결 성공", Toast.LENGTH_SHORT).show();
+                        dialog=new ProgressDialog(LoginActivity.this);
+                        dialog.setProgress(ProgressDialog.STYLE_SPINNER);
+                        dialog.setMessage("로그인 중입니다...");
+                        dialog.setCancelable(false);
+                        dialog.show();
+                        handleFacebookAccessToken(loginResult.getAccessToken());
+                    }
+                    @Override
+                    public void onCancel() {
+                        Toast.makeText(LoginActivity.this, "페이스북 로그인 취소", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(FacebookException e) {
+                        Toast.makeText(LoginActivity.this, "페이스북 로그인 에러, 에러 내용 : "+e, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
+//        facebookLoginButton.setReadPermissions("email", "public_profile");  //사용자에게서 가져올 정보 권한 설정
+//        facebookLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+//            //페이스북 로그인을 성공했을 시
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+////                Toast.makeText(LoginActivity.this, "페이스북 계정 연결 성공", Toast.LENGTH_SHORT).show();
+//                dialog=new ProgressDialog(LoginActivity.this);
+//                dialog.setProgress(ProgressDialog.STYLE_SPINNER);
+//                dialog.setMessage("로그인 중입니다...");
+//                dialog.setCancelable(false);
+//                dialog.show();
+//                handleFacebookAccessToken(loginResult.getAccessToken());
+//            }
+//            @Override
+//            public void onCancel() {
+//                Toast.makeText(LoginActivity.this, "페이스북 로그인 취소", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onError(FacebookException e) {
+//                Toast.makeText(LoginActivity.this, "페이스북 로그인 에러, 에러 내용 : "+e, Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     //페이스북 계정을 파이어베이스 인증에 등록하는 함수

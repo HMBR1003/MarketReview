@@ -1,6 +1,7 @@
 package org.baseballbaedal.baseballbaedal.MainFragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -21,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import org.baseballbaedal.baseballbaedal.MainActivity;
 import org.baseballbaedal.baseballbaedal.MainFragment.Delivery.MarketListActivity;
@@ -36,6 +38,11 @@ public class DeliveryFragment extends Fragment {
 
     private FragmentDeliveryBinding binding;
     MainActivity mainActivity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(TypekitContextWrapper.wrap(context));
+    }
 
     @Nullable
     @Override

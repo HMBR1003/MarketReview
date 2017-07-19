@@ -69,8 +69,8 @@ import java.util.Map;
 
 import devlight.io.library.ntb.NavigationTabBar;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity
+implements NavigationView.OnNavigationItemSelectedListener {
     public static final int LOGIN_REQUEST = 100;
     public static final int BUSINESS_SIGNUP_REQUEST = 200;
     public static final int SELECT_COL = 300;

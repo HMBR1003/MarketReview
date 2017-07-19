@@ -21,10 +21,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.baseballbaedal.baseballbaedal.BaseActivity;
 import org.baseballbaedal.baseballbaedal.R;
 
 
-public class MarketListActivity extends AppCompatActivity {
+public class MarketListActivity extends BaseActivity {
 
     ValueEventListener listener;
     DatabaseReference fireDB;
@@ -56,46 +57,46 @@ public class MarketListActivity extends AppCompatActivity {
 
         SharedPreferences colCheckpref = getSharedPreferences("selectedCol", MODE_PRIVATE);
         colCheck = colCheckpref.getInt("selectedCol", -1);
-        switch (colCheck) {
-            case 0:
-                Toast.makeText(this, "잠실 야구장(두산,LG)", Toast.LENGTH_SHORT).show();
-                break;
-            case 1:
-                Toast.makeText(this, "고척 스카이돔(넥센)", Toast.LENGTH_SHORT).show();
-                break;
-            case 2:
-                Toast.makeText(this, "SK 행복드림구장", Toast.LENGTH_SHORT).show();
-
-                break;
-            case 3:
-                Toast.makeText(this, "한화 이글스파크", Toast.LENGTH_SHORT).show();
-
-                break;
-            case 4:
-                Toast.makeText(this, "삼성 라이온즈파크", Toast.LENGTH_SHORT).show();
-
-                break;
-            case 5:
-                Toast.makeText(this, "기아 챔피언스필드", Toast.LENGTH_SHORT).show();
-
-                break;
-            case 6:
-                Toast.makeText(this, "사직 야구장(롯데)", Toast.LENGTH_SHORT).show();
-
-                break;
-            case 7:
-                Toast.makeText(this, "KT 위즈파크", Toast.LENGTH_SHORT).show();
-
-                break;
-            case 8:
-                Toast.makeText(this, "마산 야구장(NC)", Toast.LENGTH_SHORT).show();
-
-                break;
-            default:
-                Toast.makeText(this, "선택된 야구장이 없습니다.", Toast.LENGTH_SHORT).show();
-
-                break;
-        }
+//        switch (colCheck) {
+//            case 0:
+//                Toast.makeText(this, "잠실 야구장(두산,LG)", Toast.LENGTH_SHORT).show();
+//                break;
+//            case 1:
+//                Toast.makeText(this, "고척 스카이돔(넥센)", Toast.LENGTH_SHORT).show();
+//                break;
+//            case 2:
+//                Toast.makeText(this, "SK 행복드림구장", Toast.LENGTH_SHORT).show();
+//
+//                break;
+//            case 3:
+//                Toast.makeText(this, "한화 이글스파크", Toast.LENGTH_SHORT).show();
+//
+//                break;
+//            case 4:
+//                Toast.makeText(this, "삼성 라이온즈파크", Toast.LENGTH_SHORT).show();
+//
+//                break;
+//            case 5:
+//                Toast.makeText(this, "기아 챔피언스필드", Toast.LENGTH_SHORT).show();
+//
+//                break;
+//            case 6:
+//                Toast.makeText(this, "사직 야구장(롯데)", Toast.LENGTH_SHORT).show();
+//
+//                break;
+//            case 7:
+//                Toast.makeText(this, "KT 위즈파크", Toast.LENGTH_SHORT).show();
+//
+//                break;
+//            case 8:
+//                Toast.makeText(this, "마산 야구장(NC)", Toast.LENGTH_SHORT).show();
+//
+//                break;
+//            default:
+//                Toast.makeText(this, "선택된 야구장이 없습니다.", Toast.LENGTH_SHORT).show();
+//
+//                break;
+//        }
 
 
         listView = (ListView) findViewById(R.id.listView);
@@ -152,13 +153,13 @@ public class MarketListActivity extends AppCompatActivity {
                         if(market.selectedCol == colCheck+1) {
                             userID = data.getKey();
                             String address1 = market.marketAddress1.substring(7);
-                            adapter.addItem(userID, " " + address1 + " " + market.marketAddress2, market.marketName, " " + market.marketTel);
+                            adapter.addItem(userID, address1 + "\n" + market.marketAddress2, market.marketName, " " + market.marketTel, market.minPrice, market.aTime);
                             Log.d("handle", data.child("handleFood").getValue().toString());
                             adapter.notifyDataSetChanged();
                         }
                     }
-                    progress.dismiss();
                 }
+                progress.dismiss();
             }
 
             @Override

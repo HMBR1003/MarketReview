@@ -578,12 +578,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.baseballbaedal.baseballbaedal.BaseActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityMenuManageBinding;
 
 import java.util.Iterator;
 
-public class MenuManageActivity extends AppCompatActivity implements MenuAdapter.OnStartDragListener {
+public class MenuManageActivity extends BaseActivity implements MenuAdapter.OnStartDragListener {
     public static final int MENU_ADD_REQUEST = 555;
     public static final int MENU_EDIT_REQUEST = 444;
     ActivityMenuManageBinding binding;

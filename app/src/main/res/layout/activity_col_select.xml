@@ -34,6 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="경기장을 선택해 주세요"
+                    app:font="CUSTOM"
                     android:textSize="20sp" />
 
             </LinearLayout>

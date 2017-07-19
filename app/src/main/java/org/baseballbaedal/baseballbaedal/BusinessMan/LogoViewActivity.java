@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import org.baseballbaedal.baseballbaedal.BaseActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityLogoViewBinding;
 
@@ -20,7 +21,7 @@ import java.io.IOException;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-public class LogoViewActivity extends AppCompatActivity {
+public class LogoViewActivity extends BaseActivity {
 
     ActivityLogoViewBinding binding;
 

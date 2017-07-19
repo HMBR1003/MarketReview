@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.baseballbaedal.baseballbaedal.R;
+import org.w3c.dom.Text;
 
 /**
  * Created by qwexo on 2017-06-19.
@@ -14,7 +15,7 @@ import org.baseballbaedal.baseballbaedal.R;
 
 public class MarketListView extends LinearLayout{
     ImageView marketImage;
-    TextView marketNameText, marketAdressText, tellText;
+    TextView marketNameText, marketAdressText, tellText, minPriceText;
 
     public MarketListView(Context context){
         super(context);
@@ -25,5 +26,6 @@ public class MarketListView extends LinearLayout{
         marketNameText = (TextView)findViewById(R.id.marketNameText);
         marketAdressText = (TextView)findViewById(R.id.marketAdressText);
         tellText = (TextView)findViewById(R.id.tellText);
+        minPriceText = (TextView)findViewById(R.id.minPriceText);
     }
 }

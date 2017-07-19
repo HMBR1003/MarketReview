@@ -9,6 +9,8 @@ public class MarketListItem {
     private String marketName;
     private String marketAdress;
     private String tell;
+    private String minPrice;
+    private String aTime;
 
     public String getMarketUserID() {
         return marketUserID;
@@ -40,5 +42,21 @@ public class MarketListItem {
 
     public void setTell(String tell) {
         this.tell = tell;
+    }
+
+    public void setMinPrice(String minPrice){
+        this.minPrice = minPrice;
+    }
+
+    public String getMinPrice(){
+        return minPrice;
+    }
+
+    public void setaTime(String aTime){
+        this.aTime=aTime;
+    }
+
+    public String getaTime(){
+        return aTime;
     }
 }

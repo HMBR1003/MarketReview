@@ -5,6 +5,7 @@ package org.baseballbaedal.baseballbaedal.MainFragment.Delivery;
  */
 
 public class MarketList {
+    public String aTime;            //이미지관리 시간
     public String marketName;       //마켓이름
     public String marketAddress1;   //마켓주소
     public String marketAddress2;   //마켓 상세주소

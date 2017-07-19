@@ -53,6 +53,7 @@ import com.gun0912.tedpermission.TedPermission;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.baseballbaedal.baseballbaedal.BaseActivity;
 import org.baseballbaedal.baseballbaedal.BusinessMan.BusinessSignupActivity;
 import org.baseballbaedal.baseballbaedal.BusinessMan.LogoViewActivity;
 import org.baseballbaedal.baseballbaedal.Manifest;
@@ -66,7 +67,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class MenuAddActivity extends AppCompatActivity {
+public class MenuAddActivity extends BaseActivity {
     private static final int REQUEST_CROP = 6000;
     private static final int GET_MARKET_IMAGE = 7000 ;
 
@@ -452,7 +453,7 @@ public class MenuAddActivity extends AppCompatActivity {
                                         binding.menuImageViewContainer.setVisibility(View.VISIBLE);
                                         binding.menuTextViewContainer.setVisibility(View.INVISIBLE);
 
-                                        bitmap = ((GlideBitmapDrawable) resource).getBitmap();
+                                        bitmap = ((GlideBitmapDrawable)resource).getBitmap();
                                         try {
                                             FileOutputStream out = new FileOutputStream(tempFile.getPath());
                                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
