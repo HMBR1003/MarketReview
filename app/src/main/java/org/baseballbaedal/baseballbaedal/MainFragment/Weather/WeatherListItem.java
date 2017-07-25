@@ -10,13 +10,13 @@ import android.graphics.drawable.Drawable;
 public class WeatherListItem {
     private String dateText;
     private String amTempText;
-    private Drawable amSkyImage;
+    private int amSkyImage;
     private String amSkyText;
     private String pmTempText;
-    private Drawable pmSkyImage;
+    private int pmSkyImage;
     private String pmSkyText;
 
-    public void setAmSkyImage(Drawable amSkyImage) {
+    public void setAmSkyImage(int amSkyImage) {
         this.amSkyImage = amSkyImage;
     }
 
@@ -32,7 +32,7 @@ public class WeatherListItem {
         this.dateText = dateText;
     }
 
-    public void setPmSkyImage(Drawable pmSkyImage) {
+    public void setPmSkyImage(int pmSkyImage) {
         this.pmSkyImage = pmSkyImage;
     }
 
@@ -44,11 +44,11 @@ public class WeatherListItem {
         this.pmTempText = pmTempText;
     }
 
-    public Drawable getAmSkyImage() {
+    public int getAmSkyImage() {
         return amSkyImage;
     }
 
-    public Drawable getPmSkyImage() {
+    public int getPmSkyImage() {
         return pmSkyImage;
     }
 

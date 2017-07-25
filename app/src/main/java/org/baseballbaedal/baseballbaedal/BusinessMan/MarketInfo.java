@@ -10,6 +10,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 public class MarketInfo {
 
     public String aTime;
+    public String sanghoName;
     public String manName;
     public String manTel;
     public String businessRegisterNum;

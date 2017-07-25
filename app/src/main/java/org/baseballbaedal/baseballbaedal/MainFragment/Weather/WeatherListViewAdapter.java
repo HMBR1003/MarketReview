@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,11 +29,12 @@ import java.util.ArrayList;
 public class WeatherListViewAdapter extends BaseAdapter {
 
     private ArrayList<WeatherListItem> list = new ArrayList<>();
-    DatabaseReference fireDB;
+    Context context;
 
-    public WeatherListViewAdapter(){
+    public WeatherListViewAdapter() {
 
     }
+
     @Override
     public int getCount() {
         return list.size();
@@ -53,37 +55,45 @@ public class WeatherListViewAdapter extends BaseAdapter {
 
         final Context context = parent.getContext();
 
-        if(convertView == null){
+        if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.weather_listview_item,parent,false);
+            convertView = inflater.inflate(R.layout.weather_listview_item, parent, false);
         }
 
-        TextView dateText = (TextView)convertView.findViewById(R.id.dateText);
-        TextView amTempText = (TextView)convertView.findViewById(R.id.amTempText);
-        ImageView amSkyImage = (ImageView)convertView.findViewById(R.id.amSkyImage);
-        TextView amSkyText = (TextView)convertView.findViewById(R.id.amSkyText);
-        TextView pmTempText = (TextView)convertView.findViewById(R.id.pmTempText);
-        ImageView pmSkyImage = (ImageView)convertView.findViewById(R.id.pmSkyImage);
-        TextView pmSkyText = (TextView)convertView.findViewById(R.id.pmSkyText);
+        TextView dateText = (TextView) convertView.findViewById(R.id.dateText);
+        TextView amTempText = (TextView) convertView.findViewById(R.id.amTempText);
+        ImageView amSkyImage = (ImageView) convertView.findViewById(R.id.amSkyImage);
+        TextView amSkyText = (TextView) convertView.findViewById(R.id.amSkyText);
+        TextView pmTempText = (TextView) convertView.findViewById(R.id.pmTempText);
+        ImageView pmSkyImage = (ImageView) convertView.findViewById(R.id.pmSkyImage);
+        TextView pmSkyText = (TextView) convertView.findViewById(R.id.pmSkyText);
 
         WeatherListItem listItem = list.get(position);
 
         dateText.setText(listItem.getDateText());
         amTempText.setText(listItem.getAmTempText());
-        amSkyImage.setImageDrawable(listItem.getAmSkyImage());
+        Glide.with(context)
+                .load(listItem.getAmSkyImage())
+                .into(amSkyImage);
+
         amSkyText.setText(listItem.getAmSkyText());
         pmTempText.setText(listItem.getPmTempText());
-        pmSkyImage.setImageDrawable(listItem.getPmSkyImage());
+        Glide.with(context)
+                .load(listItem.getPmSkyImage())
+                .into(pmSkyImage);
+
         pmSkyText.setText(listItem.getPmSkyText());
 
         return convertView;
     }
-    public void clear(){
+
+    public void clear() {
         list.clear();
     }
+
     //아이템 추가
-    public void addItem(String dateText, String amTempText, Drawable amSkyImage, String amSkyText,
-                        String pmTempText, Drawable pmSkyImage, String pmSkyText){
+    public void addItem(String dateText, String amTempText, int amSkyImage, String amSkyText,
+                        String pmTempText, int pmSkyImage, String pmSkyText, Context context) {
 
         WeatherListItem item = new WeatherListItem();
 
@@ -95,6 +105,7 @@ public class WeatherListViewAdapter extends BaseAdapter {
         item.setPmSkyImage(pmSkyImage);
         item.setPmSkyText(pmSkyText);
 
+        this.context = context;
         list.add(item);
     }
 }

@@ -41,7 +41,28 @@
                     android:textSize="20sp"
                     tools:layout_editor_absoluteX="159dp"
                     tools:layout_editor_absoluteY="71dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="상호명 : "
+                        android:textSize="15sp" />
+
+                    <org.baseballbaedal.baseballbaedal.CustomEditText
+                        android:id="@+id/sanghoName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="상호명을 입력해주세요."
+                        android:inputType="textPersonName"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:textSize="15sp" />
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

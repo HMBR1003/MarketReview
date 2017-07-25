@@ -24,9 +24,13 @@ public class CustomEditText extends android.support.v7.widget.AppCompatEditText 
     private Drawable clearDrawable;
     private OnFocusChangeListener onFocusChangeListener;
     private OnTouchListener onTouchListener;
+    private boolean isClearButtonSet = true;
 
     Paint paint = new Paint();
-    EditText editText;
+
+    public void setClearButtonSet(boolean b){
+        isClearButtonSet = b;
+    }
 
     public CustomEditText(Context context) {
         super(context);
@@ -50,8 +54,6 @@ public class CustomEditText extends android.support.v7.widget.AppCompatEditText 
         this.onTouchListener = onTouchListener;
     }
 
-
-
     private void InitView() {
         Drawable tempDrawable = ContextCompat.getDrawable(getContext(), R.drawable.close_button);
         clearDrawable = DrawableCompat.wrap(tempDrawable);
@@ -63,17 +65,17 @@ public class CustomEditText extends android.support.v7.widget.AppCompatEditText 
         super.setOnTouchListener(this);
         super.setOnFocusChangeListener(this);
         addTextChangedListener(this);
-        this.setOnKeyListener(new OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
+//        this.setOnKeyListener(new OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+//                    if (keyCode == KeyEvent.KEYCODE_ENTER) {
+//                        return true;
+//                    }
+//                }
+//                return false;
+//            }
+//        });
 
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.rgb(0, 0, 0));
@@ -81,7 +83,8 @@ public class CustomEditText extends android.support.v7.widget.AppCompatEditText 
     }
     @Override public void onFocusChange(final View view, final boolean hasFocus) {
         if (hasFocus) {
-            setClearIconVisible(getText().length() > 0);
+            if(isClearButtonSet)
+                setClearIconVisible(getText().length() > 0);
         } else {
             setClearIconVisible(false);
         }
@@ -91,12 +94,14 @@ public class CustomEditText extends android.support.v7.widget.AppCompatEditText 
     }
     @Override public boolean onTouch(final View view, final MotionEvent motionEvent) {
         final int x = (int) motionEvent.getX();
-        if (clearDrawable.isVisible() && x > getWidth() - getPaddingRight() - clearDrawable.getIntrinsicWidth()) {
-            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                setError(null);
-                setText(null);
+        if(isClearButtonSet) {
+            if (clearDrawable.isVisible() && x > getWidth() - getPaddingRight() - clearDrawable.getIntrinsicWidth()) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    setError(null);
+                    setText(null);
+                }
+                return true;
             }
-            return true;
         }
         if (onTouchListener != null) {
             return onTouchListener.onTouch(view, motionEvent);
@@ -105,9 +110,11 @@ public class CustomEditText extends android.support.v7.widget.AppCompatEditText 
         }
     }
     @Override public final void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-        if (isFocused()) {
+        if(isClearButtonSet) {
+            if (isFocused()) {
 
-            setClearIconVisible(s.length() > 0);
+                setClearIconVisible(s.length() > 0);
+            }
         }
     }
     @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {

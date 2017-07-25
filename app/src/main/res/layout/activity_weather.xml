@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/weatherContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/weather_back"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
@@ -372,3 +372,4 @@
         android:text="미세먼지 농도 : 0~30: 좋음, 31~80: 보통, 81~120: 약간나쁨, 121~200: 나쁨, 201~300: 매우나쁨\n날씨API제공 : sk플래닛"
         android:textSize="9dp" />
 </LinearLayout>
+</layout>

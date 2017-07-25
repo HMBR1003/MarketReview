@@ -53,6 +53,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.baseballbaedal.baseballbaedal.BusinessMan.BusinessSignupActivity;
 import org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuManageActivity;
+import org.baseballbaedal.baseballbaedal.BusinessMan.NoticeActivity;
 import org.baseballbaedal.baseballbaedal.MainFragment.DeliveryFragment;
 import org.baseballbaedal.baseballbaedal.MainFragment.HomeFragment;
 import org.baseballbaedal.baseballbaedal.MainFragment.TakeoutFragment;
@@ -70,7 +71,7 @@ import java.util.Map;
 import devlight.io.library.ntb.NavigationTabBar;
 
 public class MainActivity extends BaseActivity
-implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
     public static final int LOGIN_REQUEST = 100;
     public static final int BUSINESS_SIGNUP_REQUEST = 200;
     public static final int SELECT_COL = 300;
@@ -97,6 +98,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
     MenuItem navReviewManage;
     MenuItem navChangeCol;
     MenuItem navNewBusiness;
+    MenuItem navNotice;
 
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
@@ -130,7 +132,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
         initUI();  //하단 UI 세팅
         //페이스북 해시 키 가져오기
         try {
-            PackageInfo info = getPackageManager().getPackageInfo( "org.baseballbaedal.baseballbaedal", PackageManager.GET_SIGNATURES);
+            PackageInfo info = getPackageManager().getPackageInfo("org.baseballbaedal.baseballbaedal", PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
@@ -158,12 +160,13 @@ implements NavigationView.OnNavigationItemSelectedListener {
 
         //왼쪽 슬라이드 버튼들 아이디 할당
         Menu menu = navigationView.getMenu();
-        navLogin=menu.findItem(R.id.nav_login);
-        navNewBusiness=menu.findItem(R.id.nav_newBusiness);
-        navReviewManage=menu.findItem(R.id.nav_reviewManage);
-        navCart=menu.findItem(R.id.nav_cart);
-        navOrderList=menu.findItem(R.id.nav_orderList);
-        navChangeCol=menu.findItem(R.id.nav_changeCol);
+        navLogin = menu.findItem(R.id.nav_login);
+        navNewBusiness = menu.findItem(R.id.nav_newBusiness);
+        navReviewManage = menu.findItem(R.id.nav_reviewManage);
+        navCart = menu.findItem(R.id.nav_cart);
+        navOrderList = menu.findItem(R.id.nav_orderList);
+        navChangeCol = menu.findItem(R.id.nav_changeCol);
+        navNotice = menu.findItem(R.id.nav_notice);
 
         //왼쪽 슬라이드 메뉴 유저이메일과 유저 이름 아이디 할당
         View headerView = navigationView.getHeaderView(0);
@@ -184,109 +187,115 @@ implements NavigationView.OnNavigationItemSelectedListener {
             }
         };
     }
-    public void setBadge(){
+
+    public void setBadge() {
         Intent intent = new Intent("android.intent.action.BADGE_COUNT_UPDATE");
-        intent.putExtra("badge_count", pushCount+loginCount);
+        intent.putExtra("badge_count", pushCount + loginCount);
         //앱의  패키지 명
-        intent.putExtra("badge_count_package_name","org.baseballbaedal.baseballbaedal");
+        intent.putExtra("badge_count_package_name", "org.baseballbaedal.baseballbaedal");
         // AndroidManifest.xml에 정의된 메인 activity 명
         intent.putExtra("badge_count_class_name", "org.baseballbaedal.baseballbaedal.MainActivity");
         sendBroadcast(intent);
     }
 
     //좌측 UI 세팅하는 함수
-    public void setLeftMenu(){
+    public void setLeftMenu() {
         //현재 로그인한 유저 객체를 가져옴
         user = mAuth.getCurrentUser();
-            //로그인한 유저가 있으면
-            if (user != null) {
-                //데이터베이스 유저 영역 참조변수 선언 및 초기화
-                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
+        //로그인한 유저가 있으면
+        if (user != null) {
+            //데이터베이스 유저 영역 참조변수 선언 및 초기화
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
 
-                //데이터베이스에서 유저가 고객인지 사업자 등록중인지 사업자인지 담는 정보를 불러옴
-                userRef.child(user.getUid()).child("isBusiness(0(not),1(applying),2(finish))").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        //데이터 읽기가 완료 된 후의 동작
-                        try {
-                            //공통적인 로그인과 이메일 출력창 세팅
-                            navLogin.setVisible(true);
-                            navLogin.setTitle("로그아웃");
-                            userEmail.setText(user.getEmail());
+            //데이터베이스에서 유저가 고객인지 사업자 등록중인지 사업자인지 담는 정보를 불러옴
+            userRef.child(user.getUid()).child("isBusiness(0(not),1(applying),2(finish))").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //데이터 읽기가 완료 된 후의 동작
+                    try {
+                        //공통적인 로그인과 이메일 출력창 세팅
+                        navLogin.setVisible(true);
+                        navLogin.setTitle("로그아웃");
+                        userEmail.setText(user.getEmail());
 
-                            //유저의 사업자여부 데이터를 가져옴
-                            isBusiness = dataSnapshot.getValue(Integer.class);
+                        //유저의 사업자여부 데이터를 가져옴
+                        isBusiness = dataSnapshot.getValue(Integer.class);
 
-                            //고객일 경우
-                            if (isBusiness == 0) {
-                                userName.setText(user.getDisplayName() + "고객님");
-                                navOrderList.setTitle("주문 내역");
-                                navReviewManage.setTitle("리뷰 관리");
-                                navNewBusiness.setTitle("사업자 신규등록 신청");
+                        //고객일 경우
+                        if (isBusiness == 0) {
+                            userName.setText(user.getDisplayName() + "고객님");
+                            navOrderList.setTitle("주문 내역");
+                            navReviewManage.setTitle("리뷰 관리");
+                            navNewBusiness.setTitle("사업자 신규등록 신청");
+                            navNotice.setVisible(false);
 
-                                //숨겼던 메뉴 보이게 함
-                                navCart.setVisible(true);
-                                navOrderList.setVisible(true);
-                                navReviewManage.setVisible(true);
-                                navNewBusiness.setVisible(true);
-                                navChangeCol.setVisible(true);
-                            }
-                            //사업자 등록 신청한 사람일 경우
-                            else if (isBusiness == 1) {
-                                userName.setText(user.getDisplayName() + "고객님\n사업자 등록 신청중입니다.");
-                                navOrderList.setTitle("주문 내역");
-                                navReviewManage.setTitle("리뷰 관리");
-                                navNewBusiness.setTitle("사업자 신청정보 수정");
-
-                                //숨겼던 메뉴 보이게 함
-                                navCart.setVisible(true);
-                                navOrderList.setVisible(true);
-                                navReviewManage.setVisible(true);
-                                navNewBusiness.setVisible(true);
-                                navChangeCol.setVisible(true);
-                            }
-                            //사업자 등록이 완료된 사람일 경우
-                            else if (isBusiness == 2) {
-                                userName.setText(user.getDisplayName() + "점주님\n");
-                                navCart.setVisible(false);
-                                navOrderList.setTitle("주문 받은 내역");
-                                navReviewManage.setTitle("메뉴 관리");
-                                navNewBusiness.setTitle("매장 정보 수정");
-
-                                //숨겼던 메뉴 보이게 함
-                                navOrderList.setVisible(true);
-                                navReviewManage.setVisible(true);
-                                navNewBusiness.setVisible(true);
-                                navChangeCol.setVisible(true);
-                            } else
-                                Toast.makeText(MainActivity.this, "사업자여부 데이터가 0,1,2중 하나가 아닙니다.", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(MainActivity.this, "메인 사업자여부 데이터 가져오기 성공", Toast.LENGTH_SHORT).show();
-                       }catch(NullPointerException e){
-                            e.printStackTrace();
+                            //숨겼던 메뉴 보이게 함
+                            navCart.setVisible(true);
+                            navOrderList.setVisible(true);
+                            navReviewManage.setVisible(true);
+                            navNewBusiness.setVisible(true);
+                            navChangeCol.setVisible(true);
                         }
-                    }
+                        //사업자 등록 신청한 사람일 경우
+                        else if (isBusiness == 1) {
+                            userName.setText(user.getDisplayName() + "고객님\n사업자 등록 신청중입니다.");
+                            navOrderList.setTitle("주문 내역");
+                            navReviewManage.setTitle("리뷰 관리");
+                            navNewBusiness.setTitle("사업자 신청정보 수정");
+                            navNotice.setVisible(false);
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                            //숨겼던 메뉴 보이게 함
+                            navCart.setVisible(true);
+                            navOrderList.setVisible(true);
+                            navReviewManage.setVisible(true);
+                            navNewBusiness.setVisible(true);
+                            navChangeCol.setVisible(true);
+                        }
+                        //사업자 등록이 완료된 사람일 경우
+                        else if (isBusiness == 2) {
+                            userName.setText(user.getDisplayName() + "점주님\n");
+                            navCart.setVisible(false);
+                            navOrderList.setTitle("주문 받은 내역");
+                            navReviewManage.setTitle("메뉴 관리");
+                            navNewBusiness.setTitle("매장 정보 수정");
+                            navNotice.setVisible(true);
+
+                            //숨겼던 메뉴 보이게 함
+                            navOrderList.setVisible(true);
+                            navReviewManage.setVisible(true);
+                            navNewBusiness.setVisible(true);
+                            navChangeCol.setVisible(true);
+                        } else
+                            Toast.makeText(MainActivity.this, "사업자여부 데이터가 0,1,2중 하나가 아닙니다.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "메인 사업자여부 데이터 가져오기 성공", Toast.LENGTH_SHORT).show();
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 //                            Toast.makeText(MainActivity.this, "메인 사업자여부 데이터 가져오기 실패", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                }
+            });
             //로그인한 유저가 없을 경우 초기화면으로 설정
-            } else {
-                userName.setText("로그인이 필요합니다");
-                userEmail.setText("");
-                navLogin.setTitle("로그인");
-                navOrderList.setTitle("주문 내역");
-                navReviewManage.setTitle("리뷰 관리");
-                navNewBusiness.setTitle("사업자 신규등록 신청");
+        } else {
+            userName.setText("로그인이 필요합니다");
+            userEmail.setText("");
+            navLogin.setTitle("로그인");
+            navOrderList.setTitle("주문 내역");
+            navReviewManage.setTitle("리뷰 관리");
+            navNewBusiness.setTitle("사업자 신규등록 신청");
+            navNotice.setVisible(false);
 
-                navLogin.setVisible(true);
-                navCart.setVisible(true);
-                navOrderList.setVisible(true);
-                navReviewManage.setVisible(true);
-                navChangeCol.setVisible(true);
-                navNewBusiness.setVisible(true);
-            }
+            navLogin.setVisible(true);
+            navCart.setVisible(true);
+            navOrderList.setVisible(true);
+            navReviewManage.setVisible(true);
+            navChangeCol.setVisible(true);
+            navNewBusiness.setVisible(true);
+
+        }
     }
 
     //동작설정 왼쪽 메뉴가 열렸을 때 뒤로가기 버튼 누르면 왼쪽 메뉴가 닫히게한다.
@@ -297,7 +306,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if(System.currentTimeMillis()-backTime<2000){
+            if (System.currentTimeMillis() - backTime < 2000) {
                 ActivityCompat.finishAffinity(this);
                 System.runFinalizersOnExit(true);
                 System.exit(0);
@@ -308,7 +317,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
     }
 
     //로그아웃 동작 하는 함수
-    public static void singOut(){
+    public static void singOut() {
         FirebaseAuth.getInstance().signOut();
         LoginManager.getInstance().logOut();
     }
@@ -324,9 +333,9 @@ implements NavigationView.OnNavigationItemSelectedListener {
         //로그인 버튼 동작
         if (id == R.id.nav_login) {
             //로그인한 유저가 없을 경우엔 로그인창을 띄우는 동작을 함함
-            if(user==null) {
+            if (user == null) {
                 Intent intent = new Intent(this, LoginActivity.class);
-               intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivityForResult(intent, LOGIN_REQUEST);
             }
             //로그인한 유저가 있을 경우엔 로그아웃할 지 물어본 후 로그아웃함
@@ -362,55 +371,61 @@ implements NavigationView.OnNavigationItemSelectedListener {
                 dialog.show();
             }
         } else if (id == R.id.nav_cart) {  //왼쪽 슬라이드메뉴 장바구니 부분
-            if(user==null) {
+            if (user == null) {
                 pleaseLogin();
-            }
-            else {
+            } else {
 
             }
         } else if (id == R.id.nav_orderList) {  //왼쪽 슬라이드메뉴 주문내역 부분
-            if(user==null) {
+            if (user == null) {
                 pleaseLogin();
-            }
-            else {
+            } else {
 
             }
         } else if (id == R.id.nav_reviewManage) {  //왼쪽 슬라이드메뉴 리뷰관리 부분
-            if(user==null) {
+            if (user == null) {
                 pleaseLogin();
-            }
-            else {
-                if(isBusiness==2){
+            } else {
+                if (isBusiness == 2) {
                     Intent intent = new Intent(this, MenuManageActivity.class);
-                    intent.putExtra("uid",uid);
+                    intent.putExtra("uid", uid);
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivityForResult(intent, BUSINESS_SIGNUP_REQUEST);
-                }
-                else{
+                } else {
                     Toast.makeText(this, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         } else if (id == R.id.nav_changeCol) {  //왼쪽 슬라이드메뉴 경기장 변경 부분
-            Intent intent = new Intent(this,ColSelectActivity.class);
-            intent.putExtra("isFirst",false);
-            startActivityForResult(intent,CHANGE_COL);
+            Intent intent = new Intent(this, ColSelectActivity.class);
+            intent.putExtra("isFirst", false);
+            startActivityForResult(intent, CHANGE_COL);
 
         } else if (id == R.id.nav_newBusiness) {  //왼쪽 슬라이드메뉴 사업자 신규 등록 부분
-            if(user==null) {
+            if (user == null) {
                 pleaseLogin();
             }
             //사업자 등록신청하는 화면을 새로 띄운다
             else {
                 Intent intent = new Intent(this, BusinessSignupActivity.class);
                 //uid와 사업자여부와 사용자 정보를 인텐트에 넣어서 전달해준다.
-                intent.putExtra("uid",uid);
-                intent.putExtra("isBusiness",isBusiness);
-                intent.putExtra("name",user.getDisplayName());
-                intent.putExtra("email",user.getEmail());
+                intent.putExtra("uid", uid);
+                intent.putExtra("isBusiness", isBusiness);
+                intent.putExtra("name", user.getDisplayName());
+                intent.putExtra("email", user.getEmail());
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivityForResult(intent, BUSINESS_SIGNUP_REQUEST);
             }
+        } else if (id == R.id.nav_notice) {  //왼쪽 슬라이드메뉴 안내 문구 등록 부분
+            Intent intent = new Intent(this, NoticeActivity.class);
+            //uid와 사업자여부와 사용자 정보를 인텐트에 넣어서 전달해준다.
+            intent.putExtra("uid", uid);
+            intent.putExtra("isBusiness", isBusiness);
+            intent.putExtra("name", user.getDisplayName());
+            intent.putExtra("email", user.getEmail());
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -450,6 +465,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
         });
         loginDialog.show();
     }
+
     //프래그먼트 어댑터
     private class FragmentAdapter extends FragmentStatePagerAdapter {
 
@@ -488,18 +504,18 @@ implements NavigationView.OnNavigationItemSelectedListener {
         //최초실행 체크하기
         pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
         boolean first = pref.getBoolean("isFirst", false);
-        if(first==false){
+        if (first == false) {
             Log.d("최초실행여부", "최초실행입니다");
-            Intent intent = new Intent(this,ColSelectActivity.class);
-            intent.putExtra("isFirst",true);
-            startActivityForResult(intent,SELECT_COL);
+            Intent intent = new Intent(this, ColSelectActivity.class);
+            intent.putExtra("isFirst", true);
+            startActivityForResult(intent, SELECT_COL);
             //앱 최초 실행시 하고 싶은 작업
-        }else{
+        } else {
             Log.d("최초실행여부", "최초실행이 아닙니다");
         }
-        SharedPreferences colCheckpref = getSharedPreferences("selectedCol",MODE_PRIVATE);
-        colCheck = colCheckpref.getInt("selectedCol",-1);
-        switch(colCheck){
+        SharedPreferences colCheckpref = getSharedPreferences("selectedCol", MODE_PRIVATE);
+        colCheck = colCheckpref.getInt("selectedCol", -1);
+        switch (colCheck) {
             case 0:
                 selectedCol.setText("잠실 야구장(두산,LG)");
                 break;
@@ -533,10 +549,10 @@ implements NavigationView.OnNavigationItemSelectedListener {
         }
 
         //푸쉬 관련
-        pushCount=0;
-        loginCount=0;
+        pushCount = 0;
+        loginCount = 0;
         setBadge();
-        NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         nm.cancelAll();
 
         //유저 객체를 가져옴
@@ -544,7 +560,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
 
         //유저가 로그인한 상태인 지 검사
         if (user != null) {
-            uid=user.getUid();
+            uid = user.getUid();
             myRef = FirebaseDatabase.getInstance().getReference();
 
             //푸쉬토큰을 검사하여 다른 기기에서 로그인을 했는 지 확인한다
@@ -552,26 +568,25 @@ implements NavigationView.OnNavigationItemSelectedListener {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     //현재 기기가 로그인 된 것이 아니라면
-                    if(dataSnapshot.getValue()!=null&& !dataSnapshot.getValue(String.class).equals(FirebaseInstanceId.getInstance().getToken())) {
+                    if (dataSnapshot.getValue() != null && !dataSnapshot.getValue(String.class).equals(FirebaseInstanceId.getInstance().getToken())) {
                         //로그아웃 후에
                         MainActivity.singOut();
                         //인증 상태 리스너를 추가
                         mAuth.addAuthStateListener(mAuthListener);
                         setLeftMenu();
                         Toast.makeText(MainActivity.this, "다른 기기에서 로그인하여 로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
+                    } else {
                         mAuth.addAuthStateListener(mAuthListener);
                         setLeftMenu();
                     }
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     setLeftMenu();
                 }
             });
-        }
-        else{
+        } else {
             mAuth.addAuthStateListener(mAuthListener);
             setLeftMenu();
         }
@@ -589,11 +604,11 @@ implements NavigationView.OnNavigationItemSelectedListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //로그인 액티비티에서 로그인 성공 응답을 보내왔을 경우
-        if(requestCode==LOGIN_REQUEST && resultCode==RESULT_OK){
+        if (requestCode == LOGIN_REQUEST && resultCode == RESULT_OK) {
 
         }
         //사업자 신청 액티비티에서 성공 응답을 보내왔을 경우
-        else if(requestCode==BUSINESS_SIGNUP_REQUEST && resultCode==RESULT_OK){
+        else if (requestCode == BUSINESS_SIGNUP_REQUEST && resultCode == RESULT_OK) {
             //제출 확인 안내 메세지 띄우기
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("안내");
@@ -610,9 +625,9 @@ implements NavigationView.OnNavigationItemSelectedListener {
             dialog.show();
         }
         //첫 실행 시 경기장 선택 하고 응답 받아왔을 때
-        else if(requestCode==SELECT_COL && resultCode==RESULT_OK){
+        else if (requestCode == SELECT_COL && resultCode == RESULT_OK) {
             SharedPreferences.Editor editor = pref.edit();
-            editor.putBoolean("isFirst",true);
+            editor.putBoolean("isFirst", true);
             editor.commit();
         }
     }
@@ -625,6 +640,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
         }
         super.onNewIntent(intent);
     }
+
     private void processIntent(Intent intent) {
         String from = intent.getStringExtra("from");
         if (from == null) {
@@ -633,7 +649,6 @@ implements NavigationView.OnNavigationItemSelectedListener {
         String title = intent.getStringExtra("title");
         String contents = intent.getStringExtra("contents");
     }
-
 
 
     //하단 네비게이션 바 활성화 함수
@@ -759,7 +774,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
     }
 
     //푸쉬 메세지 발송 기능 함수
-    public static void send(String title,String content,String type,String regId, RequestQueue queue) {
+    public static void send(String title, String content, String type, String regId, RequestQueue queue) {
 
         JSONObject requestData = new JSONObject();
 
@@ -776,7 +791,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
             idArray.put(0, regId);
             requestData.put("registration_ids", idArray);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -792,13 +807,15 @@ implements NavigationView.OnNavigationItemSelectedListener {
             @Override
             public void onRequestWithError(VolleyError error) {
             }
-        },queue);
+        }, queue);
 
     }
 
     public interface SendResponseListener {
         public void onRequestStarted();
+
         public void onRequestCompleted();
+
         public void onRequestWithError(VolleyError error);
     }
 
@@ -821,15 +838,15 @@ implements NavigationView.OnNavigationItemSelectedListener {
         ) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String,String>();
+                Map<String, String> params = new HashMap<String, String>();
 
                 return params;
             }
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> headers = new HashMap<String,String>();
-                headers.put("Authorization","key=AAAA1wB4ltE:APA91bGdXJDV8jpxBB2ivWYSgpHf6_NBme0Qc4V6MWMatxpl0lywMNC3N-kKPT_BN3rgvGXcNQ-1YNB0QB9zY-2O391qgIlzyn3uxuuhkdQjSJwT9aPT-30CBcciP04E_OQOHZ4WbplJ");
+                Map<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "key=AAAA1wB4ltE:APA91bGdXJDV8jpxBB2ivWYSgpHf6_NBme0Qc4V6MWMatxpl0lywMNC3N-kKPT_BN3rgvGXcNQ-1YNB0QB9zY-2O391qgIlzyn3uxuuhkdQjSJwT9aPT-30CBcciP04E_OQOHZ4WbplJ");
 
                 return headers;
             }

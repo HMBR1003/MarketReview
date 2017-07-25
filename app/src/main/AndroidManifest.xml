@@ -7,8 +7,8 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:allowBackup="true"
         android:name=".App"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -73,8 +73,11 @@
         <activity
             android:name=".MainFragment.Weather.WeatherActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MarketDetailViewActivity"></activity>
-        <activity android:name=".MainFragment.Delivery.MarketListActivity"
+        <activity android:name=".MarketDetailViewActivity" />
+        <activity
+            android:name=".MainFragment.Delivery.MarketListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".BusinessMan.NoticeActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

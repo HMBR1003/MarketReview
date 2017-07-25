@@ -90,8 +90,6 @@ public class BusinessSignupActivity extends BaseActivity {
     ProgressDialog dialog;
     AlertDialog checkDialog;
     AlertDialog submitDialog;
-    //이미지 불러오기용
-    String marketImageURL = null;
     String isMarket;
 
 
@@ -261,8 +259,16 @@ public class BusinessSignupActivity extends BaseActivity {
 
     //빈공간 체크 함수
     public boolean textCheck() {
+        if (dataBinding.sanghoName.length() <= 0) {
+            Toast.makeText(this, "상호명을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         if (dataBinding.manName.length() <= 0) {
             Toast.makeText(this, "사업자명을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (dataBinding.businessRegisterNum.length() <= 0) {
+            Toast.makeText(this, "사업자 등록번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (dataBinding.manTel.length() <= 0) {
@@ -324,6 +330,7 @@ public class BusinessSignupActivity extends BaseActivity {
                         myRef.child(isMarket).child(uid).child("accountEmail").setValue(email);
                         myRef.child(isMarket).child(uid).child("accountName").setValue(name);
 
+                        myRef.child(isMarket).child(uid).child("sanghoName").setValue(dataBinding.sanghoName.getText().toString());
                         myRef.child(isMarket).child(uid).child("manName").setValue(dataBinding.manName.getText().toString());
                         myRef.child(isMarket).child(uid).child("manTel").setValue(dataBinding.manTel.getText().toString());
                         myRef.child(isMarket).child(uid).child("businessRegisterNum").setValue(dataBinding.businessRegisterNum.getText().toString());
@@ -484,6 +491,7 @@ public class BusinessSignupActivity extends BaseActivity {
 
                     final MarketInfo data = dataSnapshot.getValue(MarketInfo.class);
 
+                    dataBinding.sanghoName.setText(data.sanghoName);
                     dataBinding.manName.setText(data.manName);
                     dataBinding.businessRegisterNum.setText(data.businessRegisterNum);
                     dataBinding.manTel.setText(data.manTel);
