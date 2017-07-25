@@ -66,6 +66,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import dmax.dialog.SpotsDialog;
+
 public class BusinessSignupActivity extends BaseActivity {
     private static final int SEARCH_ADDRESS_ACTIVITY = 10000;
     private static final int GET_MARKET_IMAGE = 7000;
@@ -87,7 +89,7 @@ public class BusinessSignupActivity extends BaseActivity {
     String sendUrl;
 
     Bitmap bitmap = null;
-    ProgressDialog dialog;
+    SpotsDialog dialog;
     AlertDialog checkDialog;
     AlertDialog submitDialog;
     String isMarket;
@@ -124,9 +126,6 @@ public class BusinessSignupActivity extends BaseActivity {
         dataBinding.marketAddress1.setInputType(0);
         dataBinding.marketAddress1.setFocusable(false);
         dataBinding.marketAddress1.setClickable(false);
-
-        //프로그레스 다이얼로그 동적할당
-        dialog = new ProgressDialog(BusinessSignupActivity.this);
 
         //주소찾기 버튼 클릭 시 Daum에서 지원하는 주소찾기 창을 띄움
         dataBinding.searchAddress.setOnClickListener(new View.OnClickListener() {
@@ -461,8 +460,7 @@ public class BusinessSignupActivity extends BaseActivity {
     //데이터베이스에서 데이터를 로드해서 세팅해주는 함수
     public void loadData() {
         //데이터 불러오는 중이라고 알림창 띄우기
-        dialog.setProgress(ProgressDialog.STYLE_SPINNER);
-        dialog.setMessage("데이터를 불러오는 중입니다...");
+        dialog = new SpotsDialog(BusinessSignupActivity.this,"데이터를 불러오는 중입니다...",R.style.ProgressBar);
         dialog.setCancelable(false);
         dialog.show();
 
@@ -661,8 +659,7 @@ public class BusinessSignupActivity extends BaseActivity {
 
     public void uploadImage() {
         //데이터 저장하는 중이라고 알림창 띄우기
-        dialog.setProgress(ProgressDialog.STYLE_SPINNER);
-        dialog.setMessage("데이터를 저장하는 중입니다...");
+        dialog = new SpotsDialog(BusinessSignupActivity.this,"데이터를 저장하는 중입니다...",R.style.ProgressBar);
         dialog.setCancelable(false);
         dialog.show();
 

@@ -35,6 +35,8 @@ import org.baseballbaedal.baseballbaedal.databinding.ActivityWeatherBinding;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import dmax.dialog.SpotsDialog;
+
 public class WeatherActivity extends AppCompatActivity {
     ActivityWeatherBinding binding;
     WeatherListViewAdapter adapter;
@@ -42,7 +44,7 @@ public class WeatherActivity extends AppCompatActivity {
     Weather we;
     Dust dust;
     ValueEventListener listener;
-    ProgressDialog progress;
+    SpotsDialog dialog;
     android.support.v7.widget.Toolbar toolbar;
 
     String city;
@@ -152,7 +154,7 @@ public class WeatherActivity extends AppCompatActivity {
                     count++;
                 }
                 adapter.notifyDataSetChanged();
-                progress.dismiss();
+                dialog.dismiss();
             }
 
             @Override
@@ -225,16 +227,14 @@ public class WeatherActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        progress = new ProgressDialog(WeatherActivity.this);
-        progress.setProgress(ProgressDialog.STYLE_SPINNER);
-        progress.setMessage("데이터를 불러오는중입니다.");
-        progress.setCancelable(false);
-        progress.show();
+        dialog = new SpotsDialog(WeatherActivity.this,"데이터를 불러오는 중입니다...",R.style.ProgressBar);
+        dialog.setCancelable(false);
+        dialog.show();
 
         if (city != null) {
             fireDB.child("Weather").child(city).addValueEventListener(listener);
         } else {
-            progress.dismiss();
+            dialog.dismiss();
             Toast.makeText(this, "데이터가 잘못 넘어왔습니다.", Toast.LENGTH_SHORT).show();
         }
     }

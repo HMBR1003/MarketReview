@@ -54,6 +54,8 @@ import org.baseballbaedal.baseballbaedal.databinding.ActivityLoginBinding;
 
 import java.util.Arrays;
 
+import dmax.dialog.SpotsDialog;
+
 /**
  * Created by Administrator on 2017-05-13-013.
  */
@@ -72,7 +74,7 @@ public class LoginActivity extends BaseActivity  implements
     String uid;
     Intent intent;
 
-    ProgressDialog dialog;
+    SpotsDialog dialog;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -209,9 +211,7 @@ public class LoginActivity extends BaseActivity  implements
                     @Override
                     public void onSuccess(LoginResult loginResult) {
 //                Toast.makeText(LoginActivity.this, "페이스북 계정 연결 성공", Toast.LENGTH_SHORT).show();
-                        dialog=new ProgressDialog(LoginActivity.this);
-                        dialog.setProgress(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage("로그인 중입니다...");
+                        dialog = new SpotsDialog(LoginActivity.this,"로그인 중입니다...",R.style.ProgressBar);
                         dialog.setCancelable(false);
                         dialog.show();
                         handleFacebookAccessToken(loginResult.getAccessToken());
@@ -330,9 +330,7 @@ public class LoginActivity extends BaseActivity  implements
             if (result.isSuccess()) {
                 GoogleSignInAccount acct = result.getSignInAccount();
 //                Toast.makeText(LoginActivity.this, "구글 계정 연결 성공", Toast.LENGTH_SHORT).show();
-                dialog=new ProgressDialog(this);
-                dialog.setProgress(ProgressDialog.STYLE_SPINNER);
-                dialog.setMessage("로그인 중입니다...");
+                dialog = new SpotsDialog(LoginActivity.this,"로그인 중입니다...",R.style.ProgressBar);
                 dialog.setCancelable(false);
                 dialog.show();
                 firebaseAuthWithGoogle(acct);

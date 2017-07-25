@@ -24,6 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 import org.baseballbaedal.baseballbaedal.BaseActivity;
 import org.baseballbaedal.baseballbaedal.R;
 
+import dmax.dialog.SpotsDialog;
+
 
 public class MarketListActivity extends BaseActivity {
 
@@ -32,7 +34,7 @@ public class MarketListActivity extends BaseActivity {
     MarketListAdapter adapter;
     MarketList market;
     int colCheck;
-    ProgressDialog progress;
+    SpotsDialog dialog;
     ListView listView;
 
     int menuCode;
@@ -103,11 +105,9 @@ public class MarketListActivity extends BaseActivity {
         fireDB = FirebaseDatabase.getInstance().getReference();
         adapter = new MarketListAdapter();
 
-        progress = new ProgressDialog(MarketListActivity.this);
-        progress.setProgress(ProgressDialog.STYLE_SPINNER);
-        progress.setMessage("데이터를 불러오는중입니다.");
-        progress.setCancelable(false);
-        progress.show();
+        dialog = new SpotsDialog(MarketListActivity.this,"데이터를 불러오는 중입니다...",R.style.ProgressBar);
+        dialog.setCancelable(false);
+        dialog.show();
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new ItemClickListener());
@@ -159,7 +159,7 @@ public class MarketListActivity extends BaseActivity {
                         }
                     }
                 }
-                progress.dismiss();
+                dialog.dismiss();
             }
 
             @Override

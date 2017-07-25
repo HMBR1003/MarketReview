@@ -25,10 +25,12 @@ import org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuAddActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityNoticeBinding;
 
+import dmax.dialog.SpotsDialog;
+
 public class NoticeActivity extends AppCompatActivity {
     ActivityNoticeBinding binding;
     AlertDialog submitDialog, exitDialog;
-    ProgressDialog dialog;
+    SpotsDialog dialog;
     TextWatcher watcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -52,8 +54,6 @@ public class NoticeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_notice);
 
-        dialog = new ProgressDialog(NoticeActivity.this);
-
         binding.toolBar.setTitle("공지사항 등록/수정");
         binding.toolBar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(binding.toolBar);
@@ -61,7 +61,7 @@ public class NoticeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.noticeText.setClearButtonSet(false);
         binding.noticeText.addTextChangedListener(watcher);
-        binding.submitButton.setButtonColor(Color.rgb(190, 172, 158));
+        binding.submitButton.setButtonColor(getResources().getColor(R.color.buttonColor));
         binding.submitButton.setCornerRadius(15);
         loadData();
 
@@ -155,8 +155,7 @@ public class NoticeActivity extends AppCompatActivity {
 
     public void loadData() {
         //데이터 불러오는 중이라고 알림창 띄우기
-        dialog.setProgress(ProgressDialog.STYLE_SPINNER);
-        dialog.setMessage("데이터를 불러오는 중입니다...");
+        dialog = new SpotsDialog(NoticeActivity.this,"데이터를 불러오는 중입니다...",R.style.ProgressBar);
         dialog.setCancelable(false);
         dialog.show();
 

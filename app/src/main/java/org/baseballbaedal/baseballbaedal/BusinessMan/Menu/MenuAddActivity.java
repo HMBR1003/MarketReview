@@ -67,6 +67,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import dmax.dialog.SpotsDialog;
+
 public class MenuAddActivity extends BaseActivity {
     private static final int REQUEST_CROP = 6000;
     private static final int GET_MARKET_IMAGE = 7000 ;
@@ -76,13 +78,12 @@ public class MenuAddActivity extends BaseActivity {
     AlertDialog exitDialog;
     AlertDialog checkDialog;
     AlertDialog submitDialog;
-    ProgressDialog uploadDialog;
-    ProgressDialog loadDialog;
+    SpotsDialog uploadDialog;
+    SpotsDialog loadDialog;
     InputMethodManager imm;
     DatabaseReference myRef;
     String uid;
     String menuKey;
-    String menuImageUrl;
     Uri sendUri;
     private Uri tempImageUri;
     private Uri imageCropUri;
@@ -173,8 +174,6 @@ public class MenuAddActivity extends BaseActivity {
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         //메뉴설명란 입력문자 수 읽어오기
         binding.menuExplain.addTextChangedListener(watcher);
-
-        uploadDialog = new ProgressDialog(MenuAddActivity.this);
 
         //이미지뷰 클릭설정
         binding.menuImageView.setOnClickListener(new View.OnClickListener() {
@@ -389,9 +388,7 @@ public class MenuAddActivity extends BaseActivity {
 
     public void loadData(){
         //데이터 불러오는 중이라고 알림창 띄우기
-        loadDialog = new ProgressDialog(MenuAddActivity.this);
-        loadDialog.setProgress(ProgressDialog.STYLE_SPINNER);
-        loadDialog.setMessage("데이터를 불러오는 중입니다...");
+        loadDialog = new SpotsDialog(MenuAddActivity.this,"데이터를 불러오는 중입니다...",R.style.ProgressBar);
         loadDialog.setCancelable(false);
         loadDialog.show();
 
@@ -669,8 +666,7 @@ public class MenuAddActivity extends BaseActivity {
 
     public void uploadImage(){
         //데이터 저장하는 중이라고 알림창 띄우기
-        uploadDialog.setProgress(ProgressDialog.STYLE_SPINNER);
-        uploadDialog.setMessage("데이터를 저장하는 중입니다...");
+        uploadDialog = new SpotsDialog(MenuAddActivity.this,"데이터를 저장하는 중입니다...",R.style.ProgressBar);
         uploadDialog.setCancelable(false);
         uploadDialog.show();
 
