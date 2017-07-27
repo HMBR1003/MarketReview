@@ -386,6 +386,7 @@ public class MenuAddActivity extends BaseActivity {
         return true;
     }
 
+
     public void loadData(){
         //데이터 불러오는 중이라고 알림창 띄우기
         loadDialog = new SpotsDialog(MenuAddActivity.this,"데이터를 불러오는 중입니다...",R.style.ProgressBar);
@@ -650,7 +651,27 @@ public class MenuAddActivity extends BaseActivity {
         else if(requestCode==REQUEST_CROP&&resultCode==RESULT_OK){
 //            File tempFile = getTempFile();
             if (tempFile.exists()) {
-                bitmap = BitmapFactory.decodeFile(tempFile.toString());
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(tempFile.getPath(), options);
+                int imageWidth = options.outWidth;
+
+                if (imageWidth > 1000 && imageWidth < 2000) {
+                    options.inSampleSize = 2;
+                    options.inJustDecodeBounds = false;
+                    bitmap = BitmapFactory.decodeFile(tempFile.getPath(), options);
+                } else if (imageWidth >= 2000 && imageWidth < 3000) {
+                    options.inSampleSize = 4;
+                    options.inJustDecodeBounds = false;
+                    bitmap = BitmapFactory.decodeFile(tempFile.getPath(), options);
+                } else if (imageWidth >= 3000) {
+                    options.inSampleSize = 6;
+                    options.inJustDecodeBounds = false;
+                    bitmap = BitmapFactory.decodeFile(tempFile.getPath(), options);
+                }else{
+                    bitmap = BitmapFactory.decodeFile(tempFile.toString());
+                }
+
                 binding.menuImageViewContainer.setVisibility(View.VISIBLE);
                 binding.menuTextViewContainer.setVisibility(View.INVISIBLE);
                 binding.menuImageView.setImageBitmap(bitmap);

@@ -133,7 +133,7 @@ public class MenuManageActivity extends BaseActivity implements MenuAdapter.OnSt
                         boolean isMain = it.next().getValue(Boolean.class);
                         String menuExplain = it.next().getValue(String.class);
                         String menuName = it.next().getValue(String.class);
-                        String menuPrice = it.next().getValue(String.class) + "원";
+                        String menuPrice = it.next().getValue(String.class);
                         String option = "없음";
 
                         if (it.hasNext()) {

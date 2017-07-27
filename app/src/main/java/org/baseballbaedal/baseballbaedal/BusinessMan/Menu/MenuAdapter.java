@@ -60,12 +60,41 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> implements
     }
 
 
+    public String numToWon(int num){
+        String tmp = num+"";
+        String won;
+        if(tmp.length()>3){
+            int a = tmp.length()%3;
+            int b = tmp.length()/3;
+            if(a!=0) {
+                String first = tmp.substring(0, a);
+                won = first;
+                for(int i =0; i<b; i++){
+                    won = won+","+ tmp.substring(a,a+3);
+                    a=a+3;
+                }
+            }
+            else{
+                a=3;
+                String first = tmp.substring(0, a);
+                won = first;
+                for(int i =0; i<b-1; i++){
+                    won = won+","+ tmp.substring(a,a+3);
+                    a=a+3;
+                }
+            }
+        }
+        else{
+            won = tmp;
+        }
+        return won;
+    }
     @Override
     public void onBindViewHolder(final MenuViewHolder holder, int position) {
         MenuData item = items.get(position);
         holder.itemView.setTag(item.getMenuKey());
         holder.menuDataName.setText(item.getMenuDataName());
-        holder.menuDataPrice.setText(item.getMenuDataPrice());
+        holder.menuDataPrice.setText(numToWon(Integer.parseInt(item.getMenuDataPrice()))+"원");
         holder.menuDataExplain.setText(item.getMenuDataExplain());
         holder.option.setText(item.getOption());
         if (item.getIsMain()) {

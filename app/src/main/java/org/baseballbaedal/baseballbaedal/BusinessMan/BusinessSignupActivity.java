@@ -433,7 +433,27 @@ public class BusinessSignupActivity extends BaseActivity {
             //크롭에 성공하여 이미지가 존재하면
             if (tempFile.exists()) {
                 //이미지뷰에 이미지를 세팅하는 작업을 함
-                bitmap = BitmapFactory.decodeFile(tempFile.toString());
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(tempFile.getPath(), options);
+                int imageWidth = options.outWidth;
+
+                if (imageWidth > 1000 && imageWidth < 2000) {
+                    options.inSampleSize = 2;
+                    options.inJustDecodeBounds = false;
+                    bitmap = BitmapFactory.decodeFile(tempFile.getPath(), options);
+                } else if (imageWidth >= 2000 && imageWidth < 3000) {
+                    options.inSampleSize = 4;
+                    options.inJustDecodeBounds = false;
+                    bitmap = BitmapFactory.decodeFile(tempFile.getPath(), options);
+                } else if (imageWidth >= 3000) {
+                    options.inSampleSize = 6;
+                    options.inJustDecodeBounds = false;
+                    bitmap = BitmapFactory.decodeFile(tempFile.getPath(), options);
+                }else{
+                    bitmap = BitmapFactory.decodeFile(tempFile.toString());
+                }
+
                 dataBinding.imageViewContainer.setVisibility(View.VISIBLE);
                 dataBinding.textViewContainer.setVisibility(View.INVISIBLE);
                 dataBinding.marketImageView.setImageBitmap(bitmap);
@@ -483,7 +503,7 @@ public class BusinessSignupActivity extends BaseActivity {
     //데이터베이스에서 데이터를 로드해서 세팅해주는 함수
     public void loadData() {
         //데이터 불러오는 중이라고 알림창 띄우기
-        dialog = new SpotsDialog(BusinessSignupActivity.this,"데이터를 불러오는 중입니다...",R.style.ProgressBar);
+        dialog = new SpotsDialog(BusinessSignupActivity.this, "데이터를 불러오는 중입니다...", R.style.ProgressBar);
         dialog.setCancelable(false);
         dialog.show();
 
@@ -684,7 +704,7 @@ public class BusinessSignupActivity extends BaseActivity {
 
     public void uploadImage() {
         //데이터 저장하는 중이라고 알림창 띄우기
-        dialog = new SpotsDialog(BusinessSignupActivity.this,"데이터를 저장하는 중입니다...",R.style.ProgressBar);
+        dialog = new SpotsDialog(BusinessSignupActivity.this, "데이터를 저장하는 중입니다...", R.style.ProgressBar);
         dialog.setCancelable(false);
         dialog.show();
 
@@ -712,7 +732,7 @@ public class BusinessSignupActivity extends BaseActivity {
                 @SuppressWarnings("VisibleForTests")
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    myRef.child(isMarket).child(uid).child("aTime").setValue(System.currentTimeMillis()+"");
+                    myRef.child(isMarket).child(uid).child("aTime").setValue(System.currentTimeMillis() + "");
                     dialog.dismiss();
                     if (isBusiness != 2)
                         setResult(RESULT_OK);

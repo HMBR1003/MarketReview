@@ -41,16 +41,14 @@ public class HomeFragment extends Fragment {
         homeBinding.testButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity activity = (MainActivity)getActivity();
-                Intent intent = new Intent(activity,DataTestActivity.class);
+                Intent intent = new Intent(mainActivity,DataTestActivity.class);
                 startActivity(intent);
             }
         });
         homeBinding.testButtonHome2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity activity = (MainActivity)getActivity();
-                Intent intent = new Intent(activity,DBTestActivity.class);
+                Intent intent = new Intent(mainActivity,DBTestActivity.class);
                 startActivity(intent);
             }
         });

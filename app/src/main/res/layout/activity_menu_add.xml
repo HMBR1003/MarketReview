@@ -119,6 +119,7 @@
                             android:lines="1"
                             android:maxLines="1"
                             android:textSize="15sp" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -140,6 +141,7 @@
                             android:hint=""
                             android:inputType="number"
                             android:lines="1"
+                            android:maxLength="7"
                             android:maxLines="1"
                             android:textSize="15sp" />
                     </LinearLayout>
@@ -195,6 +197,7 @@
                                 android:hint=""
                                 android:inputType="number"
                                 android:lines="1"
+                                android:maxLength="7"
                                 android:maxLines="1"
                                 android:textSize="15sp" />
                         </LinearLayout>
@@ -251,6 +254,7 @@
                                 android:hint=""
                                 android:inputType="number"
                                 android:lines="1"
+                                android:maxLength="7"
                                 android:maxLines="1"
                                 android:textSize="15sp" />
                         </LinearLayout>
@@ -307,6 +311,7 @@
                                 android:hint=""
                                 android:inputType="number"
                                 android:lines="1"
+                                android:maxLength="7"
                                 android:maxLines="1"
                                 android:textSize="15sp" />
                         </LinearLayout>
@@ -363,6 +368,7 @@
                                 android:hint=""
                                 android:inputType="number"
                                 android:lines="1"
+                                android:maxLength="7"
                                 android:maxLines="1"
                                 android:textSize="15sp" />
                         </LinearLayout>
@@ -419,6 +425,7 @@
                                 android:hint=""
                                 android:inputType="number"
                                 android:lines="1"
+                                android:maxLength="7"
                                 android:maxLines="1"
                                 android:textSize="15sp" />
                         </LinearLayout>
