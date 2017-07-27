@@ -21,6 +21,7 @@ public class MarketInfo {
     public String minPrice;
     public long handleFood;
     public long selectedCol;
+    public long selectedPay;
 
     public MarketInfo () {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)

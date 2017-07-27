@@ -66,4 +66,11 @@
         <item>KT 위즈파크</item>
         <item>마산 야구장(NC)</item>
     </string-array>
+
+    <string-array name="pay">
+        <item>결제 방법을 선택해 주세요</item>
+        <item>현금만 가능</item>
+        <item>카드만 가능</item>
+        <item>현금/카드 가능</item>
+    </string-array>
 </resources>
