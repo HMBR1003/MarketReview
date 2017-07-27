@@ -61,7 +61,7 @@ public class NoticeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.noticeText.setClearButtonSet(false);
         binding.noticeText.addTextChangedListener(watcher);
-        binding.submitButton.setButtonColor(Color.rgb(190, 172, 158));
+        binding.submitButton.setButtonColor(getResources().getColor(R.color.buttonColor));
         binding.submitButton.setCornerRadius(15);
         loadData();
 

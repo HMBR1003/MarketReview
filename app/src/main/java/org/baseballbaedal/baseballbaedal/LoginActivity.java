@@ -58,7 +58,7 @@ import java.util.Arrays;
  * Created by Administrator on 2017-05-13-013.
  */
 
-public class LoginActivity extends BaseActivity  implements
+public class LoginActivity extends BaseActivity implements
         GoogleApiClient.OnConnectionFailedListener {
     public static final int GOOGLE_SIGN_IN = 9001;
     GoogleApiClient mGoogleApiClient;  //구글 로그인 관련
@@ -88,7 +88,7 @@ public class LoginActivity extends BaseActivity  implements
                     }
                 });
         Glide.with(this)
-                .load(R.drawable.login_top)
+                .load(R.drawable.login_logo)
                 .into(activityLoginBinding.topImage);
         Glide.with(getApplicationContext())
                 .load(R.drawable.facebook_login)
@@ -163,8 +163,9 @@ public class LoginActivity extends BaseActivity  implements
             }
         });
         //타이틀 설정
-        activityLoginBinding.toolBar.setTitle("로그인");
+        activityLoginBinding.toolBar.setTitle("");
         activityLoginBinding.toolBar.setTitleTextColor(Color.WHITE);
+//        activityLoginBinding.toolBar.setBackgroundColor(getResources().getColor(R.color.ThemeColor));
         setSupportActionBar(activityLoginBinding.toolBar);
         //뒤로가기 버튼 만들기
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

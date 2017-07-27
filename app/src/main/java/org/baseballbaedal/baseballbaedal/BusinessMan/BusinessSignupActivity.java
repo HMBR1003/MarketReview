@@ -77,6 +77,7 @@ public class BusinessSignupActivity extends BaseActivity {
     int isBusiness;     //사업자 구분하기 위해 선언
     int handleFood = 0;
     int selectedCol = 0;
+    int selectedPay = 0;
     ActivityBusinessSignupBinding dataBinding;  //데이터 바인딩
     DatabaseReference myRef;
     File tempFile;
@@ -146,7 +147,7 @@ public class BusinessSignupActivity extends BaseActivity {
         name = intent.getStringExtra("name");
         //임시파일 생성
         tempFile = getTempFile();
-
+//        dataBinding.toolBar.setBackgroundColor(getResources().getColor(R.color.ThemeColor));
         //유저가 고객이고 사업자 등록신청을 하는 경우 화면 설정
         if (isBusiness == 0) {
             dataBinding.toolBar.setTitle("사업자 신규등록 신청");
@@ -229,6 +230,23 @@ public class BusinessSignupActivity extends BaseActivity {
             }
         });
 
+
+        //결제방법 스피너
+        ArrayAdapter payAdapter = ArrayAdapter.createFromResource(this, R.array.pay, android.R.layout.simple_spinner_item);
+        colAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataBinding.paySpinner.setAdapter(payAdapter);
+        dataBinding.paySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedPay = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         //이미지뷰 클릭 시 확대해서 보여주는 창 띄우기
         dataBinding.marketImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -303,6 +321,10 @@ public class BusinessSignupActivity extends BaseActivity {
             Toast.makeText(this, "최소 주문가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return false;
         }
+        if (selectedPay == 0) {
+            Toast.makeText(this, "결제 방법을 선택해주세요", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         if (bitmap == null) {
             Toast.makeText(this, "매장 사진을 등록해주세요.", Toast.LENGTH_SHORT).show();
             return false;
@@ -336,6 +358,7 @@ public class BusinessSignupActivity extends BaseActivity {
                         myRef.child(isMarket).child(uid).child("businessRegisterNum").setValue(dataBinding.businessRegisterNum.getText().toString());
                         myRef.child(isMarket).child(uid).child("marketName").setValue(dataBinding.marketName.getText().toString());
                         myRef.child(isMarket).child(uid).child("selectedCol").setValue(selectedCol);
+                        myRef.child(isMarket).child(uid).child("selectedPay").setValue(selectedPay);
                         myRef.child(isMarket).child(uid).child("handleFood").setValue(handleFood);
                         myRef.child(isMarket).child(uid).child("marketAddress1").setValue(dataBinding.marketAddress1.getText().toString());
                         myRef.child(isMarket).child(uid).child("marketAddress2").setValue(dataBinding.marketAddress2.getText().toString());
@@ -500,6 +523,8 @@ public class BusinessSignupActivity extends BaseActivity {
                     handleFood = (int) data.handleFood;
                     dataBinding.colSpinner.setSelection((int) data.selectedCol);
                     selectedCol = (int) data.selectedCol;
+                    dataBinding.paySpinner.setSelection((int) data.selectedPay);
+                    selectedPay = (int) data.selectedPay;
                     dataBinding.marketAddress1.setText(data.marketAddress1);
                     dataBinding.marketAddress2.setText(data.marketAddress2);
                     dataBinding.marketTel.setText(data.marketTel);
