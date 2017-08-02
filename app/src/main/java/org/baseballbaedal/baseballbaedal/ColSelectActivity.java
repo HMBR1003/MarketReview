@@ -26,11 +26,11 @@ import com.bumptech.glide.Glide;
 
 import org.baseballbaedal.baseballbaedal.databinding.ActivityColSelectBinding;
 
-public class ColSelectActivity extends BaseActivity {
+public class ColSelectActivity extends NewActivity {
 
 
     SharedPreferences pref;
-//    GridAdapter adapter;
+    //    GridAdapter adapter;
     int checkedItem = -1;
     long backTime;
     ActivityColSelectBinding binding;
@@ -54,14 +54,8 @@ public class ColSelectActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_col_select);
 
         //타이틀 설정
-        binding.toolBar.setTitle("경기장 선택");
-        binding.toolBar.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(binding.toolBar);
         intent = getIntent();
-        if (!intent.getBooleanExtra("isFirst", true)) {
-            //뒤로가기 버튼 만들기
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        setToolbar(binding.toolBar, "경기장 선택", Color.WHITE, !intent.getBooleanExtra("isFirst", true));
 
 
         //경기장 선택 완료 시 동작 버튼
@@ -137,7 +131,7 @@ public class ColSelectActivity extends BaseActivity {
                 binding.masan.setBackgroundColor(Color.rgb(255, 255, 255));
 
                 v.setBackgroundColor(getApplication().getResources().getColor(R.color.colorPrimary));
-                switch (v.getId()){
+                switch (v.getId()) {
                     case R.id.jamsil:
                         checkedItem = 0;
                         break;
@@ -280,16 +274,5 @@ public class ColSelectActivity extends BaseActivity {
             backTime = System.currentTimeMillis();
 
         }
-    }
-
-    //뒤로가기 버튼 기능 설정
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

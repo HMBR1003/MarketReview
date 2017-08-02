@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/noMenuContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include
+                    layout="@layout/view_header_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/noReviewText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="아직 메뉴가 없습니다!"
+                        android:textSize="30dp" />
+                </LinearLayout>
+
+                <include
+                    layout="@layout/view_footer_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <in.srain.cube.views.GridViewWithHeaderAndFooter
+                android:id="@+id/menuListView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:numColumns="2"
+                android:scrollbars="none"
+                android:visibility="gone" />
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="3">
+
+                <info.hoang8f.widget.FButton
+                    android:id="@+id/callButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="전화하기" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="7">
+
+                <info.hoang8f.widget.FButton
+                    android:id="@+id/cartButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="장바구니" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

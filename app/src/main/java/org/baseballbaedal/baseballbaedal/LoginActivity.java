@@ -60,7 +60,7 @@ import dmax.dialog.SpotsDialog;
  * Created by Administrator on 2017-05-13-013.
  */
 
-public class LoginActivity extends BaseActivity implements
+public class LoginActivity extends NewActivity implements
         GoogleApiClient.OnConnectionFailedListener {
     public static final int GOOGLE_SIGN_IN = 9001;
     GoogleApiClient mGoogleApiClient;  //구글 로그인 관련
@@ -164,13 +164,14 @@ public class LoginActivity extends BaseActivity implements
                 return false;
             }
         });
-        //타이틀 설정
-        activityLoginBinding.toolBar.setTitle("");
-        activityLoginBinding.toolBar.setTitleTextColor(Color.WHITE);
-//        activityLoginBinding.toolBar.setBackgroundColor(getResources().getColor(R.color.ThemeColor));
-        setSupportActionBar(activityLoginBinding.toolBar);
-        //뒤로가기 버튼 만들기
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setToolbar(activityLoginBinding.toolBar,"",Color.WHITE,true);
+//        //타이틀 설정
+//        activityLoginBinding.toolBar.setTitle("");
+//        activityLoginBinding.toolBar.setTitleTextColor(Color.WHITE);
+//        setSupportActionBar(activityLoginBinding.toolBar);
+//        //뒤로가기 버튼 만들기
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //파이어베이스 인증 객체 가져오기
         mAuth = FirebaseAuth.getInstance();
@@ -452,14 +453,4 @@ public class LoginActivity extends BaseActivity implements
         Toast.makeText(this, "구글 연결 실패", Toast.LENGTH_SHORT).show();
     }
 
-    //뒤로가기 버튼 기능 설정
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

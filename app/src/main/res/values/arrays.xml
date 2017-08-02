@@ -73,4 +73,10 @@
         <item>카드만 가능</item>
         <item>현금/카드 가능</item>
     </string-array>
+
+    <string-array name="beer">
+        <item>맥주 배달 여부를 선택해 주세요</item>
+        <item>가능</item>
+        <item>불가능</item>
+    </string-array>
 </resources>

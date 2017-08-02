@@ -56,6 +56,7 @@ import com.squareup.picasso.Picasso;
 
 import org.baseballbaedal.baseballbaedal.BaseActivity;
 import org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuAddActivity;
+import org.baseballbaedal.baseballbaedal.NewActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityBusinessSignupBinding;
 
@@ -68,7 +69,7 @@ import java.util.ArrayList;
 
 import dmax.dialog.SpotsDialog;
 
-public class BusinessSignupActivity extends BaseActivity {
+public class BusinessSignupActivity extends NewActivity {
     private static final int SEARCH_ADDRESS_ACTIVITY = 10000;
     private static final int GET_MARKET_IMAGE = 7000;
     private static final int REQUEST_CROP = 6000;
@@ -80,6 +81,7 @@ public class BusinessSignupActivity extends BaseActivity {
     int handleFood = 0;
     int selectedCol = 0;
     int selectedPay = 0;
+    int selectedBeer= 0;
     ActivityBusinessSignupBinding dataBinding;  //데이터 바인딩
     DatabaseReference myRef;
     File tempFile;
@@ -148,9 +150,11 @@ public class BusinessSignupActivity extends BaseActivity {
         tempFile = getTempFile();
 //        dataBinding.toolBar.setBackgroundColor(getResources().getColor(R.color.ThemeColor));
         //유저가 고객이고 사업자 등록신청을 하는 경우 화면 설정
+
+
         if (isBusiness == 0) {
-            dataBinding.toolBar.setTitle("사업자 신규등록 신청");
-            dataBinding.toolBar.setTitleTextColor(Color.WHITE);
+            //상단 툴바 설정
+            setToolbar(dataBinding.toolBar,"사업자 신규등록 신청",Color.WHITE,true);
             dataBinding.inputBusinessInfo.setText("사업자로 신청할 정보를 입력해 주세요");
             dataBinding.businessSubmit.setText("작성 완료");
             isMarket = "tmp";
@@ -158,8 +162,8 @@ public class BusinessSignupActivity extends BaseActivity {
 
         //사업자 등록신청 승인을 기다리는 고객의 경우 화면 설정(임시 데이터베이스에 저장된 내용을 불러와서 세팅함)
         else if (isBusiness == 1) {
-            dataBinding.toolBar.setTitle("사업자 신청정보 수정");
-            dataBinding.toolBar.setTitleTextColor(Color.WHITE);
+            //상단 툴바 설정
+            setToolbar(dataBinding.toolBar,"사업자 신청정보 수정",Color.WHITE,true);
             dataBinding.inputBusinessInfo.setText("신청한 정보를 수정합니다.");
             dataBinding.businessSubmit.setText("수정 완료");
             isMarket = "tmp";
@@ -169,8 +173,8 @@ public class BusinessSignupActivity extends BaseActivity {
 
         //사업자 승인이 난 고객의 경우 화면 설정(확정 데이터베이스에 저장된 내용을 불러와서 세팅함)
         else if (isBusiness == 2) {
-            dataBinding.toolBar.setTitle("매장 정보 수정");
-            dataBinding.toolBar.setTitleTextColor(Color.WHITE);
+            //상단 툴바 설정
+            setToolbar(dataBinding.toolBar,"매장 정보 수정",Color.WHITE,true);
             dataBinding.inputBusinessInfo.setText("등록된 사업자 정보를 수정합니다.");
             dataBinding.businessSubmit.setText("수정 완료");
             isMarket = "market";
@@ -229,15 +233,31 @@ public class BusinessSignupActivity extends BaseActivity {
             }
         });
 
-
-        //결제방법 스피너
+        //결제 방법스피너
         ArrayAdapter payAdapter = ArrayAdapter.createFromResource(this, R.array.pay, android.R.layout.simple_spinner_item);
-        colAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        payAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dataBinding.paySpinner.setAdapter(payAdapter);
         dataBinding.paySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedPay = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        //맥주 배달 여부 스피너
+        ArrayAdapter beerAdapter = ArrayAdapter.createFromResource(this, R.array.beer, android.R.layout.simple_spinner_item);
+        beerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataBinding.beerSpinner.setAdapter(beerAdapter);
+        dataBinding.beerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedBeer = position;
             }
 
             @Override
@@ -324,6 +344,10 @@ public class BusinessSignupActivity extends BaseActivity {
             Toast.makeText(this, "결제 방법을 선택해주세요", Toast.LENGTH_SHORT).show();
             return false;
         }
+        if (selectedBeer == 0) {
+            Toast.makeText(this, "맥주 배달 여부를 선택해주세요", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         if (bitmap == null) {
             Toast.makeText(this, "매장 사진을 등록해주세요.", Toast.LENGTH_SHORT).show();
             return false;
@@ -358,6 +382,7 @@ public class BusinessSignupActivity extends BaseActivity {
                         myRef.child(isMarket).child(uid).child("marketName").setValue(dataBinding.marketName.getText().toString());
                         myRef.child(isMarket).child(uid).child("selectedCol").setValue(selectedCol);
                         myRef.child(isMarket).child(uid).child("selectedPay").setValue(selectedPay);
+                        myRef.child(isMarket).child(uid).child("selectedBeer").setValue(selectedBeer);
                         myRef.child(isMarket).child(uid).child("handleFood").setValue(handleFood);
                         myRef.child(isMarket).child(uid).child("marketAddress1").setValue(dataBinding.marketAddress1.getText().toString());
                         myRef.child(isMarket).child(uid).child("marketAddress2").setValue(dataBinding.marketAddress2.getText().toString());
@@ -398,17 +423,6 @@ public class BusinessSignupActivity extends BaseActivity {
         });
         //확인창 보여주기
         submitDialog.show();
-    }
-
-    //상단 뒤로가기 버튼 기능 설정
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     //주소찾기나 사진 불러오기 결과를 받아왔을 때의 동작 설정
@@ -543,6 +557,8 @@ public class BusinessSignupActivity extends BaseActivity {
                     selectedCol = (int) data.selectedCol;
                     dataBinding.paySpinner.setSelection((int) data.selectedPay);
                     selectedPay = (int) data.selectedPay;
+                    dataBinding.beerSpinner.setSelection((int) data.selectedBeer);
+                    selectedBeer = (int) data.selectedBeer;
                     dataBinding.marketAddress1.setText(data.marketAddress1);
                     dataBinding.marketAddress2.setText(data.marketAddress2);
                     dataBinding.marketTel.setText(data.marketTel);

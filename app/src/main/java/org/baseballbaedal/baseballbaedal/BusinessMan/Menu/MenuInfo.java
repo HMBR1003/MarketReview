@@ -19,6 +19,8 @@ public class MenuInfo {
     public String option4Price;
     public String option5Name;
     public String option5Price;
+    public long aseq;
+    public boolean isMain;
 
     public MenuInfo() {
     }

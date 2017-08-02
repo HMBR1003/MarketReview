@@ -27,12 +27,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import org.baseballbaedal.baseballbaedal.BaseActivity;
+import org.baseballbaedal.baseballbaedal.NewActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityMenuManageBinding;
 
 import java.util.Iterator;
 
-public class MenuManageActivity extends BaseActivity implements MenuAdapter.OnStartDragListener {
+public class MenuManageActivity extends NewActivity implements MenuAdapter.OnStartDragListener {
     public static final int MENU_ADD_REQUEST = 555;
     public static final int MENU_EDIT_REQUEST = 444;
     ActivityMenuManageBinding binding;
@@ -63,13 +64,9 @@ public class MenuManageActivity extends BaseActivity implements MenuAdapter.OnSt
         isMoveMode = false;
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
-        //타이틀 설정
-        binding.toolBar.setTitle("메뉴 관리");
-        binding.toolBar.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(binding.toolBar);
-        //뒤로가기 버튼 만들기
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //상단 툴바 설정
+        setToolbar(binding.toolBar,"메뉴 관리", Color.WHITE,true);
 
         binding.addMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -480,16 +477,7 @@ public class MenuManageActivity extends BaseActivity implements MenuAdapter.OnSt
             }
         });
     }
-        //뒤로가기 버튼 기능 설정
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
     @Override
     protected void onStop() {
         super.onStop();

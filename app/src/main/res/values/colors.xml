@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="isMainColor">#f07b14</color>
     <color name="buttonColor">#beac9e</color>
+
+    <color name="background_tab_pressed">#6633B5E5</color>
 </resources>

@@ -3,6 +3,7 @@ package org.baseballbaedal.baseballbaedal.MainFragment.Delivery;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -22,95 +23,44 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.baseballbaedal.baseballbaedal.BaseActivity;
+import org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.MarketInfoActivity;
+import org.baseballbaedal.baseballbaedal.NewActivity;
 import org.baseballbaedal.baseballbaedal.R;
+import org.baseballbaedal.baseballbaedal.databinding.ActivityMarketListBinding;
 
 import dmax.dialog.SpotsDialog;
 
 
-public class MarketListActivity extends BaseActivity {
+public class MarketListActivity extends NewActivity {
 
+    ActivityMarketListBinding binding;
     ValueEventListener listener;
     DatabaseReference fireDB;
     MarketListAdapter adapter;
     MarketList market;
     int colCheck;
     SpotsDialog dialog;
-    ListView listView;
 
     int menuCode;
     String userID;  //사업자아이디
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_market_list);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_market_list);
 
         SharedPreferences colCheckpref = getSharedPreferences("selectedCol", MODE_PRIVATE);
         colCheck = colCheckpref.getInt("selectedCol", -1);
-//        switch (colCheck) {
-//            case 0:
-//                Toast.makeText(this, "잠실 야구장(두산,LG)", Toast.LENGTH_SHORT).show();
-//                break;
-//            case 1:
-//                Toast.makeText(this, "고척 스카이돔(넥센)", Toast.LENGTH_SHORT).show();
-//                break;
-//            case 2:
-//                Toast.makeText(this, "SK 행복드림구장", Toast.LENGTH_SHORT).show();
-//
-//                break;
-//            case 3:
-//                Toast.makeText(this, "한화 이글스파크", Toast.LENGTH_SHORT).show();
-//
-//                break;
-//            case 4:
-//                Toast.makeText(this, "삼성 라이온즈파크", Toast.LENGTH_SHORT).show();
-//
-//                break;
-//            case 5:
-//                Toast.makeText(this, "기아 챔피언스필드", Toast.LENGTH_SHORT).show();
-//
-//                break;
-//            case 6:
-//                Toast.makeText(this, "사직 야구장(롯데)", Toast.LENGTH_SHORT).show();
-//
-//                break;
-//            case 7:
-//                Toast.makeText(this, "KT 위즈파크", Toast.LENGTH_SHORT).show();
-//
-//                break;
-//            case 8:
-//                Toast.makeText(this, "마산 야구장(NC)", Toast.LENGTH_SHORT).show();
-//
-//                break;
-//            default:
-//                Toast.makeText(this, "선택된 야구장이 없습니다.", Toast.LENGTH_SHORT).show();
-//
-//                break;
-//        }
 
-
-        listView = (ListView) findViewById(R.id.listView);
         fireDB = FirebaseDatabase.getInstance().getReference();
         adapter = new MarketListAdapter();
 
-        dialog = new SpotsDialog(MarketListActivity.this,"데이터를 불러오는 중입니다...",R.style.ProgressBar);
+        dialog = new SpotsDialog(MarketListActivity.this, "데이터를 불러오는 중입니다...", R.style.ProgressBar);
         dialog.setCancelable(false);
         dialog.show();
 
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new ItemClickListener());
+        binding.listView.setAdapter(adapter);
+        binding.listView.setOnItemClickListener(new ItemClickListener());
 
         //메뉴데이터 가져오기
         Intent intent = getIntent();
@@ -134,13 +84,9 @@ public class MarketListActivity extends BaseActivity {
                 break;
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(menu);
-        toolbar.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        //상단 툴바 설정
+        setToolbar(binding.toolbar, menu, Color.WHITE, true);
 
         listener = new ValueEventListener() {       //마켓리스트 추출
             @Override
@@ -150,21 +96,29 @@ public class MarketListActivity extends BaseActivity {
                     market = data.getValue(MarketList.class);
 
                     if (market.handleFood == menuCode) {
-                        if(market.selectedCol == colCheck+1) {
+                        if (market.selectedCol == colCheck + 1) {
                             userID = data.getKey();
                             String address1 = market.marketAddress1.substring(7);
                             adapter.addItem(userID, address1 + "\n" + market.marketAddress2, market.marketName, " " + market.marketTel, market.minPrice, market.aTime);
                             Log.d("handle", data.child("handleFood").getValue().toString());
-                            adapter.notifyDataSetChanged();
                         }
                     }
                 }
+                if(adapter.getCount()>0){
+                    binding.noMarketContainer.setVisibility(View.GONE);
+                    binding.marketContainer.setVisibility(View.VISIBLE);
+                }
+                else{
+                    binding.noMarketContainer.setVisibility(View.VISIBLE);
+                    binding.marketContainer.setVisibility(View.GONE);
+                }
+                adapter.notifyDataSetChanged();
                 dialog.dismiss();
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         };
     }
@@ -187,10 +141,9 @@ public class MarketListActivity extends BaseActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             MarketListItem item = (MarketListItem) adapter.getItem(position);
 
-//            Intent intent = new Intent(getApplicationContext(), MenuListActivity.class);
-//            intent.putExtra("id",item.getMarketUserID());
-//            intent.putExtra("name",item.getMarketName());
-//            startActivity(intent);
+            Intent intent = new Intent(getApplicationContext(), MarketInfoActivity.class);
+            intent.putExtra("uid", item.getMarketUserID());
+            startActivity(intent);
         }
     }
 }

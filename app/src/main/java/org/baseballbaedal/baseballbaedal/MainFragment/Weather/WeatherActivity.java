@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.baseballbaedal.baseballbaedal.NewActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityWeatherBinding;
 
@@ -37,7 +38,7 @@ import java.util.Date;
 
 import dmax.dialog.SpotsDialog;
 
-public class WeatherActivity extends AppCompatActivity {
+public class WeatherActivity extends NewActivity {
     ActivityWeatherBinding binding;
     WeatherListViewAdapter adapter;
     DatabaseReference fireDB;
@@ -74,14 +75,9 @@ public class WeatherActivity extends AppCompatActivity {
         city = intent.getStringExtra("city");
         colname = intent.getStringExtra("colname");
 
-        toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.weatherToolBar);
-        //타이틀 설정
-        toolbar.setTitle(colname + " 날씨");
-        toolbar.setTitleTextColor(Color.WHITE);
+        //상단 툴바 설정
+        setToolbar(binding.weatherToolBar,colname + " 날씨",Color.WHITE,true);
 
-        //뒤로가기 버튼 만들기
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         String topAddress = "";
         if (city.equals("서울송파구잠실동")) {
@@ -243,16 +239,5 @@ public class WeatherActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         fireDB.removeEventListener(listener);
-    }
-
-    //상단 뒤로가기 버튼 기능 설정
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

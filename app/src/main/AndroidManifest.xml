@@ -21,7 +21,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,7 +39,7 @@
         <activity android:name=".Test.StorageActivity" />
         <activity
             android:name=".BusinessMan.AddressWebViewActivity"
-            android:label="주소 찾기" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".MyFirebaseMessagingService"
@@ -73,12 +73,16 @@
         <activity
             android:name=".MainFragment.Weather.WeatherActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MarketDetailViewActivity" />
         <activity
             android:name=".MainFragment.Delivery.MarketListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".BusinessMan.NoticeActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".BusinessMan.NoticeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MainFragment.Delivery.Market.MarketInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MainFragment.Delivery.Market.Menu.MenuInfoActivity"></activity>
     </application>
 
 </manifest>

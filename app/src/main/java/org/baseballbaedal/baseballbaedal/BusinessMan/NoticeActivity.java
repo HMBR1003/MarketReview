@@ -22,12 +22,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuAddActivity;
+import org.baseballbaedal.baseballbaedal.NewActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityNoticeBinding;
 
 import dmax.dialog.SpotsDialog;
 
-public class NoticeActivity extends AppCompatActivity {
+public class NoticeActivity extends NewActivity {
     ActivityNoticeBinding binding;
     AlertDialog submitDialog, exitDialog;
     SpotsDialog dialog;
@@ -54,11 +55,9 @@ public class NoticeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_notice);
 
-        binding.toolBar.setTitle("공지사항 등록/수정");
-        binding.toolBar.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(binding.toolBar);
-        //뒤로가기 버튼 만들기
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //상단 툴바 설정
+        setToolbar(binding.toolBar,"공지사항 등록/수정",Color.WHITE,true);
+
         binding.noticeText.setClearButtonSet(false);
         binding.noticeText.addTextChangedListener(watcher);
         binding.submitButton.setButtonColor(getResources().getColor(R.color.buttonColor));
@@ -108,17 +107,6 @@ public class NoticeActivity extends AppCompatActivity {
                 submitDialog.show();
             }
         });
-    }
-
-    //상단 뒤로가기 버튼 기능 설정
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

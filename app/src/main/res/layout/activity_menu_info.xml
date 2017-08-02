@@ -5,7 +5,9 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="org.baseballbaedal.baseballbaedal.MarketDetailViewActivity">
+        android:orientation="vertical"
+        tools:context="org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.Menu.MenuInfoActivity">
+
 
 
 

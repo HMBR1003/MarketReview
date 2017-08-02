@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--앱 실행시 잠시 보여주는 화면 설정-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
+    <item android:drawable="@color/colorPrimary"/>
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@mipmap/ic_launcher"/>
+    </item>
+</layer-list>
