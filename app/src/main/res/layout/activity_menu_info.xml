@@ -133,6 +133,72 @@
                     android:background="#000000" />
 
                 <LinearLayout
+                    android:id="@+id/amountContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.ssomai.android.scalablelayout.ScalableLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        sl:scale_base_height="120"
+                        sl:scale_base_width="1080">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="수량"
+                            android:textStyle="bold"
+                            sl:scale_height="120"
+                            sl:scale_textsize="45"
+                            sl:scale_width="1080" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:gravity="center"
+                            sl:scale_height="120"
+                            sl:scale_textsize="45"
+                            sl:scale_width="400">
+
+                            <Button
+                                android:id="@+id/minusButton2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="-" />
+
+                            <TextView
+                                android:id="@+id/menuAmount2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="1"
+                                android:textSize="20sp" />
+
+                            <Button
+                                android:id="@+id/plusButton2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="+" />
+                        </LinearLayout>
+
+                    </com.ssomai.android.scalablelayout.ScalableLayout>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/amountLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000000" />
+
+
+                <LinearLayout
                     android:id="@+id/allOptionContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -513,71 +579,8 @@
             android:id="@+id/commonContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.ssomai.android.scalablelayout.ScalableLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    sl:scale_base_height="120"
-                    sl:scale_base_width="1080">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:text="수량"
-                        android:textStyle="bold"
-                        sl:scale_height="120"
-                        sl:scale_textsize="45"
-                        sl:scale_width="1080" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:gravity="center"
-                        sl:scale_height="120"
-                        sl:scale_textsize="45"
-                        sl:scale_width="400">
-
-                        <Button
-                            android:id="@+id/minusButton2"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="-" />
-
-                        <TextView
-                            android:id="@+id/menuAmount2"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="1"
-                            android:textSize="20sp" />
-
-                        <Button
-                            android:id="@+id/plusButton2"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="+" />
-                    </LinearLayout>
-
-                </com.ssomai.android.scalablelayout.ScalableLayout>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000000" />
 
             <LinearLayout
                 android:layout_width="match_parent"

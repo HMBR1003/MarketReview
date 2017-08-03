@@ -87,6 +87,8 @@ public class MenuInfoActivity extends NewActivity {
         if(option1Name!=null){
             binding.allOptionContainer.setVisibility(View.VISIBLE);
             binding.commonContainer.setVisibility(View.GONE);
+            binding.amountContainer.setVisibility(View.GONE);
+            binding.amountLine.setVisibility(View.GONE);
 
             binding.optionContainer1.setVisibility(View.VISIBLE);
             binding.optionName1.setText(option1Name);
