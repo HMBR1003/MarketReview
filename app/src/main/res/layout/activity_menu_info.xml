@@ -1,15 +1,686 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:sl="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context="org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.Menu.MenuInfoActivity">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <com.ssomai.android.scalablelayout.ScalableLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        sl:scale_base_height="450"
+                        sl:scale_base_width="1080">
+
+                        <ImageView
+                            android:id="@+id/menuImageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/jamsil"
+                            sl:scale_height="450"
+                            sl:scale_width="450" />
+                    </com.ssomai.android.scalablelayout.ScalableLayout>
+
+                    <com.ssomai.android.scalablelayout.ScalableLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        sl:scale_base_height="70"
+                        sl:scale_base_width="1080">
+
+                        <TextView
+                            android:id="@+id/menuName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:gravity="center"
+                            android:text="음식 이름"
+                            android:textStyle="bold"
+                            sl:scale_height="70"
+                            sl:scale_textsize="51"
+                            sl:scale_width="1080" />
+                    </com.ssomai.android.scalablelayout.ScalableLayout>
+
+                    <com.ssomai.android.scalablelayout.ScalableLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        sl:scale_base_height="50"
+                        sl:scale_base_width="1080">
+
+                        <TextView
+                            android:id="@+id/menuExplain"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:gravity="center"
+                            android:text="설명"
+                            sl:scale_height="50"
+                            sl:scale_textsize="36"
+                            sl:scale_width="1080"
+                            sl:textview_wrapcontent_direction="bottom"
+                            sl:textview_wrapcontent_movesiblings="true"
+                            sl:textview_wrapcontent_resizesurrounded="true" />
+                    </com.ssomai.android.scalablelayout.ScalableLayout>
+                </LinearLayout>
 
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000000" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.ssomai.android.scalablelayout.ScalableLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        sl:scale_base_height="120"
+                        sl:scale_base_width="1080">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="가격"
+                            android:textStyle="bold"
+                            sl:scale_height="120"
+                            sl:scale_textsize="45"
+                            sl:scale_width="1080" />
+
+                        <TextView
+                            android:id="@+id/menuPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right|center_vertical"
+                            android:text="000원"
+                            sl:scale_height="120"
+                            sl:scale_textsize="45"
+                            sl:scale_width="1080" />
+                    </com.ssomai.android.scalablelayout.ScalableLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000000" />
+
+                <LinearLayout
+                    android:id="@+id/allOptionContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="vertical">
+
+                        <com.ssomai.android.scalablelayout.ScalableLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            sl:scale_base_height="120"
+                            sl:scale_base_width="1080">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:gravity="center_vertical"
+                                android:text="옵션"
+                                android:textStyle="bold"
+                                sl:scale_height="120"
+                                sl:scale_textsize="45"
+                                sl:scale_width="1080" />
+                        </com.ssomai.android.scalablelayout.ScalableLayout>
+
+                        <LinearLayout
+                            android:id="@+id/optionContainer1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <com.ssomai.android.scalablelayout.ScalableLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                sl:scale_base_height="120"
+                                sl:scale_base_width="1080">
+
+                                <TextView
+                                    android:id="@+id/optionName1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:text="옵션1 이름"
+                                    sl:scale_height="120"
+                                    sl:scale_textsize="45"
+                                    sl:scale_width="1080" />
+
+                                <TextView
+                                    android:id="@+id/optionPrice1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical|end"
+                                    android:text="옵션1 가격"
+                                    sl:scale_height="120"
+                                    sl:scale_textsize="45"
+                                    sl:scale_width="975" />
+
+                                <CheckBox
+                                    android:id="@+id/optionCheck1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical|end"
+                                    sl:scale_width="100" />
+                            </com.ssomai.android.scalablelayout.ScalableLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/optionContainer2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <com.ssomai.android.scalablelayout.ScalableLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                sl:scale_base_height="120"
+                                sl:scale_base_width="1080">
+
+                                <TextView
+                                    android:id="@+id/optionName2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:text="옵션2 이름"
+                                    sl:scale_height="120"
+                                    sl:scale_textsize="45"
+                                    sl:scale_width="1080" />
+
+                                <TextView
+                                    android:id="@+id/optionPrice2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical|end"
+                                    android:text="옵션2 가격"
+                                    sl:scale_height="120"
+                                    sl:scale_textsize="45"
+                                    sl:scale_width="975" />
+
+                                <CheckBox
+                                    android:id="@+id/optionCheck2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical|end"
+                                    sl:scale_width="100" />
+                            </com.ssomai.android.scalablelayout.ScalableLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/optionContainer3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <com.ssomai.android.scalablelayout.ScalableLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                sl:scale_base_height="120"
+                                sl:scale_base_width="1080">
+
+                                <TextView
+                                    android:id="@+id/optionName3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:text="옵션3 이름"
+                                    sl:scale_height="120"
+                                    sl:scale_textsize="45"
+                                    sl:scale_width="1080" />
+
+                                <TextView
+                                    android:id="@+id/optionPrice3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical|end"
+                                    android:text="옵션3 가격"
+                                    sl:scale_height="120"
+                                    sl:scale_textsize="45"
+                                    sl:scale_width="975" />
+
+                                <CheckBox
+                                    android:id="@+id/optionCheck3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical|end"
+                                    sl:scale_width="100" />
+                            </com.ssomai.android.scalablelayout.ScalableLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/optionContainer4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <com.ssomai.android.scalablelayout.ScalableLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                sl:scale_base_height="120"
+                                sl:scale_base_width="1080">
+
+                                <TextView
+                                    android:id="@+id/optionName4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:text="옵션4 이름"
+                                    sl:scale_height="120"
+                                    sl:scale_textsize="45"
+                                    sl:scale_width="1080" />
+
+                                <TextView
+                                    android:id="@+id/optionPrice4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical|end"
+                                    android:text="옵션4 가격"
+                                    sl:scale_height="120"
+                                    sl:scale_textsize="45"
+                                    sl:scale_width="975" />
+
+                                <CheckBox
+                                    android:id="@+id/optionCheck4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical|end"
+                                    sl:scale_width="100" />
+                            </com.ssomai.android.scalablelayout.ScalableLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/optionContainer5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <com.ssomai.android.scalablelayout.ScalableLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                sl:scale_base_height="120"
+                                sl:scale_base_width="1080">
+
+                                <TextView
+                                    android:id="@+id/optionName5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:text="옵션5 이름"
+                                    sl:scale_height="120"
+                                    sl:scale_textsize="45"
+                                    sl:scale_width="1080" />
+
+                                <TextView
+                                    android:id="@+id/optionPrice5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical|end"
+                                    android:text="옵션5 가격"
+                                    sl:scale_height="120"
+                                    sl:scale_textsize="45"
+                                    sl:scale_width="975" />
+
+                                <CheckBox
+                                    android:id="@+id/optionCheck5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical|end"
+                                    sl:scale_width="100" />
+                            </com.ssomai.android.scalablelayout.ScalableLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#000000" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.ssomai.android.scalablelayout.ScalableLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            sl:scale_base_height="120"
+                            sl:scale_base_width="1080">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="수량"
+                                android:textStyle="bold"
+                                sl:scale_height="120"
+                                sl:scale_textsize="45"
+                                sl:scale_width="1080" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:gravity="center"
+                                sl:scale_height="120"
+                                sl:scale_textsize="45"
+                                sl:scale_width="400">
+
+                                <Button
+                                    android:id="@+id/minusButton1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="-" />
+
+                                <TextView
+                                    android:id="@+id/menuAmount1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:text="1"
+                                    android:textSize="20sp" />
+
+                                <Button
+                                    android:id="@+id/plusButton1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="+" />
+                            </LinearLayout>
+
+                        </com.ssomai.android.scalablelayout.ScalableLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#000000" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <com.ssomai.android.scalablelayout.ScalableLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            sl:scale_base_height="90"
+                            sl:scale_base_width="1080">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center|center_vertical"
+                                android:text="총 주문 금액"
+                                sl:scale_textsize="45"
+                                sl:scale_width="1080" />
+
+                        </com.ssomai.android.scalablelayout.ScalableLayout>
+
+                        <com.ssomai.android.scalablelayout.ScalableLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            sl:scale_base_height="160"
+                            sl:scale_base_width="1080">
+
+                            <TextView
+                                android:id="@+id/totalPrice1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical|center"
+                                android:text="00000원"
+                                sl:scale_height="160"
+                                sl:scale_textsize="90"
+                                sl:scale_width="1080" />
+                        </com.ssomai.android.scalablelayout.ScalableLayout>
+
+                        <com.ssomai.android.scalablelayout.ScalableLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            sl:scale_base_width="1080">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:text="최소 주문 금액 : "
+                                sl:scale_textsize="30"
+                                sl:scale_width="580" />
+
+                            <TextView
+                                android:id="@+id/minPrice1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:gravity="left"
+                                android:text="00000원"
+                                sl:scale_textsize="30"
+                                sl:scale_width="500" />
+                        </com.ssomai.android.scalablelayout.ScalableLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/commonContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ssomai.android.scalablelayout.ScalableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    sl:scale_base_height="120"
+                    sl:scale_base_width="1080">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="수량"
+                        android:textStyle="bold"
+                        sl:scale_height="120"
+                        sl:scale_textsize="45"
+                        sl:scale_width="1080" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:gravity="center"
+                        sl:scale_height="120"
+                        sl:scale_textsize="45"
+                        sl:scale_width="400">
+
+                        <Button
+                            android:id="@+id/minusButton2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="-" />
+
+                        <TextView
+                            android:id="@+id/menuAmount2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="1"
+                            android:textSize="20sp" />
+
+                        <Button
+                            android:id="@+id/plusButton2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="+" />
+                    </LinearLayout>
+
+                </com.ssomai.android.scalablelayout.ScalableLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#000000" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <com.ssomai.android.scalablelayout.ScalableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    sl:scale_base_height="90"
+                    sl:scale_base_width="1080">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|center_vertical"
+                        android:text="총 주문 금액"
+                        sl:scale_textsize="45"
+                        sl:scale_width="1080" />
+
+                </com.ssomai.android.scalablelayout.ScalableLayout>
+
+                <com.ssomai.android.scalablelayout.ScalableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    sl:scale_base_height="160"
+                    sl:scale_base_width="1080">
+
+                    <TextView
+                        android:id="@+id/totalPrice2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|center"
+                        android:text="00000원"
+                        sl:scale_height="160"
+                        sl:scale_textsize="90"
+                        sl:scale_width="1080" />
+                </com.ssomai.android.scalablelayout.ScalableLayout>
+
+                <com.ssomai.android.scalablelayout.ScalableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    sl:scale_base_width="1080">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="최소 주문 금액 : "
+                        sl:scale_textsize="30"
+                        sl:scale_width="580" />
+
+                    <TextView
+                        android:id="@+id/minPrice2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:gravity="left"
+                        android:text="00000원"
+                        sl:scale_textsize="30"
+                        sl:scale_width="500" />
+                </com.ssomai.android.scalablelayout.ScalableLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <com.ssomai.android.scalablelayout.ScalableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    sl:scale_base_height="150"
+                    sl:scale_base_width="1080">
+
+                    <info.hoang8f.widget.FButton
+                        android:id="@+id/basketButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="장바구니 담기"
+                        sl:scale_height="150"
+                        sl:scale_textsize="70"
+                        sl:scale_width="530" />
+
+                    <info.hoang8f.widget.FButton
+                        android:id="@+id/nowOrder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="바로 주문하기"
+                        sl:scale_height="150"
+                        sl:scale_left="550"
+                        sl:scale_textsize="70"
+                        sl:scale_width="530" />
+                </com.ssomai.android.scalablelayout.ScalableLayout>
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 </layout>

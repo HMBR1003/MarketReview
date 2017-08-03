@@ -4,21 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical"
         tools:context="org.baseballbaedal.baseballbaedal.BusinessMan.BusinessSignupActivity">
-
-        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/toolBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            app:theme="@style/ToolbarStyle"></android.support.v7.widget.Toolbar>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -285,6 +277,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="테이크아웃 전문점은 0을 입력해주세요"
+                        android:maxLength="5"
                         android:inputType="phone"
                         android:lines="1"
                         android:maxLines="1"

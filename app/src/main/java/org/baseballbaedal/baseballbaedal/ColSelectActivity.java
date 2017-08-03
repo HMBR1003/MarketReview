@@ -55,31 +55,9 @@ public class ColSelectActivity extends NewActivity {
 
         //타이틀 설정
         intent = getIntent();
-        setToolbar(binding.toolBar, "경기장 선택", Color.WHITE, !intent.getBooleanExtra("isFirst", true));
+        binding.container.addView(getToolbar("경기장 선택",!intent.getBooleanExtra("isFirst", true)),0);
 
 
-        //경기장 선택 완료 시 동작 버튼
-//        binding.selectFinish.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                setResult(RESULT_OK);
-//                finish();
-//            }
-//        });
-
-//        mMetrics = new DisplayMetrics();
-//        getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
-//        int rowWidth = (mMetrics.widthPixels) / 3;
-//        binding.col1.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-//        binding.col2.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-//        binding.col3.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-//        binding.col4.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-//        binding.col5.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-//        binding.col6.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-//        binding.col7.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-//        binding.col8.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
-//        binding.col9.setLayoutParams(new TableRow.LayoutParams(rowWidth, rowWidth));
         Glide.with(this)
                 .load(img[0])
                 .into(binding.col1);
@@ -173,26 +151,6 @@ public class ColSelectActivity extends NewActivity {
         binding.masan.setOnClickListener(listener);
 
 
-//        // 커스텀 아답타 생성
-//        adapter = new GridAdapter(
-//                getApplicationContext(),
-//                R.layout.item_change_col,       // GridView 항목의 레이아웃 row.xml
-//                img);
-//        binding.gridView.setAdapter(adapter);
-//        binding.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                checkedItem = position;
-//                if(oldPosition < parent.getChildCount()) {
-//                    parent.getChildAt(oldPosition).setBackgroundColor(Color.rgb(255, 255, 255));
-//                    ((TextView) parent.getChildAt(oldPosition).findViewById(R.id.colText)).setTextColor(Color.BLACK);
-//                }
-//                oldPosition=position;
-//                view.setBackgroundColor(getApplication().getResources().getColor(R.color.colorPrimary));
-//                ((TextView)view.findViewById(R.id.colText)).setTextColor(Color.WHITE);
-//            }
-//        });
-
         binding.selectFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -211,54 +169,6 @@ public class ColSelectActivity extends NewActivity {
         });
     }
 
-//    class GridAdapter extends BaseAdapter {
-//        Context context;
-//        int layout;
-//        int img[];
-//        LayoutInflater inf;
-//        View view[] = new View[9];
-//
-//        public GridAdapter(Context context, int layout, int[] img) {
-//            this.context = context;
-//            this.layout = layout;
-//            this.img = img;
-//            inf = (LayoutInflater) context.getSystemService
-//                    (Context.LAYOUT_INFLATER_SERVICE);
-//        }
-//
-//        @Override
-//        public int getCount() {
-//            return 9;
-//        }
-//
-//        @Override
-//        public Object getItem(int position) {
-//            return view[position];
-//        }
-//
-//        @Override
-//        public long getItemId(int position) {
-//            return position;
-//        }
-//
-//        @Override
-//        public View getView(int position, View convertView, ViewGroup parent) {
-//            int rowWidth = (mMetrics.widthPixels) / 3;
-//
-//            if (convertView == null) {
-//                view[position] = convertView;
-//                view[position] = inf.inflate(layout, null);
-//                ImageView iv = (ImageView) view[position].findViewById(R.id.colImage);
-//                TextView tv = (TextView) view[position].findViewById(R.id.colText);
-//                Glide.with(context)
-//                        .load(img[position])
-//                        .into(iv);
-//                tv.setText(colName[position]);
-//                view[position].setLayoutParams(new GridView.LayoutParams(rowWidth, rowWidth));
-//            }
-//            return view[position];
-//        }
-//    }
 
     @Override
     public void onBackPressed() {

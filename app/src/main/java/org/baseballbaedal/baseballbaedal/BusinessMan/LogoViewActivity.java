@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import org.baseballbaedal.baseballbaedal.BaseActivity;
+import org.baseballbaedal.baseballbaedal.NewActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityLogoViewBinding;
 
@@ -21,7 +22,7 @@ import java.io.IOException;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-public class LogoViewActivity extends BaseActivity {
+public class LogoViewActivity extends NewActivity {
 
     ActivityLogoViewBinding binding;
 
@@ -34,12 +35,8 @@ public class LogoViewActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_logo_view);
         dialog=new ProgressDialog(LogoViewActivity.this);
 
-        //타이틀 설정
-        binding.toolBar.setTitle("이미지 확대 보기");
-        binding.toolBar.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(binding.toolBar);
-        //뒤로가기 버튼 만들기
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //상단 툴바 설정
+        binding.container.addView(getToolbar("이미지 확대 보기",true),0);
 
         Intent intent = getIntent();
         uri = intent.getParcelableExtra("imageUri");

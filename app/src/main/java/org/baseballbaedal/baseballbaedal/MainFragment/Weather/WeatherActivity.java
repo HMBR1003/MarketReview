@@ -76,7 +76,7 @@ public class WeatherActivity extends NewActivity {
         colname = intent.getStringExtra("colname");
 
         //상단 툴바 설정
-        setToolbar(binding.weatherToolBar,colname + " 날씨",Color.WHITE,true);
+        binding.weatherContainer.addView(getToolbar(colname + " 날씨",true),0);
 
 
         String topAddress = "";

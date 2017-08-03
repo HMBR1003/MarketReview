@@ -12,6 +12,7 @@ import com.tsengvn.typekit.TypekitContextWrapper;
 public class BaseActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
+        //글꼴 설정하기 위한 구문
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }

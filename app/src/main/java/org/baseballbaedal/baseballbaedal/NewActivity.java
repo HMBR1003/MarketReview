@@ -4,7 +4,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by Administrator on 2017-07-31-031.
@@ -30,6 +36,29 @@ public class NewActivity extends BaseActivity {
         if(isBack) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+    }
+
+    public View getToolbar(String title, boolean isBack){
+        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.custom_actionbar, null);
+
+        //타이틀 설정
+        ((TextView)view.findViewById(R.id.title)).setText(title);
+
+        //뒤로가기 버튼 만들기
+        if(isBack) {
+            (view.findViewById(R.id.btnBack)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+        }
+        else{
+            (view.findViewById(R.id.btnBack)).setVisibility(View.GONE);
+        }
+        return view;
     }
 
     //뒤로가기 버튼 기능 설정

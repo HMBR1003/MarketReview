@@ -2,12 +2,14 @@ package org.baseballbaedal.baseballbaedal;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -165,7 +167,13 @@ public class LoginActivity extends NewActivity implements
             }
         });
 
-        setToolbar(activityLoginBinding.toolBar,"",Color.WHITE,true);
+        //layout을 가지고 와서 actionbar에 포팅을 시킵니다.
+
+
+
+        activityLoginBinding.loginContainer.addView(getToolbar("",true),0);
+//        setToolbar(activityLoginBinding.toolBar,"",Color.WHITE,true);
+
 //        //타이틀 설정
 //        activityLoginBinding.toolBar.setTitle("");
 //        activityLoginBinding.toolBar.setTitleTextColor(Color.WHITE);
@@ -452,5 +460,4 @@ public class LoginActivity extends NewActivity implements
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(this, "구글 연결 실패", Toast.LENGTH_SHORT).show();
     }
-
 }

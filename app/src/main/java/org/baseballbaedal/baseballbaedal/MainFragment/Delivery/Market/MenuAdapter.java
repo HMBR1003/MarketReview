@@ -12,6 +12,7 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuInfo;
 import org.baseballbaedal.baseballbaedal.R;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 public class MenuAdapter extends BaseAdapter {
 
     ArrayList<MenuItem> list = new ArrayList<MenuItem>();
+    ArrayList<MenuInfo> infoList = new ArrayList<MenuInfo>();
     Context context;
     int imageWidth;
 
@@ -34,6 +36,9 @@ public class MenuAdapter extends BaseAdapter {
     public void add(MenuItem item) {
         list.add(item);
     }
+    public void addInfo(MenuInfo item) {
+        infoList.add(item);
+    }
 
     @Override
     public int getCount() {
@@ -42,6 +47,15 @@ public class MenuAdapter extends BaseAdapter {
 
     public void clear() {
         list.clear();
+        infoList.clear();
+    }
+
+    public MenuInfo getInfo(int position){
+        return infoList.get(position);
+    }
+
+    public String getMenuKey(int position){
+        return list.get(position).menuKey;
     }
 
     @Override

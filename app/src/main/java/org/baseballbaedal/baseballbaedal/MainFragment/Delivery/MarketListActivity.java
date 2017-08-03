@@ -1,6 +1,7 @@
 package org.baseballbaedal.baseballbaedal.MainFragment.Delivery;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
@@ -10,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -57,6 +59,16 @@ public class MarketListActivity extends NewActivity {
 
         dialog = new SpotsDialog(MarketListActivity.this, "데이터를 불러오는 중입니다...", R.style.ProgressBar);
         dialog.setCancelable(false);
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    dialog.dismiss();
+                    finish();
+                }
+                return true;
+            }
+        });
         dialog.show();
 
         binding.listView.setAdapter(adapter);
@@ -86,7 +98,7 @@ public class MarketListActivity extends NewActivity {
 
 
         //상단 툴바 설정
-        setToolbar(binding.toolbar, menu, Color.WHITE, true);
+        binding.container.addView(getToolbar(menu,true),0);
 
         listener = new ValueEventListener() {       //마켓리스트 추출
             @Override

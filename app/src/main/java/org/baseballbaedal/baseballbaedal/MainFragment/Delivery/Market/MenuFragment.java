@@ -135,6 +135,8 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -143,11 +145,13 @@ import com.google.firebase.database.ValueEventListener;
 
 
 import org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuInfo;
+import org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.Menu.MenuInfoActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.FragmentMenuBinding;
 
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
+import static org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.MarketInfoActivity.marketName;
 import static org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.MarketInfoActivity.marketTel;
 
 
@@ -168,7 +172,7 @@ public class MenuFragment extends ScrollTabHolderFragment {
         Bundle b = new Bundle();
         b.putInt("position", position);
         b.putString("marketId", marketId);
-        b.putInt("imageWidth",imageWidth);
+        b.putInt("imageWidth", imageWidth);
         f.setArguments(b);
         return f;
     }
@@ -183,11 +187,11 @@ public class MenuFragment extends ScrollTabHolderFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_menu,container,false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_menu, container, false);
 
-        menuListView = (GridViewWithHeaderAndFooter)rootView.findViewById(R.id.menuListView);
+        menuListView = (GridViewWithHeaderAndFooter) rootView.findViewById(R.id.menuListView);
 
-        adapter = new MenuAdapter(getContext(),imageWidth);
+        adapter = new MenuAdapter(getContext(), imageWidth);
 
         View placeHolderView = inflater.inflate(R.layout.view_header_menu, menuListView, false);
         placeHolderView.setBackgroundColor(0xFFFFFFFF);
@@ -211,31 +215,29 @@ public class MenuFragment extends ScrollTabHolderFragment {
         super.onResume();
     }
 
-    public String numToWon(int num){
-        String tmp = num+"";
+    public String numToWon(int num) {
+        String tmp = num + "";
         String won;
-        if(tmp.length()>3){
-            int a = tmp.length()%3;
-            int b = tmp.length()/3;
-            if(a!=0) {
+        if (tmp.length() > 3) {
+            int a = tmp.length() % 3;
+            int b = tmp.length() / 3;
+            if (a != 0) {
                 String first = tmp.substring(0, a);
                 won = first;
-                for(int i =0; i<b; i++){
-                    won = won+","+ tmp.substring(a,a+3);
-                    a=a+3;
+                for (int i = 0; i < b; i++) {
+                    won = won + "," + tmp.substring(a, a + 3);
+                    a = a + 3;
                 }
-            }
-            else{
-                a=3;
+            } else {
+                a = 3;
                 String first = tmp.substring(0, a);
                 won = first;
-                for(int i =0; i<b-1; i++){
-                    won = won+","+ tmp.substring(a,a+3);
-                    a=a+3;
+                for (int i = 0; i < b - 1; i++) {
+                    won = won + "," + tmp.substring(a, a + 3);
+                    a = a + 3;
                 }
             }
-        }
-        else{
+        } else {
             won = tmp;
         }
         return won;
@@ -248,11 +250,45 @@ public class MenuFragment extends ScrollTabHolderFragment {
 
         menuListView.setOnScrollListener(new OnScroll());
         menuListView.setAdapter(adapter);
+        menuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), MenuInfoActivity.class);
+                intent.putExtra("marketName",marketName);
+                intent.putExtra("marketId",marketId);
+                intent.putExtra("menuName", adapter.getInfo(position).menuName);
+                intent.putExtra("menuExplain", adapter.getInfo(position).menuExplain);
+                intent.putExtra("menuPrice",numToWon(Integer.parseInt(adapter.getInfo(position).menuPrice)) + "원" );
+                intent.putExtra("menuKey", adapter.getMenuKey(position));
+                intent.putExtra("aTime", adapter.getInfo(position).aTime);
+                if (adapter.getInfo(position).option1Name != null) {
+                    intent.putExtra("option1Name", adapter.getInfo(position).option1Name);
+                    intent.putExtra("option1Price",numToWon(Integer.parseInt(adapter.getInfo(position).option1Price)) + "원" );
+                    if (adapter.getInfo(position).option2Name != null) {
+                        intent.putExtra("option2Name", adapter.getInfo(position).option2Name);
+                        intent.putExtra("option2Price", numToWon(Integer.parseInt(adapter.getInfo(position).option2Price)) + "원");
+                        if (adapter.getInfo(position).option3Name != null) {
+                            intent.putExtra("option3Name", adapter.getInfo(position).option3Name);
+                            intent.putExtra("option3Price",numToWon(Integer.parseInt(adapter.getInfo(position).option3Price)) + "원");
+                            if (adapter.getInfo(position).option4Name != null) {
+                                intent.putExtra("option4Name", adapter.getInfo(position).option4Name);
+                                intent.putExtra("option4Price", numToWon(Integer.parseInt(adapter.getInfo(position).option4Price)) + "원");
+                                if (adapter.getInfo(position).option5Name != null) {
+                                    intent.putExtra("option5Name", adapter.getInfo(position).option5Name);
+                                    intent.putExtra("option5Price", numToWon(Integer.parseInt(adapter.getInfo(position).option5Price)) + "원");
+                                }
+                            }
+                        }
+                    }
+                }
+                startActivity(intent);
+            }
+        });
 
         listener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount()>0) {
+                if (dataSnapshot.getChildrenCount() > 0) {
                     binding.noMenuContainer.setVisibility(View.GONE);
                     menuListView.setVisibility(View.VISIBLE);
 
@@ -260,15 +296,18 @@ public class MenuFragment extends ScrollTabHolderFragment {
                     int i = 0;
                     MenuInfo menuInfo;
                     MenuItem items[] = new MenuItem[(int) dataSnapshot.getChildrenCount()];
+                    MenuInfo infos[] = new MenuInfo[(int) dataSnapshot.getChildrenCount()];
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         menuInfo = data.getValue(MenuInfo.class);
-                        items[i++] = new MenuItem(menuInfo.aTime, menuInfo.menuName, numToWon(Integer.parseInt(menuInfo.menuPrice))+"원", data.getKey(), marketId, menuInfo.isMain, menuInfo.aseq);
+                        items[i] = new MenuItem(menuInfo.aTime, menuInfo.menuName, numToWon(Integer.parseInt(menuInfo.menuPrice)) + "원", data.getKey(), marketId, menuInfo.isMain, menuInfo.aseq);
+                        infos[i++] = menuInfo;
                     }
                     //메뉴 순서대로 리스트에 추가
                     for (int iii = 1; iii < dataSnapshot.getChildrenCount() + 1; iii++) {
                         for (int jjj = 0; jjj < dataSnapshot.getChildrenCount(); jjj++) {
                             if (items[jjj].aseq == iii) {
                                 adapter.add(items[jjj]);
+                                adapter.addInfo(infos[jjj]);
                                 break;
                             }
                         }
@@ -290,7 +329,7 @@ public class MenuFragment extends ScrollTabHolderFragment {
         binding.callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+marketTel));
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + marketTel));
                 startActivity(intent);
             }
         });
@@ -311,7 +350,7 @@ public class MenuFragment extends ScrollTabHolderFragment {
     }
 
     @Override
-    public void adjustScroll(int scrollHeight,View view) {
+    public void adjustScroll(int scrollHeight, View view) {
         if (scrollHeight == 0 && menuListView.getFirstVisiblePosition() >= 1) {
             return;
         }

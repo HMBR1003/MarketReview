@@ -149,6 +149,8 @@ public class MainActivity extends BaseActivity
         //상단 UI 세팅
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        toolbar.setNavigationIcon(toolbar.getNavigationIcon());
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mainBinding.drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mainBinding.drawerLayout.setDrawerListener(toggle);

@@ -54,10 +54,10 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
     private int mHeaderHeight;
     private int mMinHeaderTranslation;
 
-    private TextView info;
     private int mLastY;
     int rowWidth;
     public static String marketTel;
+    public static String marketName;
 
     String uid;
     ActivityMarketInfoBinding binding;
@@ -70,8 +70,9 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_market_info);
 
         //상단 툴바 설정
-        setToolbar(binding.toolBar, "", Color.WHITE, true);
+        binding.container.addView(getToolbar("",true),0);
 
+        //화면 크기 구하기
         DisplayMetrics mMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
         rowWidth = (mMetrics.widthPixels) / 2;
@@ -84,7 +85,6 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
 
 
         mHeader = findViewById(R.id.header);
-        info = (TextView) findViewById(R.id.info);
 
         mPagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -98,13 +98,28 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
         mPagerSlidingTabStrip.setViewPager(mViewPager);
         mPagerSlidingTabStrip.setOnPageChangeListener(this);
         mLastY = 0;
-
+        
+        dialog = new SpotsDialog(MarketInfoActivity.this, "데이터를 불러오는 중입니다...", R.style.ProgressBar);
+        dialog.setCancelable(false);
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    dialog.dismiss();
+                    finish();
+                }
+                return true;
+            }
+        });
+        dialog.show();
         listener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 MarketList market = dataSnapshot.getValue(MarketList.class);
 
-                binding.toolBar.setTitle(market.marketName);
+                binding.container.removeViewAt(0);
+                marketName = market.marketName;
+                binding.container.addView(getToolbar(market.marketName,true),0);
                 //           binding.marketNameText.setText(market.marketName);
                 marketTel = market.marketTel;
                 binding.tellText.setText(market.marketTel);
@@ -145,19 +160,6 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
     protected void onResume() {
         super.onResume();
 
-        dialog = new SpotsDialog(MarketInfoActivity.this, "데이터를 불러오는 중입니다...", R.style.ProgressBar);
-        dialog.setCancelable(false);
-        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    dialog.dismiss();
-                    finish();
-                }
-                return true;
-            }
-        });
-        dialog.show();
         FirebaseDatabase.getInstance().getReference().child("market").child(uid).addValueEventListener(listener);
 
     }

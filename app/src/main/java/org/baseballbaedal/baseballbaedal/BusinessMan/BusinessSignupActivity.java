@@ -154,7 +154,7 @@ public class BusinessSignupActivity extends NewActivity {
 
         if (isBusiness == 0) {
             //상단 툴바 설정
-            setToolbar(dataBinding.toolBar,"사업자 신규등록 신청",Color.WHITE,true);
+            dataBinding.container.addView(getToolbar("사업자 신규등록 신청",true),0);
             dataBinding.inputBusinessInfo.setText("사업자로 신청할 정보를 입력해 주세요");
             dataBinding.businessSubmit.setText("작성 완료");
             isMarket = "tmp";
@@ -163,7 +163,7 @@ public class BusinessSignupActivity extends NewActivity {
         //사업자 등록신청 승인을 기다리는 고객의 경우 화면 설정(임시 데이터베이스에 저장된 내용을 불러와서 세팅함)
         else if (isBusiness == 1) {
             //상단 툴바 설정
-            setToolbar(dataBinding.toolBar,"사업자 신청정보 수정",Color.WHITE,true);
+            dataBinding.container.addView(getToolbar("사업자 신청정보 수정",true),0);
             dataBinding.inputBusinessInfo.setText("신청한 정보를 수정합니다.");
             dataBinding.businessSubmit.setText("수정 완료");
             isMarket = "tmp";
@@ -174,7 +174,7 @@ public class BusinessSignupActivity extends NewActivity {
         //사업자 승인이 난 고객의 경우 화면 설정(확정 데이터베이스에 저장된 내용을 불러와서 세팅함)
         else if (isBusiness == 2) {
             //상단 툴바 설정
-            setToolbar(dataBinding.toolBar,"매장 정보 수정",Color.WHITE,true);
+            dataBinding.container.addView(getToolbar("매장 정보 수정",true),0);
             dataBinding.inputBusinessInfo.setText("등록된 사업자 정보를 수정합니다.");
             dataBinding.businessSubmit.setText("수정 완료");
             isMarket = "market";
@@ -275,10 +275,6 @@ public class BusinessSignupActivity extends NewActivity {
                 startActivity(zoomIntent);
             }
         });
-
-        //뒤로가기 버튼 만들기
-        setSupportActionBar(dataBinding.toolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         //하단의 신청 완료 버튼을 눌렀을 때의 동작 설정

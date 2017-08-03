@@ -66,7 +66,7 @@ public class MenuManageActivity extends NewActivity implements MenuAdapter.OnSta
         uid = intent.getStringExtra("uid");
 
         //상단 툴바 설정
-        setToolbar(binding.toolBar,"메뉴 관리", Color.WHITE,true);
+        binding.container.addView(getToolbar("메뉴 관리",true),0);
 
         binding.addMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override

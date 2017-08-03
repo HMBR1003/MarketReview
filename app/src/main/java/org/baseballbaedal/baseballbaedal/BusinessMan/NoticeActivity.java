@@ -56,7 +56,7 @@ public class NoticeActivity extends NewActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_notice);
 
         //상단 툴바 설정
-        setToolbar(binding.toolBar,"공지사항 등록/수정",Color.WHITE,true);
+        binding.container.addView(getToolbar("공지사항 등록/수정",true),0);
 
         binding.noticeText.setClearButtonSet(false);
         binding.noticeText.addTextChangedListener(watcher);

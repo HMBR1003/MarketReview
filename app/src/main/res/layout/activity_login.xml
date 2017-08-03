@@ -1,61 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/loginContainer"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sl="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/toolBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:theme="@style/ToolbarStyle">
-
-    </android.support.v7.widget.Toolbar>
-
-    <ImageView
-        android:id="@+id/topImage"
-        android:layout_width="match_parent"
-        android:layout_height="195dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/login_logo"/>
     <LinearLayout
+        android:id="@+id/loginContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:orientation="vertical">
+
+        <!--<com.ssomai.android.scalablelayout.ScalableLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--sl:scale_base_height="168"-->
+            <!--sl:scale_base_width="1080">-->
+
+            <!--<android.support.v7.widget.Toolbar-->
+                <!--android:id="@+id/toolBar"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="?attr/colorPrimary"-->
+                <!--sl:scale_height="168"-->
+                <!--sl:scale_width="1080"-->
+                <!--sl:theme="@style/ToolbarStyle">-->
+
+            <!--</android.support.v7.widget.Toolbar>-->
+        <!--</com.ssomai.android.scalablelayout.ScalableLayout>-->
 
 
-        <ImageView
-            android:layout_margin="20dp"
-            android:id="@+id/buttonGoogleLogin"
-            android:layout_width="320dp"
-            android:layout_height="70dp" />
+        <com.ssomai.android.scalablelayout.ScalableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            sl:scale_base_height="610"
+            sl:scale_base_width="1080">
 
-        <ImageView
-            android:layout_margin="20dp"
-            android:id="@+id/buttonFacebookLogin"
-            android:layout_width="320dp"
-            android:layout_height="70dp" />
+            <ImageView
+                android:id="@+id/topImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                sl:scale_height="610"
+                sl:scale_width="1080" />
+        </com.ssomai.android.scalablelayout.ScalableLayout>
 
-    <!--<com.google.android.gms.common.SignInButton-->
-        <!--android:id="@+id/button_google_login"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="10dp"/>-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
 
-    <!--<com.facebook.login.widget.LoginButton-->
-        <!--android:id="@+id/button_facebook_login"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="10dp"/>-->
+            <com.ssomai.android.scalablelayout.ScalableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                sl:scale_base_height="210"
+                sl:scale_base_width="960">
+
+                <ImageView
+                    android:id="@+id/buttonGoogleLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    sl:scale_height="210"
+                    sl:scale_width="960" />
+            </com.ssomai.android.scalablelayout.ScalableLayout>
+
+            <com.ssomai.android.scalablelayout.ScalableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                sl:scale_base_height="210"
+                sl:scale_base_width="960">
+
+                <ImageView
+                    android:id="@+id/buttonFacebookLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    sl:scale_height="210"
+                    sl:scale_width="960" />
+            </com.ssomai.android.scalablelayout.ScalableLayout>
+
+
+        </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
 </layout>

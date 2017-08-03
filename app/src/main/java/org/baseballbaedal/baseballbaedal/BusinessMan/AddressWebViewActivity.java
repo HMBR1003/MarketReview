@@ -40,7 +40,7 @@ public class AddressWebViewActivity extends NewActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_address_web_view);
 
         //상단 툴바 설정
-        setToolbar(binding.toolBar,"주소 찾기", Color.WHITE,true);
+        binding.container.addView(getToolbar("주소 찾기",true),0);
 
         browser = (WebView) findViewById(R.id.webView);
         browser.getSettings().setJavaScriptEnabled(true);

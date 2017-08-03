@@ -155,7 +155,7 @@ public class MenuAddActivity extends NewActivity {
         if (isEdit) {
             menuKey = intent.getStringExtra("menuId");
             //상단 툴바 설정
-            setToolbar(binding.toolBar, "메뉴 수정", Color.WHITE, true);
+            binding.container.addView(getToolbar("메뉴 수정",true),0);
             loadData();
         } else {
             if (menuCount == -1) {
@@ -163,7 +163,7 @@ public class MenuAddActivity extends NewActivity {
                 finish();
             }
             //상단 툴바 설정
-            setToolbar(binding.toolBar, "메뉴 추가", Color.WHITE, true);
+            binding.container.addView(getToolbar("메뉴 추가",true),0);
         }
 
 

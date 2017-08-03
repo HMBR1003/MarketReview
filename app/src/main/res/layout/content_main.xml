@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:sl="http://schemas.android.com/apk/res-auto"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,16 +17,25 @@
         android:visibility="visible"
         android:layout_weight="1"/>
 
+    <com.ssomai.android.scalablelayout.ScalableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        sl:scale_base_height="220"
+        sl:scale_base_width="1080">
+
+
     <devlight.io.library.ntb.NavigationTabBar
         android:id="@+id/ntb_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         app:ntb_scaled="true"
         app:ntb_tinted="true"
         app:ntb_title_mode="all"
         app:ntb_titled="true"
-        app:ntb_swiped="true"/>
-
+        app:ntb_swiped="true"
+        sl:scale_height = "220"
+        sl:scale_width = "1080"/>
+    </com.ssomai.android.scalablelayout.ScalableLayout>
     <!--구글 광고 설정-->
     <!--<LinearLayout-->
         <!--android:layout_width="match_parent"-->
