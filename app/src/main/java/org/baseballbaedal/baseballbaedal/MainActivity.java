@@ -27,10 +27,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +44,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -71,7 +77,7 @@ import java.util.Map;
 import devlight.io.library.ntb.NavigationTabBar;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,GoogleApiClient.OnConnectionFailedListener {
     public static final int LOGIN_REQUEST = 100;
     public static final int BUSINESS_SIGNUP_REQUEST = 200;
     public static final int SELECT_COL = 300;
@@ -122,6 +128,16 @@ public class MainActivity extends BaseActivity
         takeoutFragment = new TakeoutFragment();
         weatherFragment = new WeatherFragment();
 
+        //구글 로그인 API 관련 작업
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("923425871569-vqi9qeuhlldersvjuo84ief9iepmukf1.apps.googleusercontent.com")
+                .requestEmail()
+                .build();
+        GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
 //        //구글 광고 초기화 및 세팅
 //        MobileAds.initialize(getApplicationContext(), "ca-app-pub-4432641899551083~2094218055");
 //        AdView mAdView = (AdView) findViewById(R.id.adView);
@@ -146,15 +162,23 @@ public class MainActivity extends BaseActivity
         }
 
 
-        //상단 UI 세팅
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        ((ImageView)findViewById(R.id.btnMenu)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainBinding.drawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
 
-        toolbar.setNavigationIcon(toolbar.getNavigationIcon());
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mainBinding.drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mainBinding.drawerLayout.setDrawerListener(toggle);
-        toggle.syncState();
+//        activityLoginBinding.loginContainer.addView(getToolbar("",true),0);
+        //상단 UI 세팅
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        toolbar.setNavigationIcon(toolbar.getNavigationIcon());
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, mainBinding.drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        mainBinding.drawerLayout.setDrawerListener(toggle);
+//        toggle.syncState();
 
         //왼쪽 슬라이드 메뉴 할당 및 리스너 부착
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -467,6 +491,11 @@ public class MainActivity extends BaseActivity
             }
         });
         loginDialog.show();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(this, "구글 관련 서비스를 설정해주세요", Toast.LENGTH_SHORT).show();
     }
 
     //프래그먼트 어댑터

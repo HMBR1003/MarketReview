@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
@@ -26,44 +27,94 @@ public class MenuInfoActivity extends NewActivity {
     String marketId;
     String menuName;
     String menuExplain;
-    String menuPrice;
+    int menuPrice;
     String option1Name;
-    String option1Price;
+    int option1Price;
+    int checkOption1Price;
+    boolean option1Checked;
     String option2Name;
-    String option2Price;
+    int option2Price;
+    int checkOption2Price;
+    boolean option2Checked;
     String option3Name;
-    String option3Price;
+    int option3Price;
+    int checkOption3Price;
+    boolean option3Checked;
     String option4Name;
-    String option4Price;
+    int option4Price;
+    int checkOption4Price;
+    boolean option4Checked;
     String option5Name;
-    String option5Price;
+    int option5Price;
+    int checkOption5Price;
+    boolean option5Checked;
+    String minPrice;
+
+    int foodCount = 1;
+    int totalPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_menu_info);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_menu_info);
 
         Intent intent = getIntent();
         aTime = intent.getStringExtra("aTime");
         menuKey = intent.getStringExtra("menuKey");
         marketName = intent.getStringExtra("marketName");
         marketId = intent.getStringExtra("marketId");
+        minPrice = intent.getStringExtra("minPrice");
         menuName = intent.getStringExtra("menuName");
         menuExplain = intent.getStringExtra("menuExplain");
-        menuPrice = intent.getStringExtra("menuPrice");
+        menuPrice = Integer.parseInt(intent.getStringExtra("menuPrice"));
         option1Name = intent.getStringExtra("option1Name");
-        option1Price = intent.getStringExtra("option1Price");
-        option2Name = intent.getStringExtra("option2Name");
-        option2Price = intent.getStringExtra("option2Price");
-        option3Name = intent.getStringExtra("option3Name");
-        option3Price = intent.getStringExtra("option3Price");
-        option4Name = intent.getStringExtra("option4Name");
-        option4Price = intent.getStringExtra("option4Price");
-        option5Name = intent.getStringExtra("option5Name");
-        option5Price = intent.getStringExtra("option5Price");
+        if (option1Name != null) {
+            option1Price = Integer.parseInt(intent.getStringExtra("option1Price"));
+
+            binding.allOptionContainer.setVisibility(View.VISIBLE);
+            binding.commonContainer.setVisibility(View.GONE);
+            binding.amountContainer.setVisibility(View.GONE);
+            binding.amountLine.setVisibility(View.GONE);
+
+            binding.optionContainer1.setVisibility(View.VISIBLE);
+            binding.optionName1.setText(option1Name);
+            binding.optionPrice1.setText(numToWon(option1Price) + "원");
+
+            option2Name = intent.getStringExtra("option2Name");
+            if (option2Name != null) {
+                option2Price = Integer.parseInt(intent.getStringExtra("option2Price"));
+                binding.optionContainer2.setVisibility(View.VISIBLE);
+                binding.optionName2.setText(option2Name);
+                binding.optionPrice2.setText(numToWon(option2Price) + "원");
+
+                option3Name = intent.getStringExtra("option3Name");
+                if (option3Name != null) {
+                    option3Price = Integer.parseInt(intent.getStringExtra("option3Price"));
+                    binding.optionContainer3.setVisibility(View.VISIBLE);
+                    binding.optionName3.setText(option3Name);
+                    binding.optionPrice3.setText(numToWon(option3Price) + "원");
+
+                    option4Name = intent.getStringExtra("option4Name");
+                    if (option4Name != null) {
+                        option4Price = Integer.parseInt(intent.getStringExtra("option4Price"));
+                        binding.optionContainer4.setVisibility(View.VISIBLE);
+                        binding.optionName4.setText(option4Name);
+                        binding.optionPrice4.setText(numToWon(option4Price) + "원");
+
+                        option5Name = intent.getStringExtra("option5Name");
+                        if (option5Name != null) {
+                            option5Price = Integer.parseInt(intent.getStringExtra("option5Price"));
+                            binding.optionContainer5.setVisibility(View.VISIBLE);
+                            binding.optionName5.setText(option5Name);
+                            binding.optionPrice5.setText(numToWon(option5Price) + "원");
+                        }
+                    }
+                }
+            }
+        }
 
 
-        binding.container.addView(getToolbar(marketName,true),0);
+        binding.container.addView(getToolbar(marketName, true), 0);
         StorageReference ref = FirebaseStorage.getInstance().getReference().child("market").child(marketId).child("menu").child(menuKey + ".jpg");
         try {
             Glide
@@ -78,47 +129,170 @@ public class MenuInfoActivity extends NewActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         binding.menuName.setText(menuName);
         binding.menuExplain.setText(menuExplain);
-        binding.menuPrice.setText(menuPrice);
+        binding.menuPrice.setText(numToWon(menuPrice) + "원");
+        binding.minPrice1.setText(numToWon(Integer.parseInt(minPrice)) + "원");
+        binding.minPrice2.setText(numToWon(Integer.parseInt(minPrice)) + "원");
+        binding.totalPrice1.setText(numToWon(menuPrice) + "원");
+        binding.totalPrice2.setText(numToWon(menuPrice) + "원");
 
 
-        if(option1Name!=null){
-            binding.allOptionContainer.setVisibility(View.VISIBLE);
-            binding.commonContainer.setVisibility(View.GONE);
-            binding.amountContainer.setVisibility(View.GONE);
-            binding.amountLine.setVisibility(View.GONE);
+        checkOption1Price = 0;
+        checkOption2Price = 0;
+        checkOption3Price = 0;
+        checkOption4Price = 0;
+        checkOption5Price = 0;
 
-            binding.optionContainer1.setVisibility(View.VISIBLE);
-            binding.optionName1.setText(option1Name);
-            binding.optionPrice1.setText(option1Price);
+        binding.optionCheck1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                    checkOption1Price = option1Price;
+                    option1Checked = true;
+                } else {
+                    checkOption1Price = 0;
+                    option1Checked = false;
+                }
 
-            if(option2Name!=null){
-                binding.optionContainer2.setVisibility(View.VISIBLE);
-                binding.optionName2.setText(option2Name);
-                binding.optionPrice2.setText(option2Price);
+                calculatePrice();
+            }
+        });
 
-                if(option3Name!=null){
-                    binding.optionContainer3.setVisibility(View.VISIBLE);
-                    binding.optionName3.setText(option3Name);
-                    binding.optionPrice3.setText(option3Price);
+        binding.optionCheck2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                    checkOption2Price = option2Price;
+                    option2Checked = true;
+                } else {
+                    checkOption2Price = 0;
+                    option2Checked = false;
+                }
 
-                    if(option4Name!=null){
-                        binding.optionContainer4.setVisibility(View.VISIBLE);
-                        binding.optionName4.setText(option4Name);
-                        binding.optionPrice4.setText(option4Price);
+                calculatePrice();
+            }
+        });
 
-                        if(option5Name!=null){
-                            binding.optionContainer5.setVisibility(View.VISIBLE);
-                            binding.optionName5.setText(option5Name);
-                            binding.optionPrice5.setText(option5Price);
-                        }
-                    }
+        binding.optionCheck3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                    checkOption3Price = option3Price;
+                    option3Checked = true;
+                } else {
+                    checkOption3Price = 0;
+                    option3Checked = false;
+                }
+
+                calculatePrice();
+            }
+        });
+
+        binding.optionCheck4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                    checkOption4Price = option4Price;
+                    option4Checked = true;
+                } else {
+                    checkOption4Price = 0;
+                    option4Checked = false;
+                }
+
+                calculatePrice();
+            }
+        });
+
+        binding.optionCheck5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                    checkOption5Price = option5Price;
+                    option5Checked = true;
+                } else {
+                    checkOption5Price = 0;
+                    option5Checked = false;
+                }
+
+                calculatePrice();
+            }
+        });
+
+        binding.plusButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                foodCount++;
+                binding.menuAmount1.setText(foodCount + "");
+                binding.menuAmount2.setText(foodCount + "");
+                calculatePrice();
+            }
+        });
+
+        binding.plusButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                foodCount++;
+                binding.menuAmount1.setText(foodCount + "");
+                binding.menuAmount2.setText(foodCount + "");
+                calculatePrice();
+            }
+        });
+
+        binding.minusButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (foodCount > 1)
+                    foodCount--;
+                binding.menuAmount1.setText(foodCount + "");
+                binding.menuAmount2.setText(foodCount + "");
+                calculatePrice();
+            }
+        });
+
+        binding.minusButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (foodCount > 1)
+                    foodCount--;
+                binding.menuAmount1.setText(foodCount + "");
+                binding.menuAmount2.setText(foodCount + "");
+                calculatePrice();
+            }
+        });
+    }
+
+    public void calculatePrice() {
+        int price = (menuPrice + checkOption1Price + checkOption2Price + checkOption3Price + checkOption4Price + checkOption5Price) * foodCount;
+        binding.totalPrice1.setText(numToWon(price) + "원");
+        binding.totalPrice2.setText(numToWon(price) + "원");
+    }
+
+    public String numToWon(int num) {
+        String tmp = num + "";
+        String won;
+        if (tmp.length() > 3) {
+            int a = tmp.length() % 3;
+            int b = tmp.length() / 3;
+            if (a != 0) {
+                String first = tmp.substring(0, a);
+                won = first;
+                for (int i = 0; i < b; i++) {
+                    won = won + "," + tmp.substring(a, a + 3);
+                    a = a + 3;
+                }
+            } else {
+                a = 3;
+                String first = tmp.substring(0, a);
+                won = first;
+                for (int i = 0; i < b - 1; i++) {
+                    won = won + "," + tmp.substring(a, a + 3);
+                    a = a + 3;
                 }
             }
-
+        } else {
+            won = tmp;
         }
-
+        return won;
     }
 }

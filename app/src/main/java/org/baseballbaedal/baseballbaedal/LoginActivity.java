@@ -104,14 +104,10 @@ public class LoginActivity extends NewActivity implements
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
-
                     // if pressed
                     case MotionEvent.ACTION_DOWN: {
                         /* 터치하고 있는 상태 */
                         activityLoginBinding.buttonFacebookLogin.setImageResource(R.drawable.facebook_login_push);
-//                        Glide.with(getApplicationContext())
-//                                .load(R.drawable.facebook_login_push)
-//                                .into(activityLoginBinding.buttonFacebookLogin);
                         break;
                     }
 
@@ -120,9 +116,6 @@ public class LoginActivity extends NewActivity implements
                     case MotionEvent.ACTION_UP: {
                         /* 터치가 안 되고 있는 상태 */
                         activityLoginBinding.buttonFacebookLogin.setImageResource(R.drawable.facebook_login);
-//                        Glide.with(getApplicationContext())
-//                                .load(R.drawable.facebook_login)
-//                                .into(activityLoginBinding.buttonFacebookLogin);
                         break;
                     }
 
@@ -141,9 +134,6 @@ public class LoginActivity extends NewActivity implements
                     // if pressed
                     case MotionEvent.ACTION_DOWN: {
                         /* 터치하고 있는 상태 */
-//                        Glide.with(getApplicationContext())
-//                                .load(R.drawable.google_login_push)
-//                                .into(activityLoginBinding.buttonGoogleLogin);
                         activityLoginBinding.buttonGoogleLogin.setImageResource(R.drawable.google_login_push);
                         break;
                     }
@@ -152,9 +142,6 @@ public class LoginActivity extends NewActivity implements
                     case MotionEvent.ACTION_CANCEL:
                     case MotionEvent.ACTION_UP: {
                         /* 터치가 안 되고 있는 상태 */
-//                        Glide.with(getApplicationContext())
-//                                .load(R.drawable.google_login)
-//                                .into(activityLoginBinding.buttonGoogleLogin);
                         activityLoginBinding.buttonGoogleLogin.setImageResource(R.drawable.google_login);
                         break;
                     }
@@ -172,14 +159,6 @@ public class LoginActivity extends NewActivity implements
 
 
         activityLoginBinding.loginContainer.addView(getToolbar("",true),0);
-//        setToolbar(activityLoginBinding.toolBar,"",Color.WHITE,true);
-
-//        //타이틀 설정
-//        activityLoginBinding.toolBar.setTitle("");
-//        activityLoginBinding.toolBar.setTitleTextColor(Color.WHITE);
-//        setSupportActionBar(activityLoginBinding.toolBar);
-//        //뒤로가기 버튼 만들기
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //파이어베이스 인증 객체 가져오기
         mAuth = FirebaseAuth.getInstance();

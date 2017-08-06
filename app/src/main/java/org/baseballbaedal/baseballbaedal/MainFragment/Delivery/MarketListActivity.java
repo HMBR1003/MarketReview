@@ -43,6 +43,7 @@ public class MarketListActivity extends NewActivity {
     int colCheck;
     SpotsDialog dialog;
 
+    ItemClickListener itemClickListener;
     int menuCode;
     String userID;  //사업자아이디
 
@@ -54,6 +55,7 @@ public class MarketListActivity extends NewActivity {
         SharedPreferences colCheckpref = getSharedPreferences("selectedCol", MODE_PRIVATE);
         colCheck = colCheckpref.getInt("selectedCol", -1);
 
+        itemClickListener = new ItemClickListener();
         fireDB = FirebaseDatabase.getInstance().getReference();
         adapter = new MarketListAdapter();
 
@@ -72,7 +74,7 @@ public class MarketListActivity extends NewActivity {
         dialog.show();
 
         binding.listView.setAdapter(adapter);
-        binding.listView.setOnItemClickListener(new ItemClickListener());
+        binding.listView.setOnItemClickListener(itemClickListener);
 
         //메뉴데이터 가져오기
         Intent intent = getIntent();

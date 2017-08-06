@@ -153,6 +153,7 @@ import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
 import static org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.MarketInfoActivity.marketName;
 import static org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.MarketInfoActivity.marketTel;
+import static org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.MarketInfoActivity.minPrice;
 
 
 public class MenuFragment extends ScrollTabHolderFragment {
@@ -256,26 +257,27 @@ public class MenuFragment extends ScrollTabHolderFragment {
                 Intent intent = new Intent(getContext(), MenuInfoActivity.class);
                 intent.putExtra("marketName",marketName);
                 intent.putExtra("marketId",marketId);
+                intent.putExtra("minPrice",minPrice);
                 intent.putExtra("menuName", adapter.getInfo(position).menuName);
                 intent.putExtra("menuExplain", adapter.getInfo(position).menuExplain);
-                intent.putExtra("menuPrice",numToWon(Integer.parseInt(adapter.getInfo(position).menuPrice)) + "원" );
+                intent.putExtra("menuPrice",adapter.getInfo(position).menuPrice);
                 intent.putExtra("menuKey", adapter.getMenuKey(position));
                 intent.putExtra("aTime", adapter.getInfo(position).aTime);
                 if (adapter.getInfo(position).option1Name != null) {
                     intent.putExtra("option1Name", adapter.getInfo(position).option1Name);
-                    intent.putExtra("option1Price",numToWon(Integer.parseInt(adapter.getInfo(position).option1Price)) + "원" );
+                    intent.putExtra("option1Price",adapter.getInfo(position).option1Price);
                     if (adapter.getInfo(position).option2Name != null) {
                         intent.putExtra("option2Name", adapter.getInfo(position).option2Name);
-                        intent.putExtra("option2Price", numToWon(Integer.parseInt(adapter.getInfo(position).option2Price)) + "원");
+                        intent.putExtra("option2Price", adapter.getInfo(position).option2Price);
                         if (adapter.getInfo(position).option3Name != null) {
                             intent.putExtra("option3Name", adapter.getInfo(position).option3Name);
-                            intent.putExtra("option3Price",numToWon(Integer.parseInt(adapter.getInfo(position).option3Price)) + "원");
+                            intent.putExtra("option3Price",adapter.getInfo(position).option3Price);
                             if (adapter.getInfo(position).option4Name != null) {
                                 intent.putExtra("option4Name", adapter.getInfo(position).option4Name);
-                                intent.putExtra("option4Price", numToWon(Integer.parseInt(adapter.getInfo(position).option4Price)) + "원");
+                                intent.putExtra("option4Price", adapter.getInfo(position).option4Price);
                                 if (adapter.getInfo(position).option5Name != null) {
                                     intent.putExtra("option5Name", adapter.getInfo(position).option5Name);
-                                    intent.putExtra("option5Price", numToWon(Integer.parseInt(adapter.getInfo(position).option5Price)) + "원");
+                                    intent.putExtra("option5Price", adapter.getInfo(position).option5Price);
                                 }
                             }
                         }

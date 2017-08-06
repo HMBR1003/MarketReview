@@ -58,6 +58,7 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
     int rowWidth;
     public static String marketTel;
     public static String marketName;
+    public static String minPrice;
 
     String uid;
     ActivityMarketInfoBinding binding;
@@ -123,6 +124,7 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
                 //           binding.marketNameText.setText(market.marketName);
                 marketTel = market.marketTel;
                 binding.tellText.setText(market.marketTel);
+                minPrice = market.minPrice;
                 binding.minPriceText.setText(numToWon(Integer.parseInt(market.minPrice)) + "원");
                 String address1 = market.marketAddress1.substring(7) + "\n" + market.marketAddress2;
                 binding.marketAdressText.setText(address1);
