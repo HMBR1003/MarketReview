@@ -82,8 +82,11 @@
         <activity
             android:name=".MainFragment.Delivery.Market.MarketInfoActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MainFragment.Delivery.Market.Menu.MenuInfoActivity"
+        <activity
+            android:name=".MainFragment.Delivery.Market.Menu.MenuInfoActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MainFragment.Delivery.Market.BasketActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

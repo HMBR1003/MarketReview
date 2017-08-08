@@ -336,6 +336,14 @@ public class MenuFragment extends ScrollTabHolderFragment {
             }
         });
 
+        binding.cartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),BasketActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
 //        mListView.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.list_item, android.R.id.text1, mListItems));
 

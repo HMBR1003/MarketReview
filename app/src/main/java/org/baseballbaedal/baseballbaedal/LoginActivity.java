@@ -372,7 +372,7 @@ public class LoginActivity extends NewActivity implements
 
                                 //이전에 로그인한 기기에 푸쉬알림을 보내 강제 로그아웃시킨다
                                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                                MainActivity.send("", user.getEmail(), "1", dataSnapshot.getValue(String.class), queue);
+                                PushUtil.getInstance().send("", user.getEmail(), "1", dataSnapshot.getValue(String.class), queue);
                             }
                                 //그 후 데이터베이스에 로그인 상태와 현재 로그인한 기기의 토큰을 등록
                                 myRef.child("users").child(uid).child("isLogin").setValue(1);
