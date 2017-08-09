@@ -80,14 +80,14 @@ public class BasketActivity extends NewActivity {
         super.onCreate(savedInstanceState);
         basketBinding = DataBindingUtil.setContentView(this, R.layout.activity_basket);
 
-        basketBinding.container.addView(getToolbar("장바구니",true),0);
+        basketBinding.container.addView(getToolbar("장바구니", true), 0);
 
         shared = getSharedPreferences("basket", MODE_PRIVATE);
         editor = shared.edit();
 
         editor.putString("marketId", "slwVsecqtTO3RDjzPxBWrFekbEd2");
-        editor.putString("marketName","치킨치킨");
-        editor.putString("minPrice","10000");
+        editor.putString("marketName", "치킨치킨");
+        editor.putString("minPrice", "10000");
 
         editor.putString("menuKey0", "-KpEcsuBIg-8VmoqGl1f");
         editor.putInt("menuAmount0", 2);
@@ -126,11 +126,11 @@ public class BasketActivity extends NewActivity {
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         headerView = (ViewGroup) inflater.inflate(R.layout.basket_start_layout, ll, false);
 
-        hapPriceText = (TextView)footerView.findViewById(R.id.hapPriceText);
-        minPriceText = (TextView)footerView.findViewById(R.id.minPrice);
-        marketName = (TextView)headerView.findViewById(R.id.marketName);
+        hapPriceText = (TextView) footerView.findViewById(R.id.hapPriceText);
+        minPriceText = (TextView) footerView.findViewById(R.id.minPrice);
+        marketName = (TextView) headerView.findViewById(R.id.marketName);
         marketName.setText(shared.getString("marketName", null));
-        minPriceText.setText(numToWon(Integer.parseInt(shared.getString("minPrice", null)))+"원");
+        minPriceText.setText(numToWon(Integer.parseInt(shared.getString("minPrice", null))) + "원");
 
         fireDB = FirebaseDatabase.getInstance().getReference().child("market").child(userID).child("menu");
         fireDB.addValueEventListener(new ValueEventListener() {
@@ -210,8 +210,8 @@ public class BasketActivity extends NewActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         basketBinding.basketLayout.removeView(view[num]);
                         int mPrice = Integer.parseInt(minHapPriceText[num].getText().toString().replaceAll(",", ""));
-                        int totalPrice = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원","")) - mPrice;
-                        hapPriceText.setText(numToWon(totalPrice)+"원");
+                        int totalPrice = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원", "")) - mPrice;
+                        hapPriceText.setText(numToWon(totalPrice) + "원");
                         shared.edit().remove("menuKey" + num).apply();
                         shared.edit().remove("menuAmount" + num).apply();
                         shared.edit().remove("option1checked" + num).apply();
@@ -219,9 +219,10 @@ public class BasketActivity extends NewActivity {
                         shared.edit().remove("option3checked" + num).apply();
                         shared.edit().remove("option4checked" + num).apply();
                         shared.edit().remove("option5checked" + num).apply();
-
-
                         Toast.makeText(BasketActivity.this, "삭제하였습니다.", Toast.LENGTH_SHORT).show();
+
+
+
                     }
                 })
                 .setPositiveButton("취소", new DialogInterface.OnClickListener() {
@@ -316,57 +317,29 @@ public class BasketActivity extends NewActivity {
         minHapPriceText[basketCount].setTag(p);
 
         int price = p * amount;    //소계
-        hapPrice = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원","")) + price;   //합계금액
-        hapPriceText.setText(numToWon(hapPrice)+"원");
+        hapPrice = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원", "")) + price;   //합계금액
+        hapPriceText.setText(numToWon(hapPrice) + "원");
 
         optionText[basketCount] = (TextView) view[basketCount].findViewById(R.id.optionText);   //옵션텍스트
 
         if (option1 || option2 || option3 || option4 || option5) {
-
-
             String option = "";
             if (option1) {
                 option += menuList.option1Name + "(+" + numToWon(Integer.parseInt(menuList.option1Price)) + "원)\n";
-//                optionText[basketCount].append(menuList.option1Name + "(+" + numToWon(Integer.parseInt(menuList.option1Price)) + "원)\n");
             }
             if (option2) {
                 option += menuList.option2Name + "(+" + numToWon(Integer.parseInt(menuList.option2Price)) + "원)\n";
-                //               optionText[basketCount].append(menuList.option2Name + "(+" + numToWon(Integer.parseInt(menuList.option2Price)) + "원)\n");
             }
             if (option3) {
                 option += menuList.option3Name + "(+" + numToWon(Integer.parseInt(menuList.option3Price)) + "원)\n";
-                //              optionText[basketCount].append(menuList.option3Name + "(+" + numToWon(Integer.parseInt(menuList.option3Price)) + "원)\n");
             }
             if (option4) {
                 option += menuList.option4Name + "(+" + numToWon(Integer.parseInt(menuList.option4Price)) + "원)\n";
-//                optionText[basketCount].append(menuList.option4Name + "(+" + numToWon(Integer.parseInt(menuList.option4Price)) + "원)\n");
             }
             if (option5) {
                 option += menuList.option5Name + "(+" + numToWon(Integer.parseInt(menuList.option5Price)) + "원)\n";
-//                optionText[basketCount].append(menuList.option5Name + "(+" + numToWon(Integer.parseInt(menuList.option5Price)) + "원)\n");
             }
-
-//            option = option.substring(0, option.length() - 1);
             optionText[basketCount].setText(option);
-
-
-//            optionText[basketCount].setText("");
-//            if (option1) {
-//                optionText[basketCount].append(menuList.option1Name + "(+" + numToWon(Integer.parseInt(menuList.option1Price)) + "원)\n");
-//            }
-//            if (option2) {
-//                optionText[basketCount].append(menuList.option2Name + "(+" + numToWon(Integer.parseInt(menuList.option2Price)) + "원)\n");
-//            }
-//            if (option3) {
-//                optionText[basketCount].append(menuList.option3Name + "(+" + numToWon(Integer.parseInt(menuList.option3Price)) + "원)\n");
-//            }
-//            if (option4) {
-//                optionText[basketCount].append(menuList.option4Name + "(+" + numToWon(Integer.parseInt(menuList.option4Price)) + "원)\n");
-//            }
-//            if (option5) {
-//                optionText[basketCount].append(menuList.option5Name + "(+" + numToWon(Integer.parseInt(menuList.option5Price)) + "원)\n");
-//            }
-
         }
 
         basketBinding.basketLayout.addView(view[basketCount]);
@@ -379,11 +352,11 @@ public class BasketActivity extends NewActivity {
         int price = (int) minHapPriceText[position].getTag();
         minHapPriceText[position].setText(numToWon(price * amount));
         if (type) {   //플러스
-            totalPrice = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원","")) + price;
+            totalPrice = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원", "")) + price;
         } else {       //마이너스
-            totalPrice = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원","")) - price;
+            totalPrice = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원", "")) - price;
         }
-        hapPriceText.setText(numToWon(totalPrice)+"원");
+        hapPriceText.setText(numToWon(totalPrice) + "원");
         shared.edit().putInt("menuAmount" + position, amount).apply();
     }
 
