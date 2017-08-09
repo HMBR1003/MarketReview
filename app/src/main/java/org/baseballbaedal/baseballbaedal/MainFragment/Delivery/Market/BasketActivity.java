@@ -56,13 +56,11 @@ public class BasketActivity extends NewActivity {
     TextView[] minHapPriceText = new TextView[BASKET_MAX_LENGTH];
     TextView[] countEdit = new TextView[BASKET_MAX_LENGTH];
     TextView[] optionText = new TextView[BASKET_MAX_LENGTH];
-    LinearLayout[] optionLayout = new LinearLayout[BASKET_MAX_LENGTH];
     Button[] plusButton = new Button[BASKET_MAX_LENGTH];
     Button[] minusButton = new Button[BASKET_MAX_LENGTH];
 
     MenuInfo[] menuList = new MenuInfo[BASKET_MAX_LENGTH];
     String[] menuKey = new String[BASKET_MAX_LENGTH];
-    String[] menuAtime = new String[BASKET_MAX_LENGTH];
     int[] menuAmount = new int[BASKET_MAX_LENGTH];
     boolean[] option1checked = new boolean[BASKET_MAX_LENGTH];
     boolean[] option2checked = new boolean[BASKET_MAX_LENGTH];
@@ -322,25 +320,53 @@ public class BasketActivity extends NewActivity {
         hapPriceText.setText(numToWon(hapPrice)+"원");
 
         optionText[basketCount] = (TextView) view[basketCount].findViewById(R.id.optionText);   //옵션텍스트
-        optionLayout[basketCount] = (LinearLayout) view[basketCount].findViewById(R.id.optionLayout);   //옵션레이아웃
 
         if (option1 || option2 || option3 || option4 || option5) {
-            optionLayout[basketCount].setVisibility(View.VISIBLE);
+
+
+            String option = "";
             if (option1) {
-                optionText[basketCount].append(menuList.option1Name + "(+" + numToWon(Integer.parseInt(menuList.option1Price)) + "원)\n");
+                option += menuList.option1Name + "(+" + numToWon(Integer.parseInt(menuList.option1Price)) + "원)\n";
+//                optionText[basketCount].append(menuList.option1Name + "(+" + numToWon(Integer.parseInt(menuList.option1Price)) + "원)\n");
             }
             if (option2) {
-                optionText[basketCount].append(menuList.option2Name + "(+" + numToWon(Integer.parseInt(menuList.option2Price)) + "원)\n");
+                option += menuList.option2Name + "(+" + numToWon(Integer.parseInt(menuList.option2Price)) + "원)\n";
+                //               optionText[basketCount].append(menuList.option2Name + "(+" + numToWon(Integer.parseInt(menuList.option2Price)) + "원)\n");
             }
             if (option3) {
-                optionText[basketCount].append(menuList.option3Name + "(+" + numToWon(Integer.parseInt(menuList.option3Price)) + "원)\n");
+                option += menuList.option3Name + "(+" + numToWon(Integer.parseInt(menuList.option3Price)) + "원)\n";
+                //              optionText[basketCount].append(menuList.option3Name + "(+" + numToWon(Integer.parseInt(menuList.option3Price)) + "원)\n");
             }
             if (option4) {
-                optionText[basketCount].append(menuList.option4Name + "(+" + numToWon(Integer.parseInt(menuList.option4Price)) + "원)\n");
+                option += menuList.option4Name + "(+" + numToWon(Integer.parseInt(menuList.option4Price)) + "원)\n";
+//                optionText[basketCount].append(menuList.option4Name + "(+" + numToWon(Integer.parseInt(menuList.option4Price)) + "원)\n");
             }
             if (option5) {
-                optionText[basketCount].append(menuList.option5Name + "(+" + numToWon(Integer.parseInt(menuList.option5Price)) + "원)\n");
+                option += menuList.option5Name + "(+" + numToWon(Integer.parseInt(menuList.option5Price)) + "원)\n";
+//                optionText[basketCount].append(menuList.option5Name + "(+" + numToWon(Integer.parseInt(menuList.option5Price)) + "원)\n");
             }
+
+//            option = option.substring(0, option.length() - 1);
+            optionText[basketCount].setText(option);
+
+
+//            optionText[basketCount].setText("");
+//            if (option1) {
+//                optionText[basketCount].append(menuList.option1Name + "(+" + numToWon(Integer.parseInt(menuList.option1Price)) + "원)\n");
+//            }
+//            if (option2) {
+//                optionText[basketCount].append(menuList.option2Name + "(+" + numToWon(Integer.parseInt(menuList.option2Price)) + "원)\n");
+//            }
+//            if (option3) {
+//                optionText[basketCount].append(menuList.option3Name + "(+" + numToWon(Integer.parseInt(menuList.option3Price)) + "원)\n");
+//            }
+//            if (option4) {
+//                optionText[basketCount].append(menuList.option4Name + "(+" + numToWon(Integer.parseInt(menuList.option4Price)) + "원)\n");
+//            }
+//            if (option5) {
+//                optionText[basketCount].append(menuList.option5Name + "(+" + numToWon(Integer.parseInt(menuList.option5Price)) + "원)\n");
+//            }
+
         }
 
         basketBinding.basketLayout.addView(view[basketCount]);
