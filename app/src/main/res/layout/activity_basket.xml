@@ -10,42 +10,77 @@
         android:background="#ffffff"
         android:orientation="vertical">
 
-        <ScrollView
+        <LinearLayout
+            android:id="@+id/emptyContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <LinearLayout
-                android:id="@+id/basketLayout"
+            <com.ssomai.android.scalablelayout.ScalableLayout
+                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                sl:scale_base_height="150"
+                sl:scale_base_width="1080">
 
-            </LinearLayout>
-        </ScrollView>
-        <!--구분선-->
-        <View
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="장바구니에 메뉴를 담아주세요"
+                sl:scale_textsize="70"
+                sl:scale_height="150"
+                sl:scale_width="1080"/>
+
+
+            </com.ssomai.android.scalablelayout.ScalableLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/commonContainer"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="0dp"
-            android:background="#f000" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <com.ssomai.android.scalablelayout.ScalableLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            sl:scale_base_height="160"
-            sl:scale_base_width="1080">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
-            <Button
-                android:id="@+id/orderButton"
+                <LinearLayout
+                    android:id="@+id/basketLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+            </ScrollView>
+            <!--구분선-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="0dp"
+                android:background="#f000" />
+
+            <com.ssomai.android.scalablelayout.ScalableLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="OnClicked"
-                android:text="주문하기"
-                sl:scale_height="160"
-                sl:scale_textsize="60"
-                sl:scale_width="1080" />
-        </com.ssomai.android.scalablelayout.ScalableLayout>
+                sl:scale_base_height="160"
+                sl:scale_base_width="1080">
 
+                <Button
+                    android:id="@+id/orderButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="OnClicked"
+                    android:text="주문하기"
+                    sl:scale_height="160"
+                    sl:scale_textsize="60"
+                    sl:scale_width="1080" />
+            </com.ssomai.android.scalablelayout.ScalableLayout>
+
+        </LinearLayout>
     </LinearLayout>
 </layout>

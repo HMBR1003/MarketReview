@@ -12,6 +12,7 @@ import android.content.pm.Signature;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -594,6 +595,8 @@ public class MainActivity extends BaseActivity
         if (user != null) {
             uid = user.getUid();
             myRef = FirebaseDatabase.getInstance().getReference();
+            SharedPreferences sp = getSharedPreferences("basket", MODE_PRIVATE);
+            sp.edit().clear().apply();
 
             //푸쉬토큰을 검사하여 다른 기기에서 로그인을 했는 지 확인한다
             myRef.child("users").child(uid).child("pushToken").addListenerForSingleValueEvent(new ValueEventListener() {

@@ -1,11 +1,13 @@
 package org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.Menu;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
@@ -51,13 +53,13 @@ public class MenuInfoActivity extends NewActivity {
     String minPrice;
 
     int foodCount = 1;
-    int totalPrice;
+    SharedPreferences shared;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_menu_info);
-
+        shared = getSharedPreferences("basket", MODE_PRIVATE);
         Intent intent = getIntent();
         aTime = intent.getStringExtra("aTime");
         menuKey = intent.getStringExtra("menuKey");
@@ -258,6 +260,60 @@ public class MenuInfoActivity extends NewActivity {
                 binding.menuAmount1.setText(foodCount + "");
                 binding.menuAmount2.setText(foodCount + "");
                 calculatePrice();
+            }
+        });
+
+        binding.basketButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = shared.edit();
+                String marketId1 = shared.getString("marketId", null);
+
+                //장바구니에 항목이 존재할 때
+                if(marketId1!=null){
+                    //현재 장바구니에 있는 음식점과 다른 음식점일 경우
+                    if(!marketId1.equals(marketId)){
+
+                    }
+
+                    //같은 음식점일 경우
+                    else{
+                        int index = shared.getInt("basketCount", 0);
+                        if(index<50) {
+                            editor.putString("menuKey" + index, menuKey);
+                            editor.putInt("menuAmount" + index, foodCount);
+                            editor.putBoolean("option1checked" + index, option1Checked);
+                            editor.putBoolean("option2checked" + index, option2Checked);
+                            editor.putBoolean("option3checked" + index, option3Checked);
+                            editor.putBoolean("option4checked" + index, option4Checked);
+                            editor.putBoolean("option5checked" + index, option5Checked);
+                            editor.putInt("basketCount", index+1);
+                            editor.commit();
+                        }
+                        else{
+                            Toast.makeText(MenuInfoActivity.this, "장바구니 최대 개수를 초과했습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                //장바구니에 항목이 없을 경우
+                else {
+
+                    editor.putString("marketId", marketId);
+                    editor.putString("marketName", marketName);
+                    editor.putString("minPrice", minPrice);
+
+                    editor.putString("menuKey0", menuKey);
+
+                    editor.putInt("menuAmount0",foodCount);
+                    editor.putBoolean("option1checked0",option1Checked);
+                    editor.putBoolean("option2checked0", option2Checked);
+                    editor.putBoolean("option3checked0", option3Checked);
+                    editor.putBoolean("option4checked0", option4Checked);
+                    editor.putBoolean("option5checked0", option5Checked);
+                    editor.putInt("basketCount", 1);
+                    editor.commit();
+                }
             }
         });
     }

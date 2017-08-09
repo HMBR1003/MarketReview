@@ -125,6 +125,7 @@
 package org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -151,6 +152,7 @@ import org.baseballbaedal.baseballbaedal.databinding.FragmentMenuBinding;
 
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
+import static android.content.Context.MODE_PRIVATE;
 import static org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.MarketInfoActivity.marketName;
 import static org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.MarketInfoActivity.marketTel;
 import static org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.MarketInfoActivity.minPrice;
@@ -167,6 +169,7 @@ public class MenuFragment extends ScrollTabHolderFragment {
     int imageWidth;
 
     GridViewWithHeaderAndFooter menuListView;
+    SharedPreferences shared;
 
     public static Fragment newInstance(int position, String marketId, int imageWidth) {
         MenuFragment f = new MenuFragment();
@@ -213,6 +216,13 @@ public class MenuFragment extends ScrollTabHolderFragment {
     @Override
     public void onResume() {
         FirebaseDatabase.getInstance().getReference().child("market").child(marketId).child("menu").addValueEventListener(listener);
+        int index = shared.getInt("basketCount", 0);
+        if(index>0) {
+            binding.cartButton.setText("장바구니로 이동(" + index + ")");
+        }
+        else{
+            binding.cartButton.setText("장바구니로 이동");
+        }
         super.onResume();
     }
 
@@ -248,6 +258,7 @@ public class MenuFragment extends ScrollTabHolderFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         binding = FragmentMenuBinding.bind(getView());
+        shared = getActivity().getSharedPreferences("basket", MODE_PRIVATE);
 
         menuListView.setOnScrollListener(new OnScroll());
         menuListView.setAdapter(adapter);
