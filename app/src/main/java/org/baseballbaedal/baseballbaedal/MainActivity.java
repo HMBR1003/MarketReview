@@ -64,6 +64,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import org.baseballbaedal.baseballbaedal.BusinessMan.BusinessSignupActivity;
 import org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuManageActivity;
 import org.baseballbaedal.baseballbaedal.BusinessMan.NoticeActivity;
+import org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.BasketActivity;
 import org.baseballbaedal.baseballbaedal.MainFragment.DeliveryFragment;
 import org.baseballbaedal.baseballbaedal.MainFragment.HomeFragment;
 import org.baseballbaedal.baseballbaedal.MainFragment.TakeoutFragment;
@@ -79,6 +80,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import devlight.io.library.ntb.NavigationTabBar;
+
+import static android.content.Intent.FLAG_ACTIVITY_NO_HISTORY;
 
 public class MainActivity extends NewActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
@@ -122,20 +125,23 @@ public class MainActivity extends NewActivity
 
     SharedPreferences pref; //최초실행 체크 변수
 
-    int fullHeight;
-    int bottomHeight;
-    int topHeight = 72;
-    int toolbarHeight;
+
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (fragmentHeight == 0) {
+            int fullHeight;
+            int fullWidth;
+            int bottomHeight;
+            int topHeight = 72;
+            int toolbarHeight;
             bottomHeight = navigationTabBar.getHeight();
 
             DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             fullHeight = displayMetrics.heightPixels;// 세로
+            fullWidth = displayMetrics.widthPixels;
 
             int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
             if (resourceId > 0) {
@@ -146,7 +152,7 @@ public class MainActivity extends NewActivity
             toolbarHeight = view.getHeight();
 
             fragmentHeight = fullHeight - bottomHeight - topHeight - toolbarHeight;
-            BusProvider.getInstance().post(new HeightEvent(fragmentHeight));
+            BusProvider.getInstance().post(new HeightEvent(fragmentHeight,fullWidth));
         }
     }
 
@@ -436,7 +442,11 @@ public class MainActivity extends NewActivity
             if (user == null) {
                 pleaseLogin();
             } else {
-
+                if(isBusiness!=2) {
+                    Intent intent = new Intent(this, BasketActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP|FLAG_ACTIVITY_NO_HISTORY);
+                    startActivity(intent);
+                }
             }
         } else if (id == R.id.nav_orderList) {  //왼쪽 슬라이드메뉴 주문내역 부분
             if (user == null) {

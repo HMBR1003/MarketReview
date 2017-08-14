@@ -3,6 +3,7 @@ package org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.Menu;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AlertDialog;
@@ -24,6 +25,7 @@ import com.google.firebase.storage.StorageReference;
 
 import org.baseballbaedal.baseballbaedal.LoginActivity;
 import org.baseballbaedal.baseballbaedal.NewActivity;
+import org.baseballbaedal.baseballbaedal.Order.OrderActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityMenuInfoBinding;
 
@@ -62,6 +64,7 @@ public class MenuInfoActivity extends NewActivity {
     boolean option5Checked;
     String minPrice;
 
+    int totalPrice;
     AlertDialog dialog;
 
     int foodCount = 1;
@@ -125,6 +128,9 @@ public class MenuInfoActivity extends NewActivity {
                     }
                 }
             }
+        }
+        if(intent.getBooleanExtra("isTakeout",false)){
+            binding.buttonContainer.setVisibility(View.GONE);
         }
 
 
@@ -274,7 +280,8 @@ public class MenuInfoActivity extends NewActivity {
                 calculatePrice();
             }
         });
-
+        binding.basketButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.basketButton.setCornerRadius(15);
         binding.basketButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -421,14 +428,22 @@ public class MenuInfoActivity extends NewActivity {
 
             }
         });
-
+        binding.nowOrder.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.nowOrder.setCornerRadius(15);
         binding.nowOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
                     if(isBusiness==0||isBusiness==1){
-
+                        if(totalPrice<Integer.parseInt(minPrice)){
+                            Toast.makeText(MenuInfoActivity.this, "주문하시는 금액이 최소 주문 금액보다 작습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
                     }
                     else {
                         Toast.makeText(MenuInfoActivity.this, "사업자 고객은 주문을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
@@ -477,9 +492,9 @@ public class MenuInfoActivity extends NewActivity {
     }
 
     public void calculatePrice() {
-        int price = (menuPrice + checkOption1Price + checkOption2Price + checkOption3Price + checkOption4Price + checkOption5Price) * foodCount;
-        binding.totalPrice1.setText(numToWon(price) + "원");
-        binding.totalPrice2.setText(numToWon(price) + "원");
+        totalPrice = (menuPrice + checkOption1Price + checkOption2Price + checkOption3Price + checkOption4Price + checkOption5Price) * foodCount;
+        binding.totalPrice1.setText(numToWon(totalPrice) + "원");
+        binding.totalPrice2.setText(numToWon(totalPrice) + "원");
     }
 
     public String numToWon(int num) {

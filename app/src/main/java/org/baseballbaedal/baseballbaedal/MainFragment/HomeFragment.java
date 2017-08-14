@@ -16,6 +16,7 @@ import com.squareup.otto.Subscribe;
 import org.baseballbaedal.baseballbaedal.BusProvider;
 import org.baseballbaedal.baseballbaedal.HeightEvent;
 import org.baseballbaedal.baseballbaedal.MainActivity;
+import org.baseballbaedal.baseballbaedal.Order.OrderActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.Test.DBTestActivity;
 import org.baseballbaedal.baseballbaedal.Test.DataTestActivity;
@@ -48,7 +49,7 @@ public class HomeFragment extends Fragment {
         homeBinding.testButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mainActivity, DataTestActivity.class);
+                Intent intent = new Intent(mainActivity,OrderActivity.class);
                 startActivity(intent);
             }
         });

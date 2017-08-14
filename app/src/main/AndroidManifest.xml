@@ -87,6 +87,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainFragment.Delivery.Market.BasketActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity android:name=".Order.OrderActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Order.ImageZoomActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Order.SeatSelectActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

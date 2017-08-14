@@ -2,6 +2,7 @@ package org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -33,6 +34,8 @@ import org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuInfo;
 import org.baseballbaedal.baseballbaedal.NewActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityBasketBinding;
+
+import info.hoang8f.widget.FButton;
 
 public class BasketActivity extends NewActivity {
     public static final int BASKET_MAX_LENGTH = 30;
@@ -73,7 +76,7 @@ public class BasketActivity extends NewActivity {
     int hapPrice;
     LayoutInflater inflater;
     LinearLayout ll;
-
+    FButton addMenuButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +123,8 @@ public class BasketActivity extends NewActivity {
         marketName = (TextView) headerView.findViewById(R.id.marketName);
 
         init();
-
+        basketBinding.orderButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        basketBinding.orderButton.setCornerRadius(15);
         basketBinding.orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,7 +177,19 @@ public class BasketActivity extends NewActivity {
 
                 //총 가격 표시해줄 푸터뷰
                 basketBinding.basketLayout.addView(footerView);
-
+                addMenuButton = (FButton)findViewById(R.id.addMenuButton);
+                addMenuButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+                addMenuButton.setCornerRadius(15);
+                addMenuButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), MarketInfoActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("uid", userID);
+                        intent.putExtra("isTakeout", false);
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override

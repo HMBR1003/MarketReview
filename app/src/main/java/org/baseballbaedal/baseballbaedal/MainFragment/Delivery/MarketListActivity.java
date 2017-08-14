@@ -24,7 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.baseballbaedal.baseballbaedal.BaseActivity;
+
 import org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.MarketInfoActivity;
 import org.baseballbaedal.baseballbaedal.NewActivity;
 import org.baseballbaedal.baseballbaedal.R;
@@ -94,13 +94,13 @@ public class MarketListActivity extends NewActivity {
                 menuCode = 4;
                 break;
             case "기타":
-                menuCode = 5;
+                menuCode = 6;
                 break;
         }
 
 
         //상단 툴바 설정
-        binding.container.addView(getToolbar(menu,true),0);
+        binding.container.addView(getToolbar(menu, true), 0);
 
         listener = new ValueEventListener() {       //마켓리스트 추출
             @Override
@@ -118,11 +118,10 @@ public class MarketListActivity extends NewActivity {
                         }
                     }
                 }
-                if(adapter.getCount()>0){
+                if (adapter.getCount() > 0) {
                     binding.noMarketContainer.setVisibility(View.GONE);
                     binding.marketContainer.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     binding.noMarketContainer.setVisibility(View.VISIBLE);
                     binding.marketContainer.setVisibility(View.GONE);
                 }
@@ -157,6 +156,7 @@ public class MarketListActivity extends NewActivity {
 
             Intent intent = new Intent(getApplicationContext(), MarketInfoActivity.class);
             intent.putExtra("uid", item.getMarketUserID());
+            intent.putExtra("isTakeout", false);
             startActivity(intent);
         }
     }

@@ -16,7 +16,7 @@ import org.w3c.dom.Text;
  * Created by Administrator on 2017-07-31-031.
  */
 
-public class NewActivity extends BaseActivity {
+public class NewActivity extends AppCompatActivity {
 
     android.support.v7.widget.Toolbar toolbar;
 
@@ -71,4 +71,10 @@ public class NewActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    //    @Override
+//    protected void attachBaseContext(Context newBase) {
+//        //글꼴 설정하기 위한 구문
+//        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+//    }
 }

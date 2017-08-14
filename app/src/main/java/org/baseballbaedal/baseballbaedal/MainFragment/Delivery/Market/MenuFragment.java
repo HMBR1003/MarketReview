@@ -161,6 +161,7 @@ import org.baseballbaedal.baseballbaedal.databinding.FragmentMenuBinding;
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT;
 import static org.baseballbaedal.baseballbaedal.MainActivity.isBusiness;
 import static org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.MarketInfoActivity.marketName;
 import static org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.MarketInfoActivity.marketTel;
@@ -176,16 +177,18 @@ public class MenuFragment extends ScrollTabHolderFragment {
     String marketId;
     ValueEventListener listener;
     int imageWidth;
+    boolean isTakeout;
 
     GridViewWithHeaderAndFooter menuListView;
     SharedPreferences shared;
 
-    public static Fragment newInstance(int position, String marketId, int imageWidth) {
+    public static Fragment newInstance(int position, String marketId, int imageWidth, boolean isTakeout) {
         MenuFragment f = new MenuFragment();
         Bundle b = new Bundle();
         b.putInt("position", position);
         b.putString("marketId", marketId);
         b.putInt("imageWidth", imageWidth);
+        b.putBoolean("isTakeout",isTakeout);
         f.setArguments(b);
         return f;
     }
@@ -196,6 +199,7 @@ public class MenuFragment extends ScrollTabHolderFragment {
         mPosition = getArguments().getInt("position");
         marketId = getArguments().getString("marketId");
         imageWidth = getArguments().getInt("imageWidth");
+        isTakeout = getArguments().getBoolean("isTakeout");
     }
 
     @Override
@@ -275,6 +279,7 @@ public class MenuFragment extends ScrollTabHolderFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), MenuInfoActivity.class);
+                intent.putExtra("isTakeout",isTakeout);
                 intent.putExtra("marketName",marketName);
                 intent.putExtra("marketId",marketId);
                 intent.putExtra("minPrice",minPrice);
@@ -347,7 +352,8 @@ public class MenuFragment extends ScrollTabHolderFragment {
 
             }
         };
-
+        binding.callButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.callButton.setCornerRadius(15);
         binding.callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -356,6 +362,8 @@ public class MenuFragment extends ScrollTabHolderFragment {
             }
         });
 
+        binding.cartButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.cartButton.setCornerRadius(15);
         binding.cartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -363,6 +371,7 @@ public class MenuFragment extends ScrollTabHolderFragment {
                 if (user != null) {
                     if (isBusiness == 0 || isBusiness == 1) {
                         Intent intent = new Intent(getActivity(), BasketActivity.class);
+                        intent.setFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent);
                     } else {
                         Toast.makeText(getActivity(), "사업자 고객은 주문을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
@@ -373,6 +382,10 @@ public class MenuFragment extends ScrollTabHolderFragment {
                 }
             }
         });
+
+        if(isTakeout){
+            binding.buttonContainer.setVisibility(View.GONE);
+        }
 
 
 //        mListView.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.list_item, android.R.id.text1, mListItems));

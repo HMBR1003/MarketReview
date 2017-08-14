@@ -6,12 +6,18 @@ package org.baseballbaedal.baseballbaedal;
 
 public class HeightEvent {
     private int height;
+    private int width;
 
-    public HeightEvent(int height){
+    public HeightEvent(int height,int width){
         this.height = height;
+        this.width = width;
     }
 
     public int getHeight() {
         return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 }

@@ -21,7 +21,7 @@
             sl:scale_base_height="140"
             sl:scale_base_width="1080">
 
-            <Button
+            <info.hoang8f.widget.FButton
                 android:layout_gravity="center"
                 android:id="@+id/addMenuButton"
                 android:layout_width="wrap_content"

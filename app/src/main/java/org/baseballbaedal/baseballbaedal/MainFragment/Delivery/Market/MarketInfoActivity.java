@@ -55,6 +55,7 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
     private int mMinHeaderTranslation;
 
     private int mLastY;
+    private boolean isTakeout;
     int rowWidth;
     public static String marketTel;
     public static String marketName;
@@ -71,7 +72,7 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_market_info);
 
         //상단 툴바 설정
-        binding.container.addView(getToolbar("",true),0);
+        binding.container.addView(getToolbar("", true), 0);
 
         //화면 크기 구하기
         DisplayMetrics mMetrics = new DisplayMetrics();
@@ -80,6 +81,7 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
 
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
+        isTakeout = intent.getBooleanExtra("isTakeout", false);
         mMinHeaderHeight = getResources().getDimensionPixelSize(R.dimen.min_header_height);
         mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.header_height);
         mMinHeaderTranslation = -mMinHeaderHeight;
@@ -120,7 +122,7 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
 
                 binding.container.removeViewAt(0);
                 marketName = market.marketName;
-                binding.container.addView(getToolbar(market.marketName,true),0);
+                binding.container.addView(getToolbar(market.marketName, true), 0);
                 //           binding.marketNameText.setText(market.marketName);
                 marketTel = market.marketTel;
                 binding.tellText.setText(market.marketTel);
@@ -222,10 +224,10 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
 
             if (NEEDS_PROXY) {
                 // TODO is not good
-                currentHolder.adjustScroll(mHeader.getHeight() - mLastY,mHeader);
+                currentHolder.adjustScroll(mHeader.getHeight() - mLastY, mHeader);
                 mHeader.postInvalidate();
             } else {
-                currentHolder.adjustScroll((int) (mHeader.getHeight() + mHeader.getTranslationY()),mHeader);
+                currentHolder.adjustScroll((int) (mHeader.getHeight() + mHeader.getTranslationY()), mHeader);
             }
         }
     }
@@ -236,10 +238,10 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
         ScrollTabHolder currentHolder = scrollTabHolders.valueAt(position);
         if (NEEDS_PROXY) {
             //TODO is not good
-            currentHolder.adjustScroll(mHeader.getHeight() - mLastY,mHeader);
+            currentHolder.adjustScroll(mHeader.getHeight() - mLastY, mHeader);
             mHeader.postInvalidate();
         } else {
-            currentHolder.adjustScroll((int) (mHeader.getHeight() + mHeader.getTranslationY()),mHeader);
+            currentHolder.adjustScroll((int) (mHeader.getHeight() + mHeader.getTranslationY()), mHeader);
         }
     }
 
@@ -320,7 +322,7 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
             ScrollTabHolderFragment fragment;
             switch (position) {
                 case 0:
-                    fragment = (ScrollTabHolderFragment) MenuFragment.newInstance(position, uid, rowWidth);
+                    fragment = (ScrollTabHolderFragment) MenuFragment.newInstance(position, uid, rowWidth,isTakeout);
                     break;
                 case 1:
                     fragment = (ScrollTabHolderFragment) ReviewFragment.newInstance(position, uid);

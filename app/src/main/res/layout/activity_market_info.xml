@@ -32,7 +32,7 @@
                         android:id="@+id/marketImage"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
-                        android:padding="5dp"
+                        android:padding="10dp"
                         android:scaleType="fitXY" />
 
                     <LinearLayout
@@ -106,7 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_gravity="bottom"
-                    android:background="#0072C6" />
+                    android:background="@color/buttonColor" />
             </FrameLayout>
         </FrameLayout>
     </LinearLayout>

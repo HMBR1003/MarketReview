@@ -54,7 +54,7 @@ import com.gun0912.tedpermission.TedPermission;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import org.baseballbaedal.baseballbaedal.BaseActivity;
+
 import org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuAddActivity;
 import org.baseballbaedal.baseballbaedal.NewActivity;
 import org.baseballbaedal.baseballbaedal.R;
