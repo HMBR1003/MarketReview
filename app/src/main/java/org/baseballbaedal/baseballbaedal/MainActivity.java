@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -90,9 +92,10 @@ public class MainActivity extends BaseActivity
     TakeoutFragment takeoutFragment;
     WeatherFragment weatherFragment;
     ViewPager viewPager;
-    int isBusiness;
+    public static int isBusiness;
     long backTime;
     int colCheck = -1;
+
 
 
     ActivityMainBinding mainBinding;
@@ -128,6 +131,8 @@ public class MainActivity extends BaseActivity
         deliveryFragment = new DeliveryFragment();
         takeoutFragment = new TakeoutFragment();
         weatherFragment = new WeatherFragment();
+
+
 
         //구글 로그인 API 관련 작업
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -595,8 +600,6 @@ public class MainActivity extends BaseActivity
         if (user != null) {
             uid = user.getUid();
             myRef = FirebaseDatabase.getInstance().getReference();
-            SharedPreferences sp = getSharedPreferences("basket", MODE_PRIVATE);
-            sp.edit().clear().apply();
 
             //푸쉬토큰을 검사하여 다른 기기에서 로그인을 했는 지 확인한다
             myRef.child("users").child(uid).child("pushToken").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -622,6 +625,8 @@ public class MainActivity extends BaseActivity
                 }
             });
         } else {
+            SharedPreferences sp = getSharedPreferences("basket", MODE_PRIVATE);
+            sp.edit().clear().apply();
             mAuth.addAuthStateListener(mAuthListener);
             setLeftMenu();
         }

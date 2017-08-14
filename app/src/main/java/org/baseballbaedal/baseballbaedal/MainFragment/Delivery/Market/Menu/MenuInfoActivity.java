@@ -1,10 +1,15 @@
 package org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.Menu;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Toast;
@@ -12,12 +17,17 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.baseballbaedal.baseballbaedal.LoginActivity;
 import org.baseballbaedal.baseballbaedal.NewActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityMenuInfoBinding;
+
+import static org.baseballbaedal.baseballbaedal.MainActivity.isBusiness;
 
 public class MenuInfoActivity extends NewActivity {
 
@@ -51,6 +61,8 @@ public class MenuInfoActivity extends NewActivity {
     int checkOption5Price;
     boolean option5Checked;
     String minPrice;
+
+    AlertDialog dialog;
 
     int foodCount = 1;
     SharedPreferences shared;
@@ -266,56 +278,202 @@ public class MenuInfoActivity extends NewActivity {
         binding.basketButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences.Editor editor = shared.edit();
+                final SharedPreferences.Editor editor = shared.edit();
                 String marketId1 = shared.getString("marketId", null);
 
-                //장바구니에 항목이 존재할 때
-                if(marketId1!=null){
-                    //현재 장바구니에 있는 음식점과 다른 음식점일 경우
-                    if(!marketId1.equals(marketId)){
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    if(isBusiness==0||isBusiness==1)
+                    {
+                        //장바구니에 항목이 존재할 때
+                        if (marketId1 != null) {
 
-                    }
+                            //현재 장바구니에 있는 음식점과 다른 음식점일 경우
+                            if (!marketId1.equals(marketId)) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(MenuInfoActivity.this);
+                                builder.setTitle("장바구니 알림");
+                                builder.setMessage("장바구니에는 한 음식점의 메뉴만 담을 수 있습니다.\n확인을 누르시면 이전에 담은 메뉴가 초기화됩니다.\n담으시겠습니까?");
+                                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        shared = getSharedPreferences("basket", MODE_PRIVATE);
+                                        shared.edit().clear().apply();
+                                        editor.putString("marketId", marketId);
+                                        editor.putString("marketName", marketName);
+                                        editor.putString("minPrice", minPrice);
+                                        editor.putString("menuKey0", menuKey);
+                                        editor.putInt("menuAmount0", foodCount);
+                                        editor.putBoolean("option1checked0", option1Checked);
+                                        editor.putBoolean("option2checked0", option2Checked);
+                                        editor.putBoolean("option3checked0", option3Checked);
+                                        editor.putBoolean("option4checked0", option4Checked);
+                                        editor.putBoolean("option5checked0", option5Checked);
+                                        editor.putInt("basketCount", 1);
+                                        editor.commit();
+                                        Toast.makeText(MenuInfoActivity.this, "장바구니에 담았습니다.", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
+                                });
+                                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                    //같은 음식점일 경우
-                    else{
-                        int index = shared.getInt("basketCount", 0);
-                        if(index<50) {
-                            editor.putString("menuKey" + index, menuKey);
-                            editor.putInt("menuAmount" + index, foodCount);
-                            editor.putBoolean("option1checked" + index, option1Checked);
-                            editor.putBoolean("option2checked" + index, option2Checked);
-                            editor.putBoolean("option3checked" + index, option3Checked);
-                            editor.putBoolean("option4checked" + index, option4Checked);
-                            editor.putBoolean("option5checked" + index, option5Checked);
-                            editor.putInt("basketCount", index+1);
+                                    }
+                                });
+                                dialog = builder.create();
+                                dialog.setCancelable(false);
+                                dialog.setOnKeyListener(new Dialog.OnKeyListener() {
+                                    @Override
+                                    public boolean onKey(DialogInterface arg0, int keyCode,
+                                                         KeyEvent event) {
+                                        if (keyCode == KeyEvent.KEYCODE_BACK) {
+                                            dialog.dismiss();
+                                        }
+                                        return true;
+                                    }
+                                });
+                                dialog.show();
+                            }
+
+                            //같은 음식점일 경우
+                            else {
+                                int index = shared.getInt("basketCount", 0);
+                                if (index < 30) {
+                                    boolean isExist = false;
+                                    int check = 0;
+                                    int menuAmount;
+                                    boolean option1checked;
+                                    boolean option2checked;
+                                    boolean option3checked;
+                                    boolean option4checked;
+                                    boolean option5checked;
+                                    for (int i = 0; i < 30; i++) {
+                                        if (shared.getString("menuKey" + i, "").equals(menuKey)) {
+
+                                            Log.d("같은메뉴", i + "번째");
+                                            option1checked = shared.getBoolean("option1checked" + i, false);
+                                            option2checked = shared.getBoolean("option2checked" + i, false);
+                                            option3checked = shared.getBoolean("option3checked" + i, false);
+                                            option4checked = shared.getBoolean("option4checked" + i, false);
+                                            option5checked = shared.getBoolean("option5checked" + i, false);
+
+                                            if (option1checked == option1Checked && option2checked == option2Checked && option3checked == option3Checked && option4checked == option4Checked && option5checked == option5Checked) {
+                                                menuAmount = shared.getInt("menuAmount" + i, 1);
+                                                editor.putInt("menuAmount" + i, menuAmount + 1);
+                                                editor.commit();
+                                                isExist = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    if (!isExist) {
+                                        editor.putString("menuKey" + index, menuKey);
+                                        editor.putInt("menuAmount" + index, foodCount);
+                                        editor.putBoolean("option1checked" + index, option1Checked);
+                                        editor.putBoolean("option2checked" + index, option2Checked);
+                                        editor.putBoolean("option3checked" + index, option3Checked);
+                                        editor.putBoolean("option4checked" + index, option4Checked);
+                                        editor.putBoolean("option5checked" + index, option5Checked);
+                                        editor.putInt("basketCount", index + 1);
+                                        editor.commit();
+                                    }
+                                } else {
+                                    Toast.makeText(MenuInfoActivity.this, "장바구니 최대 개수를 초과했습니다.", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+
+                                Toast.makeText(MenuInfoActivity.this, "장바구니에 담았습니다.", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        }
+
+                        //장바구니에 항목이 없을 경우
+                        else {
+
+                            editor.putString("marketId", marketId);
+                            editor.putString("marketName", marketName);
+                            editor.putString("minPrice", minPrice);
+
+                            editor.putString("menuKey0", menuKey);
+
+                            editor.putInt("menuAmount0", foodCount);
+                            editor.putBoolean("option1checked0", option1Checked);
+                            editor.putBoolean("option2checked0", option2Checked);
+                            editor.putBoolean("option3checked0", option3Checked);
+                            editor.putBoolean("option4checked0", option4Checked);
+                            editor.putBoolean("option5checked0", option5Checked);
+                            editor.putInt("basketCount", 1);
                             editor.commit();
-                        }
-                        else{
-                            Toast.makeText(MenuInfoActivity.this, "장바구니 최대 개수를 초과했습니다.", Toast.LENGTH_SHORT).show();
+
+                            Toast.makeText(MenuInfoActivity.this, "장바구니에 담았습니다.", Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                     }
+                    //사장 고객인 경우
+                    else{
+                        Toast.makeText(MenuInfoActivity.this, "사업자 고객은 주문을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    pleaseLogin();
                 }
 
-                //장바구니에 항목이 없을 경우
-                else {
 
-                    editor.putString("marketId", marketId);
-                    editor.putString("marketName", marketName);
-                    editor.putString("minPrice", minPrice);
+            }
+        });
 
-                    editor.putString("menuKey0", menuKey);
+        binding.nowOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    if(isBusiness==0||isBusiness==1){
 
-                    editor.putInt("menuAmount0",foodCount);
-                    editor.putBoolean("option1checked0",option1Checked);
-                    editor.putBoolean("option2checked0", option2Checked);
-                    editor.putBoolean("option3checked0", option3Checked);
-                    editor.putBoolean("option4checked0", option4Checked);
-                    editor.putBoolean("option5checked0", option5Checked);
-                    editor.putInt("basketCount", 1);
-                    editor.commit();
+                    }
+                    else {
+                        Toast.makeText(MenuInfoActivity.this, "사업자 고객은 주문을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
+
+                }else {
+                    pleaseLogin();
                 }
             }
         });
+    }
+
+    //로그인 해달라는 창을 띄우는 메서드
+    public void pleaseLogin() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MenuInfoActivity.this);
+        builder.setTitle("알림");
+        builder.setMessage("먼저 로그인을 해주세요");
+        builder.setPositiveButton("로그인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(MenuInfoActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        final AlertDialog loginDialog;
+        loginDialog = builder.create();
+        loginDialog.setCancelable(false);
+        loginDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface arg0, int keyCode,
+                                 KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    loginDialog.dismiss();
+                }
+                return true;
+            }
+        });
+        loginDialog.show();
     }
 
     public void calculatePrice() {

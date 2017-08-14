@@ -99,7 +99,7 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
         mPagerSlidingTabStrip.setViewPager(mViewPager);
         mPagerSlidingTabStrip.setOnPageChangeListener(this);
         mLastY = 0;
-        
+
         dialog = new SpotsDialog(MarketInfoActivity.this, "데이터를 불러오는 중입니다...", R.style.ProgressBar);
         dialog.setCancelable(false);
         dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {

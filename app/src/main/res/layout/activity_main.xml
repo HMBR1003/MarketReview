@@ -9,6 +9,7 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
+    <!--안드로이드 상태바 높이 72, 액션바 168, 하단바 144-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -124,11 +124,16 @@
 //}
 package org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -139,6 +144,8 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -146,6 +153,7 @@ import com.google.firebase.database.ValueEventListener;
 
 
 import org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuInfo;
+import org.baseballbaedal.baseballbaedal.LoginActivity;
 import org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.Menu.MenuInfoActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.FragmentMenuBinding;
@@ -153,6 +161,7 @@ import org.baseballbaedal.baseballbaedal.databinding.FragmentMenuBinding;
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
 import static android.content.Context.MODE_PRIVATE;
+import static org.baseballbaedal.baseballbaedal.MainActivity.isBusiness;
 import static org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.MarketInfoActivity.marketName;
 import static org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.MarketInfoActivity.marketTel;
 import static org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.MarketInfoActivity.minPrice;
@@ -350,8 +359,18 @@ public class MenuFragment extends ScrollTabHolderFragment {
         binding.cartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),BasketActivity.class);
-                startActivity(intent);
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    if (isBusiness == 0 || isBusiness == 1) {
+                        Intent intent = new Intent(getActivity(), BasketActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getActivity(), "사업자 고객은 주문을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else {
+                    pleaseLogin();
+                }
             }
         });
 
@@ -370,6 +389,40 @@ public class MenuFragment extends ScrollTabHolderFragment {
         }
     }
 
+    //로그인 해달라는 창을 띄우는 메서드
+    public void pleaseLogin() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("알림");
+        builder.setMessage("먼저 로그인을 해주세요");
+        builder.setPositiveButton("로그인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        final AlertDialog loginDialog;
+        loginDialog = builder.create();
+        loginDialog.setCancelable(false);
+        loginDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface arg0, int keyCode,
+                                 KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    loginDialog.dismiss();
+                }
+                return true;
+            }
+        });
+        loginDialog.show();
+    }
     @Override
     public void adjustScroll(int scrollHeight, View view) {
         if (scrollHeight == 0 && menuListView.getFirstVisiblePosition() >= 1) {

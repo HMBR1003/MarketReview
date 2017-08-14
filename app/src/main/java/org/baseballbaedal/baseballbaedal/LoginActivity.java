@@ -58,6 +58,8 @@ import java.util.Arrays;
 
 import dmax.dialog.SpotsDialog;
 
+import static org.baseballbaedal.baseballbaedal.MainActivity.isBusiness;
+
 /**
  * Created by Administrator on 2017-05-13-013.
  */
@@ -348,6 +350,10 @@ public class LoginActivity extends NewActivity implements
                 // 사업자항목이 없으면 새로 생성
                 if(dataSnapshot.getValue()==null) {
                     myRef.child("users").child(uid).child("isBusiness(0(not),1(applying),2(finish))").setValue(0);
+                }
+                else {
+                    long data = dataSnapshot.getValue(Long.class);
+                    isBusiness = (int)data;
                 }
             }
             @Override
