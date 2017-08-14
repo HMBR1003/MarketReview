@@ -22,8 +22,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.otto.Subscribe;
 //import com.tsengvn.typekit.TypekitContextWrapper;
 
+import org.baseballbaedal.baseballbaedal.BusProvider;
+import org.baseballbaedal.baseballbaedal.HeightEvent;
 import org.baseballbaedal.baseballbaedal.MainActivity;
 import org.baseballbaedal.baseballbaedal.MainFragment.Delivery.MarketListActivity;
 import org.baseballbaedal.baseballbaedal.R;
@@ -47,10 +50,30 @@ public class DeliveryFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_delivery,container,false);
-        mainActivity = (MainActivity)getActivity();
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_delivery, container, false);
+        mainActivity = (MainActivity) getActivity();
         return rootView;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("리슘", "d");
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("퓨즈", "d");
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Subscribe
+    public void onPushEvent(HeightEvent heightEvent) {
+
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -64,6 +87,7 @@ public class DeliveryFragment extends Fragment {
         binding.etcButton.setOnClickListener(listener);
 
     }
+
     public class Listener implements View.OnClickListener {
         @Override
         public void onClick(View v) {

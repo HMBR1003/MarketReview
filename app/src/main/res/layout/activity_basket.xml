@@ -19,20 +19,20 @@
             android:visibility="gone">
 
             <com.ssomai.android.scalablelayout.ScalableLayout
-                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 sl:scale_base_height="150"
                 sl:scale_base_width="1080">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="장바구니에 메뉴를 담아주세요"
-                sl:scale_textsize="70"
-                sl:scale_height="150"
-                sl:scale_width="1080"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="장바구니에 메뉴를 담아주세요"
+                    sl:scale_height="150"
+                    sl:scale_textsize="70"
+                    sl:scale_width="1080" />
 
 
             </com.ssomai.android.scalablelayout.ScalableLayout>

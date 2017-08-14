@@ -36,6 +36,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,8 +80,8 @@ import java.util.Map;
 
 import devlight.io.library.ntb.NavigationTabBar;
 
-public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener,GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends NewActivity
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
     public static final int LOGIN_REQUEST = 100;
     public static final int BUSINESS_SIGNUP_REQUEST = 200;
     public static final int SELECT_COL = 300;
@@ -93,11 +94,12 @@ public class MainActivity extends BaseActivity
     WeatherFragment weatherFragment;
     ViewPager viewPager;
     public static int isBusiness;
+    public static int fragmentHeight = 0;
     long backTime;
     int colCheck = -1;
 
 
-
+    NavigationTabBar navigationTabBar;
     ActivityMainBinding mainBinding;
     TextView userEmail;
     TextView userName;
@@ -120,6 +122,34 @@ public class MainActivity extends BaseActivity
 
     SharedPreferences pref; //최초실행 체크 변수
 
+    int fullHeight;
+    int bottomHeight;
+    int topHeight = 72;
+    int toolbarHeight;
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (fragmentHeight == 0) {
+            bottomHeight = navigationTabBar.getHeight();
+
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            fullHeight = displayMetrics.heightPixels;// 세로
+
+            int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                topHeight = getResources().getDimensionPixelSize(resourceId);
+            }
+
+            View view = findViewById(R.id.mainActionBar);
+            toolbarHeight = view.getHeight();
+
+            fragmentHeight = fullHeight - bottomHeight - topHeight - toolbarHeight;
+            BusProvider.getInstance().post(new HeightEvent(fragmentHeight));
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme_NoActionBar);
@@ -131,7 +161,6 @@ public class MainActivity extends BaseActivity
         deliveryFragment = new DeliveryFragment();
         takeoutFragment = new TakeoutFragment();
         weatherFragment = new WeatherFragment();
-
 
 
         //구글 로그인 API 관련 작업
@@ -168,7 +197,7 @@ public class MainActivity extends BaseActivity
         }
 
 
-        ((ImageView)findViewById(R.id.btnMenu)).setOnClickListener(new View.OnClickListener() {
+        ((ImageView) findViewById(R.id.btnMenu)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mainBinding.drawerLayout.openDrawer(Gravity.LEFT);
@@ -537,8 +566,6 @@ public class MainActivity extends BaseActivity
     @Override
     public void onResume() { //온리슘 시 파이어베이스 계정 객체에 리스너 부착
         super.onResume();
-
-
         //최초실행 체크하기
         pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
         boolean first = pref.getBoolean("isFirst", false);
@@ -743,7 +770,7 @@ public class MainActivity extends BaseActivity
 
         final String[] colors = getResources().getStringArray(R.array.default_preview);
 
-        final NavigationTabBar navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb_horizontal);
+        navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb_horizontal);
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(

@@ -2,96 +2,179 @@
 <layout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:sl="http://schemas.android.com/apk/res-auto"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:sl="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context="org.baseballbaedal.baseballbaedal">
 
-        <com.ssomai.android.scalablelayout.ScalableLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            sl:scale_base_height="1316"
-            sl:scale_base_width="1080"
-            android:background="@drawable/black_teduri"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@id/chickenButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <ImageView
+                    android:id="@id/pizzaButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <ImageView
+                    android:id="@id/hamButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <ImageView
+                    android:id="@id/footButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <ImageView
+                    android:id="@id/etcButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--<com.ssomai.android.scalablelayout.ScalableLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--sl:scale_base_height="1316"-->
+        <!--sl:scale_base_width="1080"-->
+        <!--android:background="@drawable/black_teduri"-->
 
 
+        <!--</com.ssomai.android.scalablelayout.ScalableLayout>-->
 
 
-            >
+        <!--<ImageButton-->
+            <!--android:id="@+id/footButton"-->
+            <!--android:layout_width="130dp"-->
+            <!--android:layout_height="130dp"-->
+            <!--android:layout_marginLeft="43dp"-->
+            <!--android:layout_marginStart="43dp"-->
+            <!--android:layout_marginTop="52dp"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:layout_constraintLeft_toRightOf="@+id/hamButton"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/pizzaButton"-->
+            <!--app:srcCompat="@drawable/aa" />-->
 
+        <!--<ImageButton-->
+            <!--android:id="@+id/etcButton"-->
+            <!--android:layout_width="130dp"-->
+            <!--android:layout_height="130dp"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:layout_marginStart="16dp"-->
+            <!--android:layout_marginTop="33dp"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/hamButton"-->
+            <!--app:srcCompat="@drawable/aa" />-->
 
-        </com.ssomai.android.scalablelayout.ScalableLayout>
+        <!--<ImageButton-->
+            <!--android:id="@+id/hamButton"-->
+            <!--android:layout_width="130dp"-->
+            <!--android:layout_height="130dp"-->
+            <!--android:layout_marginLeft="34dp"-->
+            <!--android:layout_marginStart="34dp"-->
+            <!--android:layout_marginTop="28dp"-->
+            <!--android:background="@android:color/transparent"-->
 
+            <!--android:scaleType="fitXY"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/chickenButton"-->
+            <!--app:srcCompat="@drawable/aa" />-->
 
+        <!--<ImageButton-->
+            <!--android:id="@+id/pizzaButton"-->
+            <!--android:layout_width="130dp"-->
+            <!--android:layout_height="130dp"-->
+            <!--android:layout_marginLeft="43dp"-->
+            <!--android:layout_marginStart="43dp"-->
+            <!--android:layout_marginTop="71dp"-->
+            <!--android:background="@android:color/transparent"-->
 
-        <ImageButton
-            android:id="@+id/footButton"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:layout_marginLeft="43dp"
-            android:layout_marginStart="43dp"
-            android:layout_marginTop="52dp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitXY"
-            app:layout_constraintLeft_toRightOf="@+id/hamButton"
-            app:layout_constraintTop_toBottomOf="@+id/pizzaButton"
-            app:srcCompat="@drawable/aa" />
+            <!--android:scaleType="fitXY"-->
+            <!--app:layout_constraintLeft_toRightOf="@+id/chickenButton"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--app:srcCompat="@drawable/aa" />-->
 
-        <ImageButton
-            android:id="@+id/etcButton"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="33dp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitXY"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/hamButton"
-            app:srcCompat="@drawable/aa" />
+        <!--<ImageButton-->
+            <!--android:id="@+id/chickenButton"-->
+            <!--android:layout_width="130dp"-->
+            <!--android:layout_height="130dp"-->
+            <!--android:layout_marginLeft="46dp"-->
+            <!--android:layout_marginStart="46dp"-->
+            <!--android:layout_marginTop="82dp"-->
+            <!--android:background="@android:color/transparent"-->
 
-        <ImageButton
-            android:id="@+id/hamButton"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:layout_marginLeft="34dp"
-            android:layout_marginStart="34dp"
-            android:layout_marginTop="28dp"
-            android:background="@android:color/transparent"
-
-            android:scaleType="fitXY"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chickenButton"
-            app:srcCompat="@drawable/aa" />
-
-        <ImageButton
-            android:id="@+id/pizzaButton"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:layout_marginLeft="43dp"
-            android:layout_marginStart="43dp"
-            android:layout_marginTop="71dp"
-            android:background="@android:color/transparent"
-
-            android:scaleType="fitXY"
-            app:layout_constraintLeft_toRightOf="@+id/chickenButton"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/aa" />
-
-        <ImageButton
-            android:id="@+id/chickenButton"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:layout_marginLeft="46dp"
-            android:layout_marginStart="46dp"
-            android:layout_marginTop="82dp"
-            android:background="@android:color/transparent"
-
-            android:scaleType="fitXY"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/aa" />
+            <!--android:scaleType="fitXY"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--app:srcCompat="@drawable/aa" />-->
     </LinearLayout>
 </layout>

@@ -9,7 +9,12 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
+
+import org.baseballbaedal.baseballbaedal.BusProvider;
+import org.baseballbaedal.baseballbaedal.HeightEvent;
 import org.baseballbaedal.baseballbaedal.MainActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.Test.DBTestActivity;
@@ -28,8 +33,8 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_home,container,false);
-        mainActivity = (MainActivity)getActivity();
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
+        mainActivity = (MainActivity) getActivity();
         return rootView;
     }
 
@@ -38,17 +43,19 @@ public class HomeFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         homeBinding = FragmentHomeBinding.bind(getView());
 
+
+
         homeBinding.testButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mainActivity,DataTestActivity.class);
+                Intent intent = new Intent(mainActivity, DataTestActivity.class);
                 startActivity(intent);
             }
         });
         homeBinding.testButtonHome2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mainActivity,DBTestActivity.class);
+                Intent intent = new Intent(mainActivity, DBTestActivity.class);
                 startActivity(intent);
             }
         });
