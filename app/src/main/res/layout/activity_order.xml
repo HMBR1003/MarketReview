@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="배달정보"
+                    android:textSize="27dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="주문메뉴 : "
+                        android:textSize="17dp" />
+
+                    <TextView
+                        android:id="@+id/menuText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="menuText"
+                        android:textSize="17dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="야구장위치 : "
+                        android:textSize="17dp" />
+
+                    <TextView
+                        android:id="@+id/stadiumText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="stadiumText"
+                        android:textSize="17dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="연락처 : "
+                        android:textSize="17dp" />
+
+                    <EditText
+                        android:id="@+id/telEdit"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:hint="ex)01012345678"
+                        android:textSize="17dp"
+                        android:inputType="number"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="요청사항 : "
+                        android:textSize="17dp" />
+
+                    <EditText
+                        android:id="@+id/memoEdit"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:hint="ex)도착하면 전화주세요"
+                        android:textSize="17dp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/seatImage"
+                    android:layout_width="150dp"
+                    android:layout_height="130dp"
+                    android:layout_margin="5dp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/seatText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center"
+                    android:textSize="17dp"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/seatButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="50dp"
+                    android:onClick="OnClicked"
+                    android:text="좌석선택"
+                    android:textSize="17dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical"
+                        android:text="총 주문금액 : "
+                        android:textSize="23dp" />
+
+                    <TextView
+                        android:id="@+id/priceText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical"
+                        android:text="priceText"
+                        android:textSize="23dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/border_background_white"
+                        android:gravity="center"
+                        android:text="결제방식\n선택"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/border_background_blue_top"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/cardBuyText"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/border_background_white_top"
+                            android:gravity="center"
+                            android:onClick="OnClicked"
+                            android:text="카드결제"
+                            android:textSize="18dp" />
+
+                        <TextView
+                            android:id="@+id/moneyBuyText"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/border_background_white_bottom"
+                            android:gravity="center"
+                            android:onClick="OnClicked"
+                            android:text="현금결제"
+                            android:textSize="18dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="※본 어플은 만나서결제(현장결제)만 지원합니다."
+                    android:textSize="10dp" />
+
+                <Button
+                    android:id="@+id/orderButton"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:onClick="OnClicked"
+                    android:text="주문완료"
+                    android:textSize="17dp" />
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+</layout>
