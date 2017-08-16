@@ -184,7 +184,7 @@ public class BasketActivity extends NewActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getApplicationContext(), MarketInfoActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.putExtra("uid", userID);
                         intent.putExtra("isTakeout", false);
                         startActivity(intent);

@@ -79,8 +79,12 @@ public class MarketListAdapter extends BaseAdapter {
         view.marketAdressText.setText(item.getMarketAdress());
         view.marketNameText.setText(item.getMarketName());
         view.tellText.setText(item.getTell());
-        view.minPriceText.setText(item.getMinPrice());
-
+        if(item.getIsTakeout()) {
+           view.minPriceContainer.setVisibility(View.GONE);
+        }
+        else{
+            view.minPriceText.setText(item.getMinPrice());
+        }
         return view;
     }
 
@@ -88,7 +92,7 @@ public class MarketListAdapter extends BaseAdapter {
         list.clear();
     }
 
-    public void addItem(String marketUserID, String marketAdress, String marketName, String tell, String minPrice, String aTime) {
+    public void addItem(String marketUserID, String marketAdress, String marketName, String tell, String minPrice, String aTime,boolean isTakeout) {
         MarketListItem item = new MarketListItem();
 
         item.setMarketAdress(marketAdress);
@@ -97,6 +101,7 @@ public class MarketListAdapter extends BaseAdapter {
         item.setMinPrice(minPrice);
         item.setTell(tell);
         item.setaTime(aTime);
+        item.setIsTakeout(isTakeout);
         list.add(item);
     }
 }

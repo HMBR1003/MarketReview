@@ -94,7 +94,7 @@ public class TakeoutFragment extends Fragment {
                         if (market.selectedCol == colCheck + 1) {
                             userID = data.getKey();
                             String address1 = market.marketAddress1.substring(7);
-                            adapter.addItem(userID, address1 + "\n" + market.marketAddress2, market.marketName, " " + market.marketTel, market.minPrice, market.aTime);
+                            adapter.addItem(userID, address1 + "\n" + market.marketAddress2, market.marketName, " " + market.marketTel, market.minPrice, market.aTime,true);
                         }
                     }
                 }

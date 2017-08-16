@@ -16,6 +16,7 @@ import org.w3c.dom.Text;
 public class MarketListView extends LinearLayout{
     ImageView marketImage;
     TextView marketNameText, marketAdressText, tellText, minPriceText;
+    LinearLayout minPriceContainer;
 
     public MarketListView(Context context){
         super(context);
@@ -27,5 +28,6 @@ public class MarketListView extends LinearLayout{
         marketAdressText = (TextView)findViewById(R.id.marketAdressText);
         tellText = (TextView)findViewById(R.id.tellText);
         minPriceText = (TextView)findViewById(R.id.minPriceText);
+        minPriceContainer = (LinearLayout)findViewById(R.id.minPriceContainer);
     }
 }

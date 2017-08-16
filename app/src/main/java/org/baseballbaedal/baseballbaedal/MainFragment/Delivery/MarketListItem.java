@@ -11,6 +11,7 @@ public class MarketListItem {
     private String tell;
     private String minPrice;
     private String aTime;
+    private boolean isTakeout;
 
     public String getMarketUserID() {
         return marketUserID;
@@ -26,6 +27,10 @@ public class MarketListItem {
 
     public String getTell() {
         return tell;
+    }
+
+    public boolean getIsTakeout() {
+        return isTakeout;
     }
 
     public void setMarketAdress(String marketAdress) {
@@ -58,5 +63,9 @@ public class MarketListItem {
 
     public String getaTime(){
         return aTime;
+    }
+
+    public void setIsTakeout(boolean isTakeout) {
+        this.isTakeout = isTakeout;
     }
 }

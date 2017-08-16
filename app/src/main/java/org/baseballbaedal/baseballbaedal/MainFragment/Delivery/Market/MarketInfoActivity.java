@@ -59,12 +59,14 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
     int rowWidth;
     public static String marketTel;
     public static String marketName;
-    public static String minPrice;
+    public static String minPrice="0";
 
     String uid;
     ActivityMarketInfoBinding binding;
     SpotsDialog dialog;
     ValueEventListener listener;
+    Intent intent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +81,7 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
         getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
         rowWidth = (mMetrics.widthPixels) / 2;
 
-        Intent intent = getIntent();
+        intent = getIntent();
         uid = intent.getStringExtra("uid");
         isTakeout = intent.getBooleanExtra("isTakeout", false);
         mMinHeaderHeight = getResources().getDimensionPixelSize(R.dimen.min_header_height);
@@ -126,8 +128,13 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
                 //           binding.marketNameText.setText(market.marketName);
                 marketTel = market.marketTel;
                 binding.tellText.setText(market.marketTel);
-                minPrice = market.minPrice;
-                binding.minPriceText.setText(numToWon(Integer.parseInt(market.minPrice)) + "원");
+                if(isTakeout) {
+                    binding.minPriceContainer.setVisibility(View.GONE);
+                }
+                else{
+                    minPrice = market.minPrice;
+                    binding.minPriceText.setText(numToWon(Integer.parseInt(market.minPrice)) + "원");
+                }
                 String address1 = market.marketAddress1.substring(7) + "\n" + market.marketAddress2;
                 binding.marketAdressText.setText(address1);
                 StorageReference ref = FirebaseStorage.getInstance().getReference().child("market").child(uid).child(uid + ".jpg");
@@ -163,9 +170,7 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
     @Override
     protected void onResume() {
         super.onResume();
-
         FirebaseDatabase.getInstance().getReference().child("market").child(uid).addValueEventListener(listener);
-
     }
 
     @Override
