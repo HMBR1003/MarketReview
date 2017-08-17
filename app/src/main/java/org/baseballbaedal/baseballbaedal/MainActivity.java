@@ -778,38 +778,40 @@ public class MainActivity extends NewActivity
 //            }
 //        });
 
-        final String[] colors = getResources().getStringArray(R.array.default_preview);
+        final String[] colors = getResources().getStringArray(R.array.bottom_navigation_color);
 
         navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb_horizontal);
+        navigationTabBar.setBgColor(Color.WHITE);
+        navigationTabBar.setInactiveColor(Color.rgb(116,212,159));
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_first),
+                        getResources().getDrawable(R.drawable.home1),
                         Color.parseColor(colors[0]))
-//                        .selectedIcon(getResources().getDrawable(R.drawable.ic_sixth))
+//                        .selectedIcon(getResources().getDrawable(R.drawable.home2))
                         .title("홈")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_second),
-                        Color.parseColor(colors[1]))
+                        getResources().getDrawable(R.drawable.delivery1),
+                        Color.parseColor(colors[0]))
 //                        .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
                         .title("배달음식")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_third),
-                        Color.parseColor(colors[2]))
+                        getResources().getDrawable(R.drawable.takeout1),
+                        Color.parseColor(colors[0]))
 //                        .selectedIcon(getResources().getDrawable(R.drawable.ic_seventh))
                         .title("테이크아웃")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_fourth),
-                        Color.parseColor(colors[3]))
+                        getResources().getDrawable(R.drawable.weather1),
+                        Color.parseColor(colors[0]))
 //                        .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
                         .title("야구장 날씨")
                         .build()

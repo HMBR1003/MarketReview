@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sl="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -18,16 +19,26 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="center">
 
-                <TextView
+                <com.ssomai.android.scalablelayout.ScalableLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="경기장을 선택해 주세요"
-                    android:textSize="20sp" />
-                <!--app:font="CUSTOM"-->
+                    sl:scale_base_height="120"
+                    sl:scale_base_width="1080">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="경기장을 선택해 주세요"
+                        sl:scale_height="120"
+                        sl:scale_textsize="70"
+                        sl:scale_width="1080" />
+                    <!--app:font="CUSTOM"-->
+                </com.ssomai.android.scalablelayout.ScalableLayout>
 
             </LinearLayout>
 
@@ -302,16 +313,29 @@
 
             </LinearLayout>
 
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:gravity="center">
 
-                <Button
-                    android:id="@+id/selectFinish"
-                    android:layout_width="match_parent"
+                <com.ssomai.android.scalablelayout.ScalableLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="선택 완료" />
+                    sl:scale_base_height="180"
+                    sl:scale_base_width="1080">
+
+                    <info.hoang8f.widget.FButton
+                        android:id="@+id/selectFinish"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="선택 완료"
+                        sl:scale_height="150"
+                        sl:scale_textsize="60"
+                        sl:scale_width="1000" />
+                </com.ssomai.android.scalablelayout.ScalableLayout>
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

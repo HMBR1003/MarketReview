@@ -150,7 +150,8 @@ public class ColSelectActivity extends NewActivity {
         binding.wizpark.setOnClickListener(listener);
         binding.masan.setOnClickListener(listener);
 
-
+        binding.selectFinish.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.selectFinish.setCornerRadius(15);
         binding.selectFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

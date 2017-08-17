@@ -71,10 +71,10 @@
                 sl:scale_base_width="1080">
 
                 <info.hoang8f.widget.FButton
-                    android:layout_gravity="center"
                     android:id="@+id/orderButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:onClick="OnClicked"
                     android:text="주문하기"
                     sl:scale_height="140"
