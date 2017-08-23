@@ -65,14 +65,12 @@ public class DeliveryFragment extends Fragment {
     public void onResume() {
         super.onResume();
         init();
-        Log.d("리슘", "d");
         BusProvider.getInstance().register(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.d("퓨즈", "d");
         BusProvider.getInstance().unregister(this);
     }
 
@@ -131,8 +129,6 @@ public class DeliveryFragment extends Fragment {
         Glide.with(this)
                 .load(R.drawable.etc_button1)
                 .into(binding.etcButton);
-        ;
-
     }
 
     public class TouchListener implements View.OnTouchListener {

@@ -103,6 +103,14 @@ public class BusinessSignupActivity extends NewActivity {
         super.onCreate(savedInstanceState);
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_business_signup);
 
+        dataBinding.businessSubmit.setButtonColor(getResources().getColor(R.color.buttonColor));
+        dataBinding.businessSubmit.setCornerRadius(15);
+        dataBinding.loadImage.setButtonColor(getResources().getColor(R.color.buttonColor));
+        dataBinding.loadImage.setCornerRadius(15);
+        dataBinding.searchAddress.setButtonColor(getResources().getColor(R.color.buttonColor));
+        dataBinding.searchAddress.setCornerRadius(15);
+
+
         //저장소 권한 묻기
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
@@ -565,6 +573,7 @@ public class BusinessSignupActivity extends NewActivity {
                                 .with(BusinessSignupActivity.this)
                                 .using(new FirebaseImageLoader())
                                 .load(ref)
+                                .thumbnail(Glide.with(BusinessSignupActivity.this).load(R.drawable.loading))
                                 .listener(new RequestListener<StorageReference, GlideDrawable>() {
                                     @Override
                                     public boolean onException(Exception e, StorageReference model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -591,8 +600,6 @@ public class BusinessSignupActivity extends NewActivity {
                                     }
                                 })
                                 .signature(new StringSignature(data.aTime)) //이미지저장시간
-                                .placeholder(R.drawable.jamsil)
-                                .thumbnail(0.1f)
                                 .crossFade()
                                 .into(dataBinding.marketImageView);
                     } catch (Exception e) {

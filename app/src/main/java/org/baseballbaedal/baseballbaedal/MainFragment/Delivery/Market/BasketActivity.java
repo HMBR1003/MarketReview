@@ -32,6 +32,7 @@ import com.google.firebase.storage.StorageReference;
 
 import org.baseballbaedal.baseballbaedal.BusinessMan.Menu.MenuInfo;
 import org.baseballbaedal.baseballbaedal.NewActivity;
+import org.baseballbaedal.baseballbaedal.Order.OrderActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityBasketBinding;
 
@@ -73,7 +74,8 @@ public class BasketActivity extends NewActivity {
     StorageReference storageReference;
     String userID;
     int basketCount = 0;
-    int hapPrice;
+    int totalPrice;
+    int minPrice;
     LayoutInflater inflater;
     LinearLayout ll;
     FButton addMenuButton;
@@ -83,8 +85,43 @@ public class BasketActivity extends NewActivity {
         super.onCreate(savedInstanceState);
         basketBinding = DataBindingUtil.setContentView(this, R.layout.activity_basket);
 
-        basketBinding.container.addView(getToolbar("장바구니", true), 0);
+        ((ImageView) findViewById(R.id.btnBack)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
+        ((ImageView) findViewById(R.id.btnDelete)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!emptyCheck()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                    builder.setMessage("장바구니를 비우시겠습니까?")
+                            .setCancelable(false)
+                            .setNegativeButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //장바구니 초기화
+                                    SharedPreferences sp = getSharedPreferences("basket", MODE_PRIVATE);
+                                    sp.edit().clear().apply();
+                                    emptyCheck();
+                                }
+                            })
+                            .setPositiveButton("취소", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+                else{
+                    Toast.makeText(BasketActivity.this, "장바구니에 아무것도 없어요", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 //        editor = shared.edit();
 //
@@ -128,7 +165,15 @@ public class BasketActivity extends NewActivity {
         basketBinding.orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(totalPrice<minPrice){
+                    Toast.makeText(BasketActivity.this, "주문하시는 금액이 최소 주문 금액보다 작습니다.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("isBasket",true);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -140,7 +185,8 @@ public class BasketActivity extends NewActivity {
 
         userID = shared.getString("marketId", "");
         marketName.setText(shared.getString("marketName", null));
-        minPriceText.setText(numToWon(Integer.parseInt(shared.getString("minPrice", "0"))) + "원");
+        minPrice = Integer.parseInt(shared.getString("minPrice", "0"));
+        minPriceText.setText(numToWon(minPrice) + "원");
         for (int i = 0; i < BASKET_MAX_LENGTH; i++) {
             menuKey[i] = shared.getString("menuKey" + i, null);
             menuAmount[i] = shared.getInt("menuAmount" + i, 13);
@@ -223,18 +269,7 @@ public class BasketActivity extends NewActivity {
         }
     };
 
-    //주문하기 버튼
-    public void OnClicked(View v) {
-        switch (v.getId()) {
-            case R.id.orderButton:  //주문하기버튼
-//                for (int i = 0; i < BASKET_MAX_LENGTH; i++) {
-//                    Log.d("menu" + i, menu[i]);
-//                }
-                break;
-        }
-    }
-
-    public void emptyCheck() {
+    public boolean emptyCheck() {
         boolean isEmpty = true;
         for (int i = 0; i < BASKET_MAX_LENGTH; i++) {
             menuKey[i] = shared.getString("menuKey" + i, null);
@@ -250,6 +285,7 @@ public class BasketActivity extends NewActivity {
             shared.edit().remove("marketName").apply();
             shared.edit().remove("minPrice").apply();
         }
+        return isEmpty;
     }
 
     public void alertDialog(final int num) {
@@ -261,7 +297,7 @@ public class BasketActivity extends NewActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         basketBinding.basketLayout.removeView(view[num]);
                         int mPrice = Integer.parseInt(minHapPriceText[num].getText().toString().replaceAll(",", ""));
-                        int totalPrice = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원", "")) - mPrice;
+                        totalPrice = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원", "")) - mPrice;
                         hapPriceText.setText(numToWon(totalPrice) + "원");
 //                        shared.edit().remove("menuKey" + num).apply();
 //                        shared.edit().remove("menuAmount" + num).apply();
@@ -334,9 +370,8 @@ public class BasketActivity extends NewActivity {
                     .with(BasketActivity.this)
                     .using(new FirebaseImageLoader())
                     .load(storageReference)
+                    .thumbnail(Glide.with(BasketActivity.this).load(R.drawable.loading))
                     .signature(new StringSignature(menuList.aTime)) //이미지저장시간
-                    .placeholder(R.drawable.jamsil)
-                    .thumbnail(0.1f)
                     .crossFade()
                     .into(imageView[basketCount]);
         } catch (Exception e) {
@@ -396,8 +431,8 @@ public class BasketActivity extends NewActivity {
         minHapPriceText[basketCount].setTag(p);
 
         int price = p * amount;    //소계
-        hapPrice = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원", "")) + price;   //합계금액
-        hapPriceText.setText(numToWon(hapPrice) + "원");
+        totalPrice = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원", "")) + price;   //합계금액
+        hapPriceText.setText(numToWon(totalPrice) + "원");
 
         optionText[basketCount] = (TextView) view[basketCount].findViewById(R.id.optionText);   //옵션텍스트
 
@@ -427,7 +462,6 @@ public class BasketActivity extends NewActivity {
     }
 
     public void updatePrice(int position, int amount, boolean type) {
-        int totalPrice;
         int price = (int) minHapPriceText[position].getTag();
         minHapPriceText[position].setText(numToWon(price * amount));
         if (type) {   //플러스

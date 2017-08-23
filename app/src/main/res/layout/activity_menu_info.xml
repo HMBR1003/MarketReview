@@ -40,7 +40,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:scaleType="fitXY"
-                            android:src="@drawable/jamsil"
                             sl:scale_height="450"
                             sl:scale_width="450" />
                     </com.ssomai.android.scalablelayout.ScalableLayout>

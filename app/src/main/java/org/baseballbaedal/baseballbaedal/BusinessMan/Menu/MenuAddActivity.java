@@ -434,6 +434,7 @@ public class MenuAddActivity extends NewActivity {
                                 .with(MenuAddActivity.this)
                                 .using(new FirebaseImageLoader())
                                 .load(ref)
+                                .thumbnail(Glide.with(MenuAddActivity.this).load(R.drawable.loading))
                                 .listener(new RequestListener<StorageReference, GlideDrawable>() {
                                     @Override
                                     public boolean onException(Exception e, StorageReference model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -464,8 +465,6 @@ public class MenuAddActivity extends NewActivity {
                                     }
                                 })
                                 .signature(new StringSignature(data.aTime)) //이미지저장시간
-                                .placeholder(R.drawable.jamsil)
-                                .thumbnail(0.1f)
                                 .crossFade()
                                 .into(binding.menuImageView);
                     } catch (Exception e) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:sl="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
@@ -195,7 +195,8 @@
                     android:layout_marginTop="5dp"
                     android:orientation="vertical">
 
-                    <Button
+                    <info.hoang8f.widget.FButton
+                        android:textColor="#fff"
                         android:id="@+id/searchAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
@@ -344,7 +345,8 @@
                             android:text="매장 대표로고 : "
                             android:textSize="15sp" />
 
-                        <Button
+                        <info.hoang8f.widget.FButton
+                            android:textColor="#fff"
                             android:id="@+id/loadImage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -396,7 +398,8 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <Button
+                <info.hoang8f.widget.FButton
+                    android:textColor="#fff"
                     android:id="@+id/businessSubmit"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"

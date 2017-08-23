@@ -20,7 +20,8 @@
             android:textSize="20sp" />
 
         <LinearLayout
-
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/black_teduri">
@@ -66,6 +67,8 @@
         </LinearLayout>
 
         <FrameLayout
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -76,6 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="#ece7e2"
                 android:visibility="gone">
 
             </android.support.v7.widget.RecyclerView>
@@ -112,29 +116,33 @@
                         android:layout_height="wrap_content">
 
                         <LinearLayout
+                            android:layout_margin="5dp"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center">
 
-                            <Button
+                            <info.hoang8f.widget.FButton
                                 android:id="@+id/addMenuButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="#fff"
                                 android:text="메뉴 추가하기" />
 
                         </LinearLayout>
 
                         <LinearLayout
+                            android:layout_margin="5dp"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center">
 
-                            <Button
+                            <info.hoang8f.widget.FButton
                                 android:id="@+id/deleteStartButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="#fff"
                                 android:text="삭제하기" />
 
                         </LinearLayout>
@@ -145,28 +153,32 @@
                         android:layout_height="wrap_content">
 
                         <LinearLayout
+                            android:layout_margin="5dp"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center">
 
-                            <Button
+                            <info.hoang8f.widget.FButton
                                 android:id="@+id/moveMenuButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="순서 변경하기" />
+                                android:textColor="#fff"
+                                android:text="순서 변경" />
                         </LinearLayout>
 
                         <LinearLayout
+                            android:layout_margin="5dp"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center">
 
-                            <Button
+                            <info.hoang8f.widget.FButton
                                 android:id="@+id/selectMainMenuButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="#fff"
                                 android:text="대표메뉴 선택" />
                         </LinearLayout>
                     </LinearLayout>
@@ -184,10 +196,11 @@
                         android:layout_weight="1"
                         android:gravity="center">
 
-                        <Button
+                        <info.hoang8f.widget.FButton
                             android:id="@+id/deleteCancelButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="#fff"
                             android:text="삭제 취소" />
                     </LinearLayout>
 
@@ -197,11 +210,12 @@
                         android:layout_weight="1"
                         android:gravity="center">
 
-                        <Button
+                        <info.hoang8f.widget.FButton
                             android:id="@+id/deleteFinishButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="선택항목 삭제하기" />
+                            android:textColor="#fff"
+                            android:text="선택항목 삭제" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -218,10 +232,11 @@
                         android:layout_weight="1"
                         android:gravity="center">
 
-                        <Button
+                        <info.hoang8f.widget.FButton
                             android:id="@+id/mainCancelButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="#fff"
                             android:text="대표메뉴 선택 취소" />
                     </LinearLayout>
 
@@ -231,10 +246,11 @@
                         android:layout_weight="1"
                         android:gravity="center">
 
-                        <Button
+                        <info.hoang8f.widget.FButton
                             android:id="@+id/mainFinishButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="#fff"
                             android:text="대표메뉴 선택 완료" />
                     </LinearLayout>
 
@@ -252,10 +268,11 @@
                         android:layout_weight="1"
                         android:gravity="center">
 
-                        <Button
+                        <info.hoang8f.widget.FButton
                             android:id="@+id/moveCancelButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="#fff"
                             android:text="순서 변경 취소" />
                     </LinearLayout>
 
@@ -265,10 +282,11 @@
                         android:layout_weight="1"
                         android:gravity="center">
 
-                        <Button
+                        <info.hoang8f.widget.FButton
                             android:id="@+id/moveFinishButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="#fff"
                             android:text="순서 변경 완료" />
                     </LinearLayout>
 

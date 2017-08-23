@@ -29,6 +29,12 @@ public class OrderActivity extends NewActivity {
         orderBinding = DataBindingUtil.setContentView(this, R.layout.activity_order);
         orderBinding.container.addView(getToolbar("주문하기", true), 0);
 
+        orderBinding.orderButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        orderBinding.orderButton.setCornerRadius(15);
+        orderBinding.seatButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        orderBinding.seatButton.setCornerRadius(15);
+
+
         //현재 선택된 야구장 데이터 가져오기
         SharedPreferences colCheckpref = getSharedPreferences("selectedCol", MODE_PRIVATE);
         colCheck = colCheckpref.getInt("selectedCol", -1);
@@ -149,8 +155,9 @@ public class OrderActivity extends NewActivity {
                     String seat = data.getStringExtra("seat");
                     int blockNum = data.getIntExtra("block", 0);
                     orderBinding.seatText.setText(seat);
-                    orderBinding.seatText.setVisibility(View.VISIBLE);
-                    orderBinding.seatImage.setVisibility(View.VISIBLE);
+                    orderBinding.seatContainerJamsil.setVisibility(View.VISIBLE);
+//                    orderBinding.seatText.setVisibility(View.VISIBLE);
+//                    orderBinding.seatImage.setVisibility(View.VISIBLE);
                     switch (blockNum) {
                         case 334:
                             imageGlide(R.drawable.seat334);

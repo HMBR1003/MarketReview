@@ -163,6 +163,11 @@ public class ColSelectActivity extends NewActivity {
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putInt("selectedCol", checkedItem);
                 editor.commit();
+
+                //장바구니 초기화
+                SharedPreferences sp = getSharedPreferences("basket", MODE_PRIVATE);
+                sp.edit().clear().apply();
+
                 setResult(RESULT_OK);
                 Toast.makeText(ColSelectActivity.this, colName[checkedItem] + "을(를) 선택하셨습니다.", Toast.LENGTH_SHORT).show();
                 finish();

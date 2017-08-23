@@ -112,10 +112,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> implements
                     .with(context)
                     .using(new FirebaseImageLoader())
                     .load(ref)
+                    .thumbnail(Glide.with(context).load(R.drawable.loading))
                     .override(300, 300)
                     .signature(new StringSignature(item.getATime()))
-                    .placeholder(R.drawable.jamsil)
-                    .thumbnail(0.1f)
                     .into(holder.menuDataImage);
 
         } catch (Exception e) {
@@ -124,13 +123,13 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> implements
 
         if (isDeleteMode) {
             if (selectedPosition[position]) {
-                holder.itemView.setBackgroundColor(Color.rgb(103, 153, 255));
+                holder.itemView.setBackgroundColor(Color.rgb(100, 100, 100));
             } else {
                 holder.itemView.setBackgroundColor(Color.rgb(255, 255, 255));
             }
         } else if (isMainSelect) {
             if (position == checkedItem) {
-                holder.itemView.setBackgroundColor(Color.rgb(103, 153, 255));
+                holder.itemView.setBackgroundColor(Color.argb(100,255, 66, 66));
             }
             else{
                 holder.itemView.setBackgroundColor(Color.rgb(255, 255, 255));
@@ -175,7 +174,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> implements
                 view.setBackgroundColor(Color.rgb(255, 255, 255));
             } else {
                 selectedPosition[position] = true;
-                view.setBackgroundColor(Color.rgb(103, 153, 255));
+                view.setBackgroundColor(Color.rgb(100, 100, 100));
             }
             int i = 0;
             for (boolean a : selectedPosition) {
@@ -185,7 +184,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> implements
         } else if (isMainSelect) {
             checkedItem = position;
             notifyDataSetChanged();
-            view.setBackgroundColor(Color.rgb(103, 153, 255));
+            view.setBackgroundColor(Color.argb(100,255, 66, 66));
 //                    if (oldPosition < parent.getChildCount())
 //                        parent.getChildAt(oldPosition).setBackgroundColor(Color.rgb(255, 255, 255));
 //                    oldPosition = position;

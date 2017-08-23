@@ -152,6 +152,7 @@ public class MainActivity extends NewActivity
             toolbarHeight = view.getHeight();
 
             fragmentHeight = fullHeight - bottomHeight - topHeight - toolbarHeight;
+            Log.d("높이",fragmentHeight+"");
             BusProvider.getInstance().post(new HeightEvent(fragmentHeight,fullWidth));
         }
     }

@@ -84,6 +84,7 @@ public class MenuInfoActivity extends NewActivity {
         menuName = intent.getStringExtra("menuName");
         menuExplain = intent.getStringExtra("menuExplain");
         menuPrice = Integer.parseInt(intent.getStringExtra("menuPrice"));
+        totalPrice = menuPrice;
         option1Name = intent.getStringExtra("option1Name");
         if (option1Name != null) {
             option1Price = Integer.parseInt(intent.getStringExtra("option1Price"));
@@ -141,9 +142,8 @@ public class MenuInfoActivity extends NewActivity {
                     .with(MenuInfoActivity.this)
                     .using(new FirebaseImageLoader())
                     .load(ref)
+                    .thumbnail(Glide.with(MenuInfoActivity.this).load(R.drawable.loading))
                     .signature(new StringSignature(aTime)) //이미지저장시간
-                    .placeholder(R.drawable.jamsil)
-                    .thumbnail(0.1f)
                     .crossFade()
                     .into(binding.menuImageView);
         } catch (Exception e) {
@@ -442,6 +442,8 @@ public class MenuInfoActivity extends NewActivity {
                         else{
                             Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.putExtra("isBasket",false);
+
                             startActivity(intent);
                         }
                     }

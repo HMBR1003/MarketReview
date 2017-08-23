@@ -144,10 +144,9 @@ public class MarketInfoActivity extends NewActivity implements ScrollTabHolder, 
                             .with(MarketInfoActivity.this)
                             .using(new FirebaseImageLoader())
                             .load(ref)
+                            .thumbnail(Glide.with(MarketInfoActivity.this).load(R.drawable.loading))
                             .override(300, 300)
                             .signature(new StringSignature(market.aTime))
-                            .placeholder(R.drawable.jamsil)
-                            .thumbnail(0.1f)
                             .into(binding.marketImage);
 
                 } catch (Exception e) {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:sl="http://schemas.android.com/apk/res-auto"
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -11,158 +11,257 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
+                <com.ssomai.android.scalablelayout.ScalableLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="배달정보"
-                    android:textSize="27dp"
-                    android:textStyle="bold" />
+                    sl:scale_base_height="150"
+                    sl:scale_base_width="1080">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="주문 정보"
+                        android:textStyle="bold"
+                        sl:scale_height="150"
+                        sl:scale_textsize="80"
+                        sl:scale_width="1080" />
+                </com.ssomai.android.scalablelayout.ScalableLayout>
+
+                <com.ssomai.android.scalablelayout.ScalableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    sl:scale_base_height="120"
+                    sl:scale_base_width="1080">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:text="주문메뉴 : "
-                        android:textSize="17dp" />
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:text="메뉴"
+                        sl:scale_height="100"
+                        sl:scale_left="30"
+                        sl:scale_textsize="51" />
+
+                    <!--<TextView-->
+                    <!--android:layout_gravity="center_vertical"-->
+                    <!--android:id="@+id/menuText"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--sl:scale_left="250"-->
+                    <!--sl:scale_height="100"-->
+                    <!--sl:scale_width="1080"-->
+                    <!--sl:scale_textsize="51" />-->
+
+                </com.ssomai.android.scalablelayout.ScalableLayout>
+
+
+                <com.ssomai.android.scalablelayout.ScalableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    sl:scale_base_height="120"
+                    sl:scale_base_width="1080">
 
                     <TextView
-                        android:id="@+id/menuText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="menuText"
-                        android:textSize="17dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:gravity="center_vertical"
                         android:text="야구장위치 : "
-                        android:textSize="17dp" />
+                        sl:scale_height="120"
+                        sl:scale_left="30"
+                        sl:scale_textsize="51"
+                        sl:scale_width="280" />
 
                     <TextView
                         android:id="@+id/stadiumText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
                         android:text="stadiumText"
-                        android:textSize="17dp" />
-                </LinearLayout>
+                        sl:scale_height="100"
+                        sl:scale_left="310"
+                        sl:scale_textsize="51"
+                        sl:scale_width="750" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                </com.ssomai.android.scalablelayout.ScalableLayout>
+                <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:orientation="horizontal">-->
+
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:text="야구장위치 : "-->
+                <!--android:textSize="17dp" />-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/stadiumText"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="stadiumText"-->
+                <!--android:textSize="17dp" />-->
+                <!--</LinearLayout>-->
+                <com.ssomai.android.scalablelayout.ScalableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    sl:scale_base_height="120"
+                    sl:scale_base_width="1080">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:gravity="center_vertical"
                         android:text="연락처 : "
-                        android:textSize="17dp" />
+                        sl:scale_height="120"
+                        sl:scale_left="30"
+                        sl:scale_textsize="51"
+                        sl:scale_width="280" />
 
                     <EditText
                         android:id="@+id/telEdit"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:hint="ex)01012345678"
-                        android:textSize="17dp"
-                        android:inputType="number"/>
-                </LinearLayout>
+                        android:inputType="number"
+                        sl:scale_height="120"
+                        sl:scale_left="310"
+                        sl:scale_textsize="51"
+                        sl:scale_width="750" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                </com.ssomai.android.scalablelayout.ScalableLayout>
+
+                <com.ssomai.android.scalablelayout.ScalableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    sl:scale_base_height="120"
+                    sl:scale_base_width="1080">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:gravity="center_vertical"
                         android:text="요청사항 : "
-                        android:textSize="17dp" />
+                        sl:scale_height="120"
+                        sl:scale_left="30"
+                        sl:scale_textsize="51"
+                        sl:scale_width="280" />
 
                     <EditText
                         android:id="@+id/memoEdit"
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:hint="ex)도착하면 전화주세요"
-                        android:textSize="17dp" />
-                </LinearLayout>
+                        sl:scale_height="120"
+                        sl:scale_left="310"
+                        sl:scale_textsize="51"
+                        sl:scale_width="750" />
 
-                <ImageView
-                    android:id="@+id/seatImage"
-                    android:layout_width="150dp"
-                    android:layout_height="130dp"
-                    android:layout_margin="5dp"
-                    android:scaleType="fitXY"
-                    android:layout_gravity="center"
-                    android:visibility="gone"/>
 
-                <TextView
-                    android:id="@+id/seatText"
+                </com.ssomai.android.scalablelayout.ScalableLayout>
+
+
+                <com.ssomai.android.scalablelayout.ScalableLayout
+                    android:id="@+id/seatContainerJamsil"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:gravity="center_vertical"
-                    android:layout_gravity="center"
-                    android:textSize="17dp"
-                    android:visibility="gone" />
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    sl:scale_base_height="560"
+                    sl:scale_base_width="1080">
 
-                <Button
-                    android:id="@+id/seatButton"
+                    <ImageView
+                        android:id="@+id/seatImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:scaleType="fitXY"
+                        sl:scale_height="390"
+                        sl:scale_top="15"
+                        sl:scale_width="450" />
+
+                    <TextView
+                        android:id="@+id/seatText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_vertical"
+                        sl:scale_height="120"
+                        sl:scale_textsize="51"
+                        sl:scale_top="425"
+                        sl:scale_width="450" />
+                </com.ssomai.android.scalablelayout.ScalableLayout>
+
+                <com.ssomai.android.scalablelayout.ScalableLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="50dp"
-                    android:onClick="OnClicked"
-                    android:text="좌석선택"
-                    android:textSize="17dp" />
+                    android:layout_height="wrap_content"
+                    sl:scale_base_height="120"
+                    sl:scale_base_width="1080">
+
+                    <info.hoang8f.widget.FButton
+                        android:id="@+id/seatButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:onClick="OnClicked"
+                        android:text="좌석 선택"
+                        android:textColor="#fff"
+                        sl:scale_height="120"
+                        sl:scale_textsize="51"
+                        sl:scale_width="1000" />
+
+
+                </com.ssomai.android.scalablelayout.ScalableLayout>
 
                 <LinearLayout
+                    android:id="@+id/seatContainerEtc"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+
+                <com.ssomai.android.scalablelayout.ScalableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    sl:scale_base_height="150"
+                    sl:scale_base_width="1080">
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:gravity="center_vertical"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|right"
                         android:text="총 주문금액 : "
-                        android:textSize="23dp" />
+                        sl:scale_height="150"
+                        sl:scale_textsize="69"
+                        sl:scale_width="540" />
 
                     <TextView
                         android:id="@+id/priceText"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:gravity="center_vertical"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:gravity=""
                         android:text="priceText"
-                        android:textSize="23dp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                        android:textStyle="bold"
+                        sl:scale_height="150"
+                        sl:scale_textsize="69"
+                        sl:scale_width="540" />
+
+                </com.ssomai.android.scalablelayout.ScalableLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -209,24 +308,252 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
+                <com.ssomai.android.scalablelayout.ScalableLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:text="※본 어플은 만나서결제(현장결제)만 지원합니다."
-                    android:textSize="10dp" />
+                    sl:scale_base_height="80"
+                    sl:scale_base_width="1080">
 
-                <Button
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="※본 어플은 만나서결제(현장결제)만 지원합니다."
+                        sl:scale_top = "20"
+                        sl:scale_left = "20"
+                        sl:scale_height="80"
+                        sl:scale_textsize="30"
+                        sl:scale_width="1080"/>
+
+                </com.ssomai.android.scalablelayout.ScalableLayout>
+
+                <info.hoang8f.widget.FButton
                     android:id="@+id/orderButton"
-                    android:layout_width="120dp"
-                    android:layout_height="40dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:onClick="OnClicked"
-                    android:text="주문완료"
+                    android:text="주문 완료"
+                    android:textColor="#fff"
                     android:textSize="17dp" />
             </LinearLayout>
+
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:text="배달정보"-->
+            <!--android:textSize="27dp"-->
+            <!--android:textStyle="bold" />-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:text="주문메뉴 : "-->
+            <!--android:textSize="17dp" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/menuText"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="menuText"-->
+            <!--android:textSize="17dp" />-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:text="야구장위치 : "-->
+            <!--android:textSize="17dp" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/stadiumText"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="stadiumText"-->
+            <!--android:textSize="17dp" />-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:text="연락처 : "-->
+            <!--android:textSize="17dp" />-->
+
+            <!--<EditText-->
+            <!--android:id="@+id/telEdit"-->
+            <!--android:layout_width="200dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:hint="ex)01012345678"-->
+            <!--android:inputType="number"-->
+            <!--android:textSize="17dp" />-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:text="요청사항 : "-->
+            <!--android:textSize="17dp" />-->
+
+            <!--<EditText-->
+            <!--android:id="@+id/memoEdit"-->
+            <!--android:layout_width="300dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:hint="ex)도착하면 전화주세요"-->
+            <!--android:textSize="17dp" />-->
+            <!--</LinearLayout>-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/seatImage"-->
+            <!--android:layout_width="150dp"-->
+            <!--android:layout_height="130dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_margin="5dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--android:visibility="gone" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/seatText"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:textSize="17dp"-->
+            <!--android:visibility="gone" />-->
+
+            <!--<Button-->
+            <!--android:id="@+id/seatButton"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_gravity="right"-->
+            <!--android:layout_marginRight="50dp"-->
+            <!--android:onClick="OnClicked"-->
+            <!--android:text="좌석선택"-->
+            <!--android:textSize="17dp" />-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:text="총 주문금액 : "-->
+            <!--android:textSize="23dp" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/priceText"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:text="priceText"-->
+            <!--android:textSize="23dp"-->
+            <!--android:textStyle="bold" />-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="0.5"-->
+            <!--android:background="@drawable/border_background_white"-->
+            <!--android:gravity="center"-->
+            <!--android:text="결제방식\n선택"-->
+            <!--android:textSize="20dp"-->
+            <!--android:textStyle="bold" />-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@drawable/border_background_blue_top"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/cardBuyText"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:background="@drawable/border_background_white_top"-->
+            <!--android:gravity="center"-->
+            <!--android:onClick="OnClicked"-->
+            <!--android:text="카드결제"-->
+            <!--android:textSize="18dp" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/moneyBuyText"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:background="@drawable/border_background_white_bottom"-->
+            <!--android:gravity="center"-->
+            <!--android:onClick="OnClicked"-->
+            <!--android:text="현금결제"-->
+            <!--android:textSize="18dp" />-->
+            <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:text="※본 어플은 만나서결제(현장결제)만 지원합니다."-->
+            <!--android:textSize="10dp" />-->
+
+            <!--<info.hoang8f.widget.FButton-->
+            <!--android:id="@+id/orderButton"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:onClick="OnClicked"-->
+            <!--android:text="주문완료"-->
+            <!--android:textColor="#fff"-->
+            <!--android:textSize="17dp" />-->
+            <!--</LinearLayout>-->
         </ScrollView>
 
     </LinearLayout>

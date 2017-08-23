@@ -88,10 +88,9 @@ public class MenuAdapter extends BaseAdapter {
                     .with(context)
                     .using(new FirebaseImageLoader())
                     .load(ref)
+                    .thumbnail(Glide.with(context).load(R.drawable.loading))
                     .override(300, 300)
                     .signature(new StringSignature(item.aTime))
-                    .placeholder(R.drawable.jamsil)
-                    .thumbnail(0.1f)
                     .into(view.getMenuImage());
 
         } catch (Exception e) {

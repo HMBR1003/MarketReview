@@ -68,6 +68,8 @@ public class MenuManageActivity extends NewActivity implements MenuAdapter.OnSta
         //상단 툴바 설정
         binding.container.addView(getToolbar("메뉴 관리",true),0);
 
+        binding.addMenuButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.addMenuButton.setCornerRadius(15);
         binding.addMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,6 +183,10 @@ public class MenuManageActivity extends NewActivity implements MenuAdapter.OnSta
 
             }
         };
+
+
+        binding.moveMenuButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.moveMenuButton.setCornerRadius(15);
         binding.moveMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -192,6 +198,9 @@ public class MenuManageActivity extends NewActivity implements MenuAdapter.OnSta
             }
         });
 
+
+        binding.moveCancelButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.moveCancelButton.setCornerRadius(15);
         binding.moveCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -205,6 +214,8 @@ public class MenuManageActivity extends NewActivity implements MenuAdapter.OnSta
             }
         });
 
+        binding.moveFinishButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.moveFinishButton.setCornerRadius(15);
         binding.moveFinishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -222,6 +233,8 @@ public class MenuManageActivity extends NewActivity implements MenuAdapter.OnSta
             }
         });
 
+        binding.selectMainMenuButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.selectMainMenuButton.setCornerRadius(15);
         binding.selectMainMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -235,6 +248,8 @@ public class MenuManageActivity extends NewActivity implements MenuAdapter.OnSta
             }
         });
 
+        binding.mainFinishButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.mainFinishButton.setCornerRadius(15);
         binding.mainFinishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -287,6 +302,8 @@ public class MenuManageActivity extends NewActivity implements MenuAdapter.OnSta
             }
         });
 
+        binding.mainCancelButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.mainCancelButton.setCornerRadius(15);
         binding.mainCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -301,6 +318,8 @@ public class MenuManageActivity extends NewActivity implements MenuAdapter.OnSta
             }
         });
 
+        binding.deleteStartButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.deleteStartButton.setCornerRadius(15);
         binding.deleteStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -315,6 +334,8 @@ public class MenuManageActivity extends NewActivity implements MenuAdapter.OnSta
             }
         });
 
+        binding.deleteCancelButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.deleteCancelButton.setCornerRadius(15);
         binding.deleteCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -329,6 +350,8 @@ public class MenuManageActivity extends NewActivity implements MenuAdapter.OnSta
             }
         });
 
+        binding.deleteFinishButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.deleteFinishButton.setCornerRadius(15);
         binding.deleteFinishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -66,10 +66,9 @@ public class MarketListAdapter extends BaseAdapter {
                     .with(context)
                     .using(new FirebaseImageLoader())
                     .load(fireStorage)
+                    .thumbnail(Glide.with(context).load(R.drawable.loading))
                     .override(300, 300)
                     .signature(new StringSignature(stamp))
-                    .placeholder(R.drawable.jamsil)
-                    .thumbnail(0.1f)
                     .into(view.marketImage);
 
         } catch (Exception e) {
