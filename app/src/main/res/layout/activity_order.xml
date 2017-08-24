@@ -121,6 +121,8 @@
                     sl:scale_base_width="1080">
 
                     <ImageView
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
                         android:id="@+id/seatButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

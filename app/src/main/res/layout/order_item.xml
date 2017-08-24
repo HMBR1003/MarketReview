@@ -41,14 +41,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="옵션 : "
-            android:gravity="center_vertical"
             android:textColor="@color/gray"
             android:textStyle="bold"
             sl:scale_top ="130"
             sl:scale_height="70"
             sl:scale_left="30"
             sl:scale_textsize="45"
-            sl:scale_width="140" />
+            sl:scale_width="135" />
 
         <TextView
             android:id="@+id/options"
@@ -60,8 +59,11 @@
             android:textStyle="bold"
             sl:scale_top ="130"
             sl:scale_height="70"
-            sl:scale_left="170"
+            sl:scale_left="165"
             sl:scale_textsize="45"
-            sl:scale_width="140" />
+            sl:scale_width="910"
+            sl:textview_wrapcontent_direction="bottom"
+            sl:textview_wrapcontent_resizesurrounded="true"
+            sl:textview_wrapcontent_movesiblings="true"/>
     </com.ssomai.android.scalablelayout.ScalableLayout>
 </LinearLayout>

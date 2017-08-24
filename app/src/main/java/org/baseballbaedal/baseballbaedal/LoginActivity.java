@@ -196,7 +196,7 @@ public class LoginActivity extends NewActivity implements
             @Override
             public void onClick(View v) {
                 LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,
-                        Arrays.asList("public_profile", "user_friends"));
+                        Arrays.asList("public_profile", "email"));
                 LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
                     //페이스북 로그인을 성공했을 시
                     @Override

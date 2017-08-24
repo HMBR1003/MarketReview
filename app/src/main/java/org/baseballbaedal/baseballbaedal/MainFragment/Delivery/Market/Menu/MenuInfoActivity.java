@@ -130,7 +130,7 @@ public class MenuInfoActivity extends NewActivity {
                 }
             }
         }
-        if(intent.getBooleanExtra("isTakeout",false)){
+        if (intent.getBooleanExtra("isTakeout", false)) {
             binding.buttonContainer.setVisibility(View.GONE);
         }
 
@@ -290,8 +290,7 @@ public class MenuInfoActivity extends NewActivity {
 
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
-                    if(isBusiness==0||isBusiness==1)
-                    {
+                    if (isBusiness == 0 || isBusiness == 1) {
                         //장바구니에 항목이 존재할 때
                         if (marketId1 != null) {
 
@@ -310,11 +309,18 @@ public class MenuInfoActivity extends NewActivity {
                                         editor.putString("minPrice", minPrice);
                                         editor.putString("menuKey0", menuKey);
                                         editor.putInt("menuAmount0", foodCount);
+                                        editor.putString("menuName0", menuName);
                                         editor.putBoolean("option1checked0", option1Checked);
                                         editor.putBoolean("option2checked0", option2Checked);
                                         editor.putBoolean("option3checked0", option3Checked);
                                         editor.putBoolean("option4checked0", option4Checked);
                                         editor.putBoolean("option5checked0", option5Checked);
+                                        editor.putString("option1Name0", option1Name);
+                                        editor.putString("option2Name0", option2Name);
+                                        editor.putString("option3Name0", option3Name);
+                                        editor.putString("option4Name0", option4Name);
+                                        editor.putString("option5Name0", option5Name);
+
                                         editor.putInt("basketCount", 1);
                                         editor.commit();
                                         Toast.makeText(MenuInfoActivity.this, "장바구니에 담았습니다.", Toast.LENGTH_SHORT).show();
@@ -357,7 +363,6 @@ public class MenuInfoActivity extends NewActivity {
                                     for (int i = 0; i < 30; i++) {
                                         if (shared.getString("menuKey" + i, "").equals(menuKey)) {
 
-                                            Log.d("같은메뉴", i + "번째");
                                             option1checked = shared.getBoolean("option1checked" + i, false);
                                             option2checked = shared.getBoolean("option2checked" + i, false);
                                             option3checked = shared.getBoolean("option3checked" + i, false);
@@ -377,11 +382,17 @@ public class MenuInfoActivity extends NewActivity {
                                     if (!isExist) {
                                         editor.putString("menuKey" + index, menuKey);
                                         editor.putInt("menuAmount" + index, foodCount);
+                                        editor.putString("menuName" + index, menuName);
                                         editor.putBoolean("option1checked" + index, option1Checked);
                                         editor.putBoolean("option2checked" + index, option2Checked);
                                         editor.putBoolean("option3checked" + index, option3Checked);
                                         editor.putBoolean("option4checked" + index, option4Checked);
                                         editor.putBoolean("option5checked" + index, option5Checked);
+                                        editor.putString("option1Name" + index, option1Name);
+                                        editor.putString("option2Name" + index, option2Name);
+                                        editor.putString("option3Name" + index, option3Name);
+                                        editor.putString("option4Name" + index, option4Name);
+                                        editor.putString("option5Name" + index, option5Name);
                                         editor.putInt("basketCount", index + 1);
                                         editor.commit();
                                     }
@@ -403,13 +414,18 @@ public class MenuInfoActivity extends NewActivity {
                             editor.putString("minPrice", minPrice);
 
                             editor.putString("menuKey0", menuKey);
-
+                            editor.putString("menuName0", menuName);
                             editor.putInt("menuAmount0", foodCount);
                             editor.putBoolean("option1checked0", option1Checked);
                             editor.putBoolean("option2checked0", option2Checked);
                             editor.putBoolean("option3checked0", option3Checked);
                             editor.putBoolean("option4checked0", option4Checked);
                             editor.putBoolean("option5checked0", option5Checked);
+                            editor.putString("option1Name0",option1Name);
+                            editor.putString("option2Name0",option2Name);
+                            editor.putString("option3Name0",option3Name);
+                            editor.putString("option4Name0",option4Name);
+                            editor.putString("option5Name0",option5Name);
                             editor.putInt("basketCount", 1);
                             editor.commit();
 
@@ -418,7 +434,7 @@ public class MenuInfoActivity extends NewActivity {
                         }
                     }
                     //사장 고객인 경우
-                    else{
+                    else {
                         Toast.makeText(MenuInfoActivity.this, "사업자 고객은 주문을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -435,41 +451,39 @@ public class MenuInfoActivity extends NewActivity {
             public void onClick(View v) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
-                    if(isBusiness==0||isBusiness==1){
-                        if(totalPrice<Integer.parseInt(minPrice)){
+                    if (isBusiness == 0 || isBusiness == 1) {
+                        if (totalPrice < Integer.parseInt(minPrice)) {
                             Toast.makeText(MenuInfoActivity.this, "주문하시는 금액이 최소 주문 금액보다 작습니다.", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
+                        } else {
                             Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            intent.putExtra("isBasket",false);
+                            intent.putExtra("isBasket", false);
                             intent.putExtra("marketId", marketId);
-                            intent.putExtra("menuName",menuName);
-                            intent.putExtra("menuPrice",numToWon(totalPrice));
+                            intent.putExtra("menuName", menuName);
+                            intent.putExtra("menuPrice", numToWon(totalPrice));
                             intent.putExtra("menuAmount", foodCount);
-                            if(option1Checked){
+                            if (option1Checked) {
                                 intent.putExtra("option1Name", option1Name);
                             }
-                            if(option2Checked){
+                            if (option2Checked) {
                                 intent.putExtra("option2Name", option2Name);
                             }
-                            if(option3Checked){
+                            if (option3Checked) {
                                 intent.putExtra("option3Name", option3Name);
                             }
-                            if(option4Checked){
+                            if (option4Checked) {
                                 intent.putExtra("option4Name", option4Name);
                             }
-                            if(option5Checked){
+                            if (option5Checked) {
                                 intent.putExtra("option5Name", option5Name);
                             }
                             startActivity(intent);
                         }
-                    }
-                    else {
+                    } else {
                         Toast.makeText(MenuInfoActivity.this, "사업자 고객은 주문을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
                     }
 
-                }else {
+                } else {
                     pleaseLogin();
                 }
             }

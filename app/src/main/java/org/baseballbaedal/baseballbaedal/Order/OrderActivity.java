@@ -21,6 +21,8 @@ import org.baseballbaedal.baseballbaedal.databinding.ActivityOrderBinding;
 
 import java.util.zip.Inflater;
 
+import static org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.BasketActivity.BASKET_MAX_LENGTH;
+
 
 public class OrderActivity extends NewActivity {
     public static final int REQUEST_CODE_SEATSELECT = 1;
@@ -93,32 +95,38 @@ public class OrderActivity extends NewActivity {
             LinearLayout linearLayout = new LinearLayout(this);
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.order_item, linearLayout, false);
-            ((TextView) viewGroup.findViewById(R.id.menuName)).setText(menuName+" X "+menuAmount);
-            ((TextView) viewGroup.findViewById(R.id.menuPrice)).setText(menuPrice+"원");
-            orderBinding.finalPrice.setText(menuPrice+"원");
+            ((TextView) viewGroup.findViewById(R.id.menuName)).setText(menuName + " X " + menuAmount);
+            ((TextView) viewGroup.findViewById(R.id.menuPrice)).setText(menuPrice + "원");
+            orderBinding.finalPrice.setText(menuPrice + "원");
+
             boolean optionExist = false;
-            if(option1Name!=null){
+            String options = "";
+            if (option1Name != null) {
                 optionExist = true;
-                ((TextView) viewGroup.findViewById(R.id.options)).append(option1Name);
+                options += option1Name + ", ";
             }
-            if(option2Name!=null){
+            if (option2Name != null) {
                 optionExist = true;
-                ((TextView) viewGroup.findViewById(R.id.options)).append(option2Name);
+                options += option2Name + ", ";
             }
-            if(option3Name!=null){
+            if (option3Name != null) {
                 optionExist = true;
-                ((TextView) viewGroup.findViewById(R.id.options)).append(option3Name);
+                options += option3Name + ", ";
             }
-            if(option4Name!=null){
+            if (option4Name != null) {
                 optionExist = true;
-                ((TextView) viewGroup.findViewById(R.id.options)).append(option4Name);
+                options += option4Name + ", ";
             }
-            if(option5Name!=null){
+            if (option5Name != null) {
                 optionExist = true;
-                ((TextView) viewGroup.findViewById(R.id.options)).append(option5Name);
+                options += option5Name + ", ";
             }
-            if(!optionExist){
+
+            if (!optionExist) {
                 ((TextView) viewGroup.findViewById(R.id.options)).setText("없음");
+            } else {
+                options = options.substring(0, options.length() - 2);
+                ((TextView) viewGroup.findViewById(R.id.options)).append(options);
             }
 
             orderBinding.orderContainer.addView(viewGroup);
@@ -126,7 +134,121 @@ public class OrderActivity extends NewActivity {
 
         //장바구니
         else {
+            int basketCount = intent.getIntExtra("basketCount", 1);
+            String totalPrice = intent.getStringExtra("totalPrice");
+            SharedPreferences shared = getSharedPreferences("basket", MODE_PRIVATE);
 
+//            String[] menuKey = new String[basketCount];
+//            String[] menuName = new String[basketCount];
+//            int[] menuAmount = new int[basketCount];
+//            boolean[] option1checked = new boolean[basketCount];
+//            boolean[] option2checked = new boolean[basketCount];
+//            boolean[] option3checked = new boolean[basketCount];
+//            boolean[] option4checked = new boolean[basketCount];
+//            boolean[] option5checked = new boolean[basketCount];
+//            String[] option1Name = new String[basketCount];
+//            String[] option2Name = new String[basketCount];
+//            String[] option3Name = new String[basketCount];
+//            String[] option4Name = new String[basketCount];
+//            String[] option5Name = new String[basketCount];
+//            String basketPrice[] = new String[basketCount];
+//            for (int i = 0; i < basketCount; i++) {
+//                menuKey[i] = shared.getString("menuKey" + i, null);
+//                menuAmount[i] = shared.getInt("menuAmount" + i, 1);
+//                menuName[i] = shared.getString("menuName" + i, null);
+//                option1checked[i] = shared.getBoolean("option1checked" + i, false);
+//                option2checked[i] = shared.getBoolean("option2checked" + i, false);
+//                option3checked[i] = shared.getBoolean("option3checked" + i, false);
+//                option4checked[i] = shared.getBoolean("option4checked" + i, false);
+//                option5checked[i] = shared.getBoolean("option5checked" + i, false);
+//                option1Name[i] = shared.getString("option1Name" + i, null);
+//                option2Name[i] = shared.getString("option2Name" + i, null);
+//                option3Name[i] = shared.getString("option3Name" + i, null);
+//                option4Name[i] = shared.getString("option4Name" + i, null);
+//                option5Name[i] = shared.getString("option5Name" + i, null);
+//                intent.getStringExtra("basketPrice" + i);
+//            }
+
+
+            for (int i = 0; i < basketCount; i++) {
+                LinearLayout linearLayout = new LinearLayout(this);
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.order_item, linearLayout, false);
+                ((TextView) viewGroup.findViewById(R.id.menuName)).setText(  intent.getStringExtra("menuName"+i) + " X " + shared.getInt("menuAmount" + i, 1));
+                ((TextView) viewGroup.findViewById(R.id.menuPrice)).setText(intent.getStringExtra("basketPrice" + i));
+
+                boolean optionExist = false;
+                String options = "";
+                if (shared.getBoolean("option1checked" + i, false)) {
+                    optionExist = true;
+                    options += shared.getString("option1Name" + i, null) + ", ";
+                }
+                if (shared.getBoolean("option2checked" + i, false)) {
+                    optionExist = true;
+                    options += shared.getString("option2Name" + i, null) + ", ";
+                }
+                if (shared.getBoolean("option3checked" + i, false)) {
+                    optionExist = true;
+                    options += shared.getString("option3Name" + i, null) + ", ";
+                }
+                if (shared.getBoolean("option4checked" + i, false)) {
+                    optionExist = true;
+                    options += shared.getString("option4Name" + i, null) + ", ";
+                }
+                if (shared.getBoolean("option5checked" + i, false)) {
+                    optionExist = true;
+                    options += shared.getString("option5Name" + i, null) + ", ";
+                }
+
+                if (!optionExist) {
+                    ((TextView) viewGroup.findViewById(R.id.options)).setText("없음");
+                } else {
+                    options = options.substring(0, options.length() - 2);
+                    ((TextView) viewGroup.findViewById(R.id.options)).append(options);
+                }
+                orderBinding.orderContainer.addView(viewGroup);
+            }
+            orderBinding.finalPrice.setText(totalPrice);
+
+
+
+//            LinearLayout linearLayout = new LinearLayout(this);
+//            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.order_item, linearLayout, false);
+//            ((TextView) viewGroup.findViewById(R.id.menuName)).setText(menuName + " X " + menuAmount);
+//            ((TextView) viewGroup.findViewById(R.id.menuPrice)).setText(menuPrice + "원");
+//            orderBinding.finalPrice.setText(menuPrice + "원");
+//            boolean optionExist = false;
+//            String options = "";
+//            if (option1Name != null) {
+//                optionExist = true;
+//                options += option1Name + ", ";
+//            }
+//            if (option2Name != null) {
+//                optionExist = true;
+//                options += option2Name + ", ";
+//            }
+//            if (option3Name != null) {
+//                optionExist = true;
+//                options += option3Name + ", ";
+//            }
+//            if (option4Name != null) {
+//                optionExist = true;
+//                options += option4Name + ", ";
+//            }
+//            if (option5Name != null) {
+//                optionExist = true;
+//                options += option5Name + ", ";
+//            }
+//
+//            if (!optionExist) {
+//                ((TextView) viewGroup.findViewById(R.id.options)).setText("없음");
+//            } else {
+//                options = options.substring(0, options.length() - 2);
+//                ((TextView) viewGroup.findViewById(R.id.options)).append(options);
+//            }
+//
+//            orderBinding.orderContainer.addView(viewGroup);
         }
 
     }

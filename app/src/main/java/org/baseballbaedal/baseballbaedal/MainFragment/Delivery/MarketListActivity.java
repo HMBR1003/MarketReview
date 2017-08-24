@@ -110,6 +110,7 @@ public class MarketListActivity extends NewActivity {
                     market = data.getValue(MarketList.class);
 
                     if (market.handleFood == menuCode) {
+                        Log.d("확인", market.marketName+"");
                         if (market.selectedCol == colCheck + 1) {
                             userID = data.getKey();
                             String address1 = market.marketAddress1.substring(7);

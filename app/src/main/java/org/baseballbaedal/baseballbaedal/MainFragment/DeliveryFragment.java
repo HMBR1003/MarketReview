@@ -198,7 +198,7 @@ public class DeliveryFragment extends Fragment {
                 intent.putExtra("menu", "족발");
                 startActivity(intent);
             } else if (v == binding.etcButton) {
-                intent.putExtra("menu", "기타음식");
+                intent.putExtra("menu", "기타");
                 startActivity(intent);
             }
         }

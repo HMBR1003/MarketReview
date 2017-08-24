@@ -5,8 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -54,7 +52,7 @@ public class BasketActivity extends NewActivity {
     ViewGroup[] view = new ViewGroup[BASKET_MAX_LENGTH];
     TextView[] tagText = new TextView[BASKET_MAX_LENGTH];
     ImageButton[] closeButton = new ImageButton[BASKET_MAX_LENGTH];
-    TextView[] menuName = new TextView[BASKET_MAX_LENGTH];
+    TextView[] menuNameView = new TextView[BASKET_MAX_LENGTH];
     TextView[] menuPriceText = new TextView[BASKET_MAX_LENGTH];
     ImageView[] imageView = new ImageView[BASKET_MAX_LENGTH];
     TextView[] minHapPriceText = new TextView[BASKET_MAX_LENGTH];
@@ -65,6 +63,7 @@ public class BasketActivity extends NewActivity {
 
     MenuInfo[] menuList = new MenuInfo[BASKET_MAX_LENGTH];
     String[] menuKey = new String[BASKET_MAX_LENGTH];
+    String[] menuName = new String[BASKET_MAX_LENGTH];
     int[] menuAmount = new int[BASKET_MAX_LENGTH];
     boolean[] option1checked = new boolean[BASKET_MAX_LENGTH];
     boolean[] option2checked = new boolean[BASKET_MAX_LENGTH];
@@ -95,7 +94,7 @@ public class BasketActivity extends NewActivity {
         ((ImageView) findViewById(R.id.btnDelete)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!emptyCheck()) {
+                if (!emptyCheck()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                     builder.setMessage("장바구니를 비우시겠습니까?")
                             .setCancelable(false)
@@ -116,8 +115,7 @@ public class BasketActivity extends NewActivity {
                             });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-                }
-                else{
+                } else {
                     Toast.makeText(BasketActivity.this, "장바구니에 아무것도 없어요", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -165,13 +163,18 @@ public class BasketActivity extends NewActivity {
         basketBinding.orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(totalPrice<minPrice){
+                if (totalPrice < minPrice) {
                     Toast.makeText(BasketActivity.this, "주문하시는 금액이 최소 주문 금액보다 작습니다.", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra("isBasket",true);
+                    intent.putExtra("isBasket", true);
+                    intent.putExtra("basketCount",basketCount);
+                    for(int i=0; i<basketCount; i++){
+                        intent.putExtra("basketPrice"+i,minHapPriceText[i].getText().toString());
+                        intent.putExtra("menuName"+i,menuNameView[i].getText().toString());
+                    }
+                    intent.putExtra("totalPrice",hapPriceText.getText().toString());
                     startActivity(intent);
                 }
             }
@@ -190,6 +193,7 @@ public class BasketActivity extends NewActivity {
         for (int i = 0; i < BASKET_MAX_LENGTH; i++) {
             menuKey[i] = shared.getString("menuKey" + i, null);
             menuAmount[i] = shared.getInt("menuAmount" + i, 13);
+            menuName[i] = shared.getString("menuName"+i,null);
             option1checked[i] = shared.getBoolean("option1checked" + i, false);
             option2checked[i] = shared.getBoolean("option2checked" + i, false);
             option3checked[i] = shared.getBoolean("option3checked" + i, false);
@@ -223,7 +227,7 @@ public class BasketActivity extends NewActivity {
 
                 //총 가격 표시해줄 푸터뷰
                 basketBinding.basketLayout.addView(footerView);
-                addMenuButton = (FButton)findViewById(R.id.addMenuButton);
+                addMenuButton = (FButton) findViewById(R.id.addMenuButton);
                 addMenuButton.setButtonColor(getResources().getColor(R.color.buttonColor));
                 addMenuButton.setCornerRadius(15);
                 addMenuButton.setOnClickListener(new View.OnClickListener() {
@@ -307,7 +311,7 @@ public class BasketActivity extends NewActivity {
 //                        shared.edit().remove("option4checked" + num).apply();
 //                        shared.edit().remove("option5checked" + num).apply();
 
-                        int index = shared.getInt("basketCount",0);
+                        int index = shared.getInt("basketCount", 0);
 //                        shared.edit().putInt("basketCount",0).apply();
                         for (int i = num; shared.getString("menuKey" + (i + 1), null) != null; i++) {
                             shared.edit().putString("menuKey" + i, shared.getString("menuKey" + (i + 1), null)).apply();
@@ -327,14 +331,14 @@ public class BasketActivity extends NewActivity {
 //                            editor.putBoolean("option5checked" + (i - 1), shared.getBoolean("option5checked" + i, false));
 //                            editor.commit();
                         }
-                        shared.edit().putInt("basketCount", index-1).apply();
-                        shared.edit().remove("menuKey" + (index-1)).apply();
-                        shared.edit().remove("menuAmount" + (index-1)).apply();
-                        shared.edit().remove("option1checked" + (index-1)).apply();
-                        shared.edit().remove("option2checked" + (index-1)).apply();
-                        shared.edit().remove("option3checked" + (index-1)).apply();
-                        shared.edit().remove("option4checked" + (index-1)).apply();
-                        shared.edit().remove("option5checked" + (index-1)).apply();
+                        shared.edit().putInt("basketCount", index - 1).apply();
+                        shared.edit().remove("menuKey" + (index - 1)).apply();
+                        shared.edit().remove("menuAmount" + (index - 1)).apply();
+                        shared.edit().remove("option1checked" + (index - 1)).apply();
+                        shared.edit().remove("option2checked" + (index - 1)).apply();
+                        shared.edit().remove("option3checked" + (index - 1)).apply();
+                        shared.edit().remove("option4checked" + (index - 1)).apply();
+                        shared.edit().remove("option5checked" + (index - 1)).apply();
 
                         Toast.makeText(BasketActivity.this, "삭제하였습니다.", Toast.LENGTH_SHORT).show();
                         emptyCheck();
@@ -361,8 +365,8 @@ public class BasketActivity extends NewActivity {
         closeButton[basketCount].setTag(basketCount);
         menuPriceText[basketCount] = (TextView) view[basketCount].findViewById(R.id.menuPriceText); //메뉴가격
         menuPriceText[basketCount].setText(numToWon(Integer.parseInt(menuList.menuPrice)));
-        menuName[basketCount] = (TextView) view[basketCount].findViewById(R.id.menuName);   //메뉴이름
-        menuName[basketCount].setText(menuList.menuName);
+        menuNameView[basketCount] = (TextView) view[basketCount].findViewById(R.id.menuName);   //메뉴이름
+        menuNameView[basketCount].setText(menuList.menuName);
         imageView[basketCount] = (ImageView) view[basketCount].findViewById(R.id.imageView);    //메뉴이미지
         storageReference = FirebaseStorage.getInstance().getReference().child("market").child(userID).child("menu").child(menuList.menuKey + ".jpg");
         try {
