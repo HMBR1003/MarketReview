@@ -86,6 +86,10 @@ public class ColSelectActivity extends NewActivity {
                 .load(img[8])
                 .into(binding.col9);
 
+        Glide.with(this)
+                .load(R.drawable.colselect_tab)
+                .into(binding.colselectTab);
+
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {

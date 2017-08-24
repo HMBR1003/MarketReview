@@ -39,7 +39,6 @@ public class SeatSelectActivity extends NewActivity {
     int spinnerPosition;
     String premiumBlock = "";
     String block, raw, num;
-    String seatString;
     String blockNum;
 
     @Override
@@ -472,7 +471,7 @@ public class SeatSelectActivity extends NewActivity {
                                     break;
                                 }
                         if (blockbool == true) {
-                            alertDialog(block, raw, num);
+                            alertDialog(block, raw, num,true);
                         } else {
                             Toast.makeText(this, "블록 번호를 다시 확인하여 주십시오.", Toast.LENGTH_SHORT).show();
                             selectBinding.blockEdit.setText("");
@@ -492,16 +491,43 @@ public class SeatSelectActivity extends NewActivity {
 
                     switch (spinnerPosition) {
                         case PREMIUM:
-                            premiumBlock = "PREMIUM";
+                            if (raw.length() != 0 && num.length() != 0) {
+                                premiumBlock = "PREMIUM";
+                                alertDialog(premiumBlock, raw, num,false);
+                            }  else if (raw.length() == 0) {
+                                Toast.makeText(this, "열 번호를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                                selectBinding.rawEdit.requestFocus();
+                            } else if (num.length() == 0) {
+                                Toast.makeText(this, "좌석 번호를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                                selectBinding.numEdit.requestFocus();
+                            }
                             break;
                         case EXCITING1:
-                            premiumBlock = "1루 EXCITING";
+                            if (raw.length() != 0 && num.length() != 0) {
+                                premiumBlock = "1루 EXCITING";
+                                alertDialog(premiumBlock, raw, num,false);
+                            } else if (raw.length() == 0) {
+                                Toast.makeText(this, "열 번호를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                                selectBinding.rawEdit.requestFocus();
+                            } else if (num.length() == 0) {
+                                Toast.makeText(this, "좌석 번호를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                                selectBinding.numEdit.requestFocus();
+                            }
+
                             break;
                         case EXCITING3:
-                            premiumBlock = "3루 EXCITING";
+                            if (raw.length() != 0 && num.length() != 0) {
+                                premiumBlock = "3루 EXCITING";
+                                alertDialog(premiumBlock, raw, num,false);
+                            } else if (raw.length() == 0) {
+                                Toast.makeText(this, "열 번호를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                                selectBinding.rawEdit.requestFocus();
+                            } else if (num.length() == 0) {
+                                Toast.makeText(this, "좌석 번호를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                                selectBinding.numEdit.requestFocus();
+                            }
                             break;
                     }
-                    alertDialog(premiumBlock, raw, num);
                 }
                 break;
             case R.id.imageview:
@@ -519,9 +545,10 @@ public class SeatSelectActivity extends NewActivity {
         }
     }
 
+
     //좌석확인 다이알로그
-    public void alertDialog(final String block, String raw, String num) {
-        seatString = "블럭:" + block + " 열:" + raw + " 좌석:" + num;
+    public void alertDialog(final String block, String raw, String num, final boolean isNum) {
+        final String seatString = "블럭:" + block + "\n열:" + raw + "\n좌석:" + num;
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle("좌석확인");
         dialogBuilder.setMessage("좌석이 맞는지 확인하여 주십시오.\n" + seatString)
@@ -530,9 +557,14 @@ public class SeatSelectActivity extends NewActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
-                        intent.putExtra("seat",seatString);
-                        intent.putExtra("block",Integer.parseInt(block));
-                        setResult(RESULT_OK,intent);
+                        intent.putExtra("seat", seatString);
+                        if(isNum) {
+                            intent.putExtra("numBlock", Integer.parseInt(block));
+                        }
+                        else {
+                            intent.putExtra("stringBlock", block);
+                        }
+                        setResult(RESULT_OK, intent);
                         finish();
                     }
                 })

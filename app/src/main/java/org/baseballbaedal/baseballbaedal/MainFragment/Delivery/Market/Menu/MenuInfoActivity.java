@@ -443,7 +443,25 @@ public class MenuInfoActivity extends NewActivity {
                             Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             intent.putExtra("isBasket",false);
-
+                            intent.putExtra("marketId", marketId);
+                            intent.putExtra("menuName",menuName);
+                            intent.putExtra("menuPrice",numToWon(totalPrice));
+                            intent.putExtra("menuAmount", foodCount);
+                            if(option1Checked){
+                                intent.putExtra("option1Name", option1Name);
+                            }
+                            if(option2Checked){
+                                intent.putExtra("option2Name", option2Name);
+                            }
+                            if(option3Checked){
+                                intent.putExtra("option3Name", option3Name);
+                            }
+                            if(option4Checked){
+                                intent.putExtra("option4Name", option4Name);
+                            }
+                            if(option5Checked){
+                                intent.putExtra("option5Name", option5Name);
+                            }
                             startActivity(intent);
                         }
                     }

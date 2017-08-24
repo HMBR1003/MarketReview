@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sl="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.ssomai.android.scalablelayout.ScalableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        sl:scale_base_height="200"
+        sl:scale_base_width="1080">
+
+        <TextView
+            android:id="@+id/menuName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="음식 이름 X 수량"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            sl:scale_height="130"
+            sl:scale_left="30"
+            sl:scale_textsize="50"
+            sl:scale_width="800" />
+
+        <TextView
+            android:id="@+id/menuPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0원"
+            android:gravity="center_vertical|end"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            sl:scale_height="130"
+            sl:scale_left="450"
+            sl:scale_textsize="50"
+            sl:scale_width="600" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="옵션 : "
+            android:gravity="center_vertical"
+            android:textColor="@color/gray"
+            android:textStyle="bold"
+            sl:scale_top ="130"
+            sl:scale_height="70"
+            sl:scale_left="30"
+            sl:scale_textsize="45"
+            sl:scale_width="140" />
+
+        <TextView
+            android:id="@+id/options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:gravity="center_vertical"
+            android:textColor="@color/gray"
+            android:textStyle="bold"
+            sl:scale_top ="130"
+            sl:scale_height="70"
+            sl:scale_left="170"
+            sl:scale_textsize="45"
+            sl:scale_width="140" />
+    </com.ssomai.android.scalablelayout.ScalableLayout>
+</LinearLayout>

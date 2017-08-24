@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ssomai.android.scalablelayout.ScalableLayout;
+
 import org.w3c.dom.Text;
 
 /**
@@ -57,6 +59,7 @@ public class NewActivity extends AppCompatActivity {
         }
         else{
             (view.findViewById(R.id.btnBack)).setVisibility(View.GONE);
+            ((ScalableLayout)view.findViewById(R.id.titleScal)).moveChildView((view.findViewById(R.id.title)),50,0);
         }
         return view;
     }

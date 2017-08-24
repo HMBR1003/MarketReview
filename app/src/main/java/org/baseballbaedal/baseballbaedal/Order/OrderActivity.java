@@ -1,11 +1,16 @@
 package org.baseballbaedal.baseballbaedal.Order;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -13,6 +18,8 @@ import com.bumptech.glide.Glide;
 import org.baseballbaedal.baseballbaedal.NewActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityOrderBinding;
+
+import java.util.zip.Inflater;
 
 
 public class OrderActivity extends NewActivity {
@@ -22,6 +29,9 @@ public class OrderActivity extends NewActivity {
 
     int buying = 0; // 1: 카드결제 2: 현금결제
     int colCheck;
+    boolean isSetSeat = false;
+    String marketId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +41,6 @@ public class OrderActivity extends NewActivity {
 
         orderBinding.orderButton.setButtonColor(getResources().getColor(R.color.buttonColor));
         orderBinding.orderButton.setCornerRadius(15);
-        orderBinding.seatButton.setButtonColor(getResources().getColor(R.color.buttonColor));
-        orderBinding.seatButton.setCornerRadius(15);
-
 
         //현재 선택된 야구장 데이터 가져오기
         SharedPreferences colCheckpref = getSharedPreferences("selectedCol", MODE_PRIVATE);
@@ -69,6 +76,57 @@ public class OrderActivity extends NewActivity {
             default:
                 orderBinding.stadiumText.setText("선택된 야구장이 없습니다.");
                 break;
+        }
+
+        Intent intent = getIntent();
+        //즉시주문
+        if (!intent.getBooleanExtra("isBasket", false)) {
+            marketId = intent.getStringExtra("marketId");
+            String menuPrice = intent.getStringExtra("menuPrice");
+            String menuName = intent.getStringExtra("menuName");
+            int menuAmount = intent.getIntExtra("menuAmount", 1);
+            String option1Name = intent.getStringExtra("option1Name");
+            String option2Name = intent.getStringExtra("option2Name");
+            String option3Name = intent.getStringExtra("option3Name");
+            String option4Name = intent.getStringExtra("option4Name");
+            String option5Name = intent.getStringExtra("option5Name");
+            LinearLayout linearLayout = new LinearLayout(this);
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.order_item, linearLayout, false);
+            ((TextView) viewGroup.findViewById(R.id.menuName)).setText(menuName+" X "+menuAmount);
+            ((TextView) viewGroup.findViewById(R.id.menuPrice)).setText(menuPrice+"원");
+            orderBinding.finalPrice.setText(menuPrice+"원");
+            boolean optionExist = false;
+            if(option1Name!=null){
+                optionExist = true;
+                ((TextView) viewGroup.findViewById(R.id.options)).append(option1Name);
+            }
+            if(option2Name!=null){
+                optionExist = true;
+                ((TextView) viewGroup.findViewById(R.id.options)).append(option2Name);
+            }
+            if(option3Name!=null){
+                optionExist = true;
+                ((TextView) viewGroup.findViewById(R.id.options)).append(option3Name);
+            }
+            if(option4Name!=null){
+                optionExist = true;
+                ((TextView) viewGroup.findViewById(R.id.options)).append(option4Name);
+            }
+            if(option5Name!=null){
+                optionExist = true;
+                ((TextView) viewGroup.findViewById(R.id.options)).append(option5Name);
+            }
+            if(!optionExist){
+                ((TextView) viewGroup.findViewById(R.id.options)).setText("없음");
+            }
+
+            orderBinding.orderContainer.addView(viewGroup);
+        }
+
+        //장바구니
+        else {
+
         }
 
     }
@@ -122,25 +180,35 @@ public class OrderActivity extends NewActivity {
                 startActivityForResult(intent, REQUEST_CODE_SEATSELECT);
                 break;
             case R.id.orderButton://주문완료
-                switch (buying) {
-                    case 1:
-                        Toast.makeText(this, "카드결제", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 2:
-                        Toast.makeText(this, "현금결제", Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        Toast.makeText(this, "결제방식 선택하셈", Toast.LENGTH_SHORT).show();
+                if (isSetSeat && orderBinding.telEdit.length() > 0) {
+                    switch (buying) {
+                        case 1:
+                            Toast.makeText(this, "카드결제", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 2:
+                            Toast.makeText(this, "현금결제", Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            Toast.makeText(this, "결제방식 선택하셈", Toast.LENGTH_SHORT).show();
+                    }
+                } else if (!isSetSeat) {
+                    Toast.makeText(this, "좌석을 선택해 주세요", Toast.LENGTH_SHORT).show();
+                } else if (orderBinding.telEdit.length() == 0) {
+                    Toast.makeText(this, "핸드폰 번호를 입력해 주세요", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.cardBuyText:  //카드결제
-                orderBinding.moneyBuyText.setBackgroundResource(R.drawable.border_background_white_bottom);
-                orderBinding.cardBuyText.setBackgroundResource(R.drawable.border_background_blue_top);
+                orderBinding.moneyBuyText.setBackgroundResource(R.color.white);
+                orderBinding.cardBuyText.setBackgroundResource(R.color.buttonColor);
+                orderBinding.cardBuyText.setTextColor(getResources().getColor(R.color.white));
+                orderBinding.moneyBuyText.setTextColor(getResources().getColor(R.color.darkgray));
                 buying = 1;
                 break;
             case R.id.moneyBuyText: //현금결제
-                orderBinding.moneyBuyText.setBackgroundResource(R.drawable.border_background_blue_bottom);
-                orderBinding.cardBuyText.setBackgroundResource(R.drawable.border_background_white_top);
+                orderBinding.moneyBuyText.setBackgroundResource(R.color.buttonColor);
+                orderBinding.cardBuyText.setBackgroundResource(R.color.white);
+                orderBinding.moneyBuyText.setTextColor(getResources().getColor(R.color.white));
+                orderBinding.cardBuyText.setTextColor(getResources().getColor(R.color.darkgray));
                 buying = 2;
                 break;
         }
@@ -153,324 +221,336 @@ public class OrderActivity extends NewActivity {
             case REQUEST_CODE_SEATSELECT:
                 if (resultCode == RESULT_OK) {
                     String seat = data.getStringExtra("seat");
-                    int blockNum = data.getIntExtra("block", 0);
+                    int blockNum = data.getIntExtra("numBlock", 0);
+                    String blockString = data.getStringExtra("stringBlock");
                     orderBinding.seatText.setText(seat);
+                    isSetSeat = true;
                     orderBinding.seatContainerJamsil.setVisibility(View.VISIBLE);
 //                    orderBinding.seatText.setVisibility(View.VISIBLE);
 //                    orderBinding.seatImage.setVisibility(View.VISIBLE);
-                    switch (blockNum) {
-                        case 334:
-                            imageGlide(R.drawable.seat334);
-                            break;
-                        case 333:
-                            imageGlide(R.drawable.seat333);
-                            break;
-                        case 332:
-                            imageGlide(R.drawable.seat332);
-                            break;
-                        case 331:
-                            imageGlide(R.drawable.seat331);
-                            break;
-                        case 330:
-                            imageGlide(R.drawable.seat330);
-                            break;
-                        case 329:
-                            imageGlide(R.drawable.seat329);
-                            break;
-                        case 328:
-                            imageGlide(R.drawable.seat328);
-                            break;
-                        case 327:
-                            imageGlide(R.drawable.seat327);
-                            break;
-                        case 326:
-                            imageGlide(R.drawable.seat326);
-                            break;
-                        case 325:
-                            imageGlide(R.drawable.seat325);
-                            break;
-                        case 324:
-                            imageGlide(R.drawable.seat324);
-                            break;
-                        case 323:
-                            imageGlide(R.drawable.seat323);
-                            break;
-                        case 322:
-                            imageGlide(R.drawable.seat322);
-                            break;
-                        case 321:
-                            imageGlide(R.drawable.seat321);
-                            break;
-                        case 320:
-                            imageGlide(R.drawable.seat320);
-                            break;
-                        case 319:
-                            imageGlide(R.drawable.seat319);
-                            break;
-                        case 318:
-                            imageGlide(R.drawable.seat318);
-                            break;
-                        case 317:
-                            imageGlide(R.drawable.seat317);
-                            break;
-                        case 316:
-                            imageGlide(R.drawable.seat316);
-                            break;
-                        case 315:
-                            imageGlide(R.drawable.seat315);
-                            break;
-                        case 314:
-                            imageGlide(R.drawable.seat314);
-                            break;
-                        case 313:
-                            imageGlide(R.drawable.seat313);
-                            break;
-                        case 312:
-                            imageGlide(R.drawable.seat312);
-                            break;
-                        case 311:
-                            imageGlide(R.drawable.seat311);
-                            break;
-                        case 310:
-                            imageGlide(R.drawable.seat310);
-                            break;
-                        case 309:
-                            imageGlide(R.drawable.seat309);
-                            break;
-                        case 308:
-                            imageGlide(R.drawable.seat308);
-                            break;
-                        case 307:
-                            imageGlide(R.drawable.seat307);
-                            break;
-                        case 306:
-                            imageGlide(R.drawable.seat306);
-                            break;
-                        case 305:
-                            imageGlide(R.drawable.seat305);
-                            break;
-                        case 304:
-                            imageGlide(R.drawable.seat304);
-                            break;
-                        case 303:
-                            imageGlide(R.drawable.seat303);
-                            break;
-                        case 302:
-                            imageGlide(R.drawable.seat302);
-                            break;
-                        case 301:
-                            imageGlide(R.drawable.seat301);
-                            break;
-                        case 201:
-                            imageGlide(R.drawable.seat201);
-                            break;
-                        case 202:
-                            imageGlide(R.drawable.seat202);
-                            break;
-                        case 203:
-                            imageGlide(R.drawable.seat203);
-                            break;
-                        case 204:
-                            imageGlide(R.drawable.seat204);
-                            break;
-                        case 205:
-                            imageGlide(R.drawable.seat205);
-                            break;
-                        case 206:
-                            imageGlide(R.drawable.seat206);
-                            break;
-                        case 207:
-                            imageGlide(R.drawable.seat207);
-                            break;
-                        case 208:
-                            imageGlide(R.drawable.seat208);
-                            break;
-                        case 209:
-                            imageGlide(R.drawable.seat209);
-                            break;
-                        case 210:
-                            imageGlide(R.drawable.seat210);
-                            break;
-                        case 211:
-                            imageGlide(R.drawable.seat211);
-                            break;
-                        case 212:
-                            imageGlide(R.drawable.seat212);
-                            break;
-                        case 213:
-                            imageGlide(R.drawable.seat213);
-                            break;
-                        case 214:
-                            imageGlide(R.drawable.seat214);
-                            break;
-                        case 215:
-                            imageGlide(R.drawable.seat215);
-                            break;
-                        case 216:
-                            imageGlide(R.drawable.seat216);
-                            break;
-                        case 217:
-                            imageGlide(R.drawable.seat217);
-                            break;
-                        case 218:
-                            imageGlide(R.drawable.seat218);
-                            break;
-                        case 219:
-                            imageGlide(R.drawable.seat219);
-                            break;
-                        case 220:
-                            imageGlide(R.drawable.seat220);
-                            break;
-                        case 221:
-                            imageGlide(R.drawable.seat221);
-                            break;
-                        case 222:
-                            imageGlide(R.drawable.seat222);
-                            break;
-                        case 223:
-                            imageGlide(R.drawable.seat223);
-                            break;
-                        case 224:
-                            imageGlide(R.drawable.seat224);
-                            break;
-                        case 225:
-                            imageGlide(R.drawable.seat225);
-                            break;
-                        case 226:
-                            imageGlide(R.drawable.seat226);
-                            break;
-                        case 101:
-                            imageGlide(R.drawable.seat101);
-                            break;
-                        case 102:
-                            imageGlide(R.drawable.seat102);
-                            break;
-                        case 103:
-                            imageGlide(R.drawable.seat103);
-                            break;
-                        case 104:
-                            imageGlide(R.drawable.seat104);
-                            break;
-                        case 105:
-                            imageGlide(R.drawable.seat105);
-                            break;
-                        case 106:
-                            imageGlide(R.drawable.seat106);
-                            break;
-                        case 107:
-                            imageGlide(R.drawable.seat107);
-                            break;
-                        case 108:
-                            imageGlide(R.drawable.seat108);
-                            break;
-                        case 109:
-                            imageGlide(R.drawable.seat109);
-                            break;
-                        case 110:
-                            imageGlide(R.drawable.seat110);
-                            break;
-                        case 111:
-                            imageGlide(R.drawable.seat111);
-                            break;
-                        case 112:
-                            imageGlide(R.drawable.seat112);
-                            break;
-                        case 113:
-                            imageGlide(R.drawable.seat113);
-                            break;
-                        case 114:
-                            imageGlide(R.drawable.seat114);
-                            break;
-                        case 115:
-                            imageGlide(R.drawable.seat115);
-                            break;
-                        case 116:
-                            imageGlide(R.drawable.seat116);
-                            break;
-                        case 117:
-                            imageGlide(R.drawable.seat117);
-                            break;
-                        case 118:
-                            imageGlide(R.drawable.seat118);
-                            break;
-                        case 119:
-                            imageGlide(R.drawable.seat119);
-                            break;
-                        case 120:
-                            imageGlide(R.drawable.seat120);
-                            break;
-                        case 121:
-                            imageGlide(R.drawable.seat121);
-                            break;
-                        case 122:
-                            imageGlide(R.drawable.seat122);
-                            break;
-                        case 401:
-                            imageGlide(R.drawable.seat401);
-                            break;
-                        case 402:
-                            imageGlide(R.drawable.seat402);
-                            break;
-                        case 403:
-                            imageGlide(R.drawable.seat403);
-                            break;
-                        case 404:
-                            imageGlide(R.drawable.seat404);
-                            break;
-                        case 405:
-                            imageGlide(R.drawable.seat405);
-                            break;
-                        case 406:
-                            imageGlide(R.drawable.seat406);
-                            break;
-                        case 407:
-                            imageGlide(R.drawable.seat407);
-                            break;
-                        case 408:
-                            imageGlide(R.drawable.seat408);
-                            break;
-                        case 409:
-                            imageGlide(R.drawable.seat409);
-                            break;
-                        case 410:
-                            imageGlide(R.drawable.seat410);
-                            break;
-                        case 411:
-                            imageGlide(R.drawable.seat411);
-                            break;
-                        case 412:
-                            imageGlide(R.drawable.seat412);
-                            break;
-                        case 413:
-                            imageGlide(R.drawable.seat413);
-                            break;
-                        case 414:
-                            imageGlide(R.drawable.seat414);
-                            break;
-                        case 415:
-                            imageGlide(R.drawable.seat415);
-                            break;
-                        case 416:
-                            imageGlide(R.drawable.seat416);
-                            break;
-                        case 417:
-                            imageGlide(R.drawable.seat417);
-                            break;
-                        case 418:
-                            imageGlide(R.drawable.seat418);
-                            break;
-                        case 419:
-                            imageGlide(R.drawable.seat419);
-                            break;
-                        case 420:
-                            imageGlide(R.drawable.seat420);
-                            break;
-                        case 421:
-                            imageGlide(R.drawable.seat421);
-                            break;
-                        case 422:
-                            imageGlide(R.drawable.seat422);
-                            break;
+                    if (blockNum != 0) {
+                        switch (blockNum) {
+                            case 334:
+                                imageGlide(R.drawable.seat334);
+                                break;
+                            case 333:
+                                imageGlide(R.drawable.seat333);
+                                break;
+                            case 332:
+                                imageGlide(R.drawable.seat332);
+                                break;
+                            case 331:
+                                imageGlide(R.drawable.seat331);
+                                break;
+                            case 330:
+                                imageGlide(R.drawable.seat330);
+                                break;
+                            case 329:
+                                imageGlide(R.drawable.seat329);
+                                break;
+                            case 328:
+                                imageGlide(R.drawable.seat328);
+                                break;
+                            case 327:
+                                imageGlide(R.drawable.seat327);
+                                break;
+                            case 326:
+                                imageGlide(R.drawable.seat326);
+                                break;
+                            case 325:
+                                imageGlide(R.drawable.seat325);
+                                break;
+                            case 324:
+                                imageGlide(R.drawable.seat324);
+                                break;
+                            case 323:
+                                imageGlide(R.drawable.seat323);
+                                break;
+                            case 322:
+                                imageGlide(R.drawable.seat322);
+                                break;
+                            case 321:
+                                imageGlide(R.drawable.seat321);
+                                break;
+                            case 320:
+                                imageGlide(R.drawable.seat320);
+                                break;
+                            case 319:
+                                imageGlide(R.drawable.seat319);
+                                break;
+                            case 318:
+                                imageGlide(R.drawable.seat318);
+                                break;
+                            case 317:
+                                imageGlide(R.drawable.seat317);
+                                break;
+                            case 316:
+                                imageGlide(R.drawable.seat316);
+                                break;
+                            case 315:
+                                imageGlide(R.drawable.seat315);
+                                break;
+                            case 314:
+                                imageGlide(R.drawable.seat314);
+                                break;
+                            case 313:
+                                imageGlide(R.drawable.seat313);
+                                break;
+                            case 312:
+                                imageGlide(R.drawable.seat312);
+                                break;
+                            case 311:
+                                imageGlide(R.drawable.seat311);
+                                break;
+                            case 310:
+                                imageGlide(R.drawable.seat310);
+                                break;
+                            case 309:
+                                imageGlide(R.drawable.seat309);
+                                break;
+                            case 308:
+                                imageGlide(R.drawable.seat308);
+                                break;
+                            case 307:
+                                imageGlide(R.drawable.seat307);
+                                break;
+                            case 306:
+                                imageGlide(R.drawable.seat306);
+                                break;
+                            case 305:
+                                imageGlide(R.drawable.seat305);
+                                break;
+                            case 304:
+                                imageGlide(R.drawable.seat304);
+                                break;
+                            case 303:
+                                imageGlide(R.drawable.seat303);
+                                break;
+                            case 302:
+                                imageGlide(R.drawable.seat302);
+                                break;
+                            case 301:
+                                imageGlide(R.drawable.seat301);
+                                break;
+                            case 201:
+                                imageGlide(R.drawable.seat201);
+                                break;
+                            case 202:
+                                imageGlide(R.drawable.seat202);
+                                break;
+                            case 203:
+                                imageGlide(R.drawable.seat203);
+                                break;
+                            case 204:
+                                imageGlide(R.drawable.seat204);
+                                break;
+                            case 205:
+                                imageGlide(R.drawable.seat205);
+                                break;
+                            case 206:
+                                imageGlide(R.drawable.seat206);
+                                break;
+                            case 207:
+                                imageGlide(R.drawable.seat207);
+                                break;
+                            case 208:
+                                imageGlide(R.drawable.seat208);
+                                break;
+                            case 209:
+                                imageGlide(R.drawable.seat209);
+                                break;
+                            case 210:
+                                imageGlide(R.drawable.seat210);
+                                break;
+                            case 211:
+                                imageGlide(R.drawable.seat211);
+                                break;
+                            case 212:
+                                imageGlide(R.drawable.seat212);
+                                break;
+                            case 213:
+                                imageGlide(R.drawable.seat213);
+                                break;
+                            case 214:
+                                imageGlide(R.drawable.seat214);
+                                break;
+                            case 215:
+                                imageGlide(R.drawable.seat215);
+                                break;
+                            case 216:
+                                imageGlide(R.drawable.seat216);
+                                break;
+                            case 217:
+                                imageGlide(R.drawable.seat217);
+                                break;
+                            case 218:
+                                imageGlide(R.drawable.seat218);
+                                break;
+                            case 219:
+                                imageGlide(R.drawable.seat219);
+                                break;
+                            case 220:
+                                imageGlide(R.drawable.seat220);
+                                break;
+                            case 221:
+                                imageGlide(R.drawable.seat221);
+                                break;
+                            case 222:
+                                imageGlide(R.drawable.seat222);
+                                break;
+                            case 223:
+                                imageGlide(R.drawable.seat223);
+                                break;
+                            case 224:
+                                imageGlide(R.drawable.seat224);
+                                break;
+                            case 225:
+                                imageGlide(R.drawable.seat225);
+                                break;
+                            case 226:
+                                imageGlide(R.drawable.seat226);
+                                break;
+                            case 101:
+                                imageGlide(R.drawable.seat101);
+                                break;
+                            case 102:
+                                imageGlide(R.drawable.seat102);
+                                break;
+                            case 103:
+                                imageGlide(R.drawable.seat103);
+                                break;
+                            case 104:
+                                imageGlide(R.drawable.seat104);
+                                break;
+                            case 105:
+                                imageGlide(R.drawable.seat105);
+                                break;
+                            case 106:
+                                imageGlide(R.drawable.seat106);
+                                break;
+                            case 107:
+                                imageGlide(R.drawable.seat107);
+                                break;
+                            case 108:
+                                imageGlide(R.drawable.seat108);
+                                break;
+                            case 109:
+                                imageGlide(R.drawable.seat109);
+                                break;
+                            case 110:
+                                imageGlide(R.drawable.seat110);
+                                break;
+                            case 111:
+                                imageGlide(R.drawable.seat111);
+                                break;
+                            case 112:
+                                imageGlide(R.drawable.seat112);
+                                break;
+                            case 113:
+                                imageGlide(R.drawable.seat113);
+                                break;
+                            case 114:
+                                imageGlide(R.drawable.seat114);
+                                break;
+                            case 115:
+                                imageGlide(R.drawable.seat115);
+                                break;
+                            case 116:
+                                imageGlide(R.drawable.seat116);
+                                break;
+                            case 117:
+                                imageGlide(R.drawable.seat117);
+                                break;
+                            case 118:
+                                imageGlide(R.drawable.seat118);
+                                break;
+                            case 119:
+                                imageGlide(R.drawable.seat119);
+                                break;
+                            case 120:
+                                imageGlide(R.drawable.seat120);
+                                break;
+                            case 121:
+                                imageGlide(R.drawable.seat121);
+                                break;
+                            case 122:
+                                imageGlide(R.drawable.seat122);
+                                break;
+                            case 401:
+                                imageGlide(R.drawable.seat401);
+                                break;
+                            case 402:
+                                imageGlide(R.drawable.seat402);
+                                break;
+                            case 403:
+                                imageGlide(R.drawable.seat403);
+                                break;
+                            case 404:
+                                imageGlide(R.drawable.seat404);
+                                break;
+                            case 405:
+                                imageGlide(R.drawable.seat405);
+                                break;
+                            case 406:
+                                imageGlide(R.drawable.seat406);
+                                break;
+                            case 407:
+                                imageGlide(R.drawable.seat407);
+                                break;
+                            case 408:
+                                imageGlide(R.drawable.seat408);
+                                break;
+                            case 409:
+                                imageGlide(R.drawable.seat409);
+                                break;
+                            case 410:
+                                imageGlide(R.drawable.seat410);
+                                break;
+                            case 411:
+                                imageGlide(R.drawable.seat411);
+                                break;
+                            case 412:
+                                imageGlide(R.drawable.seat412);
+                                break;
+                            case 413:
+                                imageGlide(R.drawable.seat413);
+                                break;
+                            case 414:
+                                imageGlide(R.drawable.seat414);
+                                break;
+                            case 415:
+                                imageGlide(R.drawable.seat415);
+                                break;
+                            case 416:
+                                imageGlide(R.drawable.seat416);
+                                break;
+                            case 417:
+                                imageGlide(R.drawable.seat417);
+                                break;
+                            case 418:
+                                imageGlide(R.drawable.seat418);
+                                break;
+                            case 419:
+                                imageGlide(R.drawable.seat419);
+                                break;
+                            case 420:
+                                imageGlide(R.drawable.seat420);
+                                break;
+                            case 421:
+                                imageGlide(R.drawable.seat421);
+                                break;
+                            case 422:
+                                imageGlide(R.drawable.seat422);
+                                break;
+                        }
+                    } else {
+                        if (blockString.equals("PREMIUM")) {
+                            imageGlide(R.drawable.jampremium);
+                        } else if (blockString.equals("1루 EXCITING")) {
+                            imageGlide(R.drawable.jamexciting1);
+                        } else if (blockString.equals("3루 EXCITING")) {
+                            imageGlide(R.drawable.jamexciting3);
+                        }
                     }
                 }
         }

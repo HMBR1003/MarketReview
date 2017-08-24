@@ -22,23 +22,44 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center">
-
                 <com.ssomai.android.scalablelayout.ScalableLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    sl:scale_base_height="120"
+                    sl:scale_base_height="130"
                     sl:scale_base_width="1080">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="경기장을 선택해 주세요"
-                        sl:scale_height="120"
-                        sl:scale_textsize="70"
-                        sl:scale_width="1080" />
-                    <!--app:font="CUSTOM"-->
+                        sl:scale_height="130"
+                        sl:scale_width="1080">
+
+                        <ImageView
+                            android:id="@+id/colselectTab"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+
+                    </LinearLayout>
                 </com.ssomai.android.scalablelayout.ScalableLayout>
+                <!--<com.ssomai.android.scalablelayout.ScalableLayout-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--sl:scale_base_height="120"-->
+                    <!--sl:scale_base_width="1080">-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="경기장을 선택해 주세요"-->
+                        <!--sl:scale_height="120"-->
+                        <!--sl:scale_textsize="70"-->
+                        <!--sl:scale_width="1080" />-->
+                    <!--&lt;!&ndash;app:font="CUSTOM"&ndash;&gt;-->
+                <!--</com.ssomai.android.scalablelayout.ScalableLayout>-->
 
             </LinearLayout>
 
@@ -327,6 +348,7 @@
 
                     <info.hoang8f.widget.FButton
                         android:id="@+id/selectFinish"
+                        android:textColor="#fff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

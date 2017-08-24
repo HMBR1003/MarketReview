@@ -669,6 +669,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="장바구니 담기"
+                        android:textColor="#fff"
                         sl:scale_height="150"
                         sl:scale_textsize="70"
                         sl:scale_width="530" />
@@ -677,6 +678,7 @@
                         android:id="@+id/nowOrder"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="#fff"
                         android:text="바로 주문하기"
                         sl:scale_height="150"
                         sl:scale_left="550"

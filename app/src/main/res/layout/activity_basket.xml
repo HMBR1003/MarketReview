@@ -80,6 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:textColor="#fff"
                     android:text="주문하기"
                     sl:scale_height="140"
                     sl:scale_textsize="60"

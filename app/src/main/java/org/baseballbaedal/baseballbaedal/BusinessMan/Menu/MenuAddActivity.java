@@ -155,7 +155,7 @@ public class MenuAddActivity extends NewActivity {
         if (isEdit) {
             menuKey = intent.getStringExtra("menuId");
             //상단 툴바 설정
-            binding.container.addView(getToolbar("메뉴 수정",true),0);
+            binding.container.addView(getToolbar("메뉴 수정", true), 0);
             loadData();
         } else {
             if (menuCount == -1) {
@@ -163,7 +163,7 @@ public class MenuAddActivity extends NewActivity {
                 finish();
             }
             //상단 툴바 설정
-            binding.container.addView(getToolbar("메뉴 추가",true),0);
+            binding.container.addView(getToolbar("메뉴 추가", true), 0);
         }
 
 
@@ -171,6 +171,7 @@ public class MenuAddActivity extends NewActivity {
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         //메뉴설명란 입력문자 수 읽어오기
         binding.menuExplain.addTextChangedListener(watcher);
+
 
         //이미지뷰 클릭설정
         binding.menuImageView.setOnClickListener(new View.OnClickListener() {
@@ -182,6 +183,8 @@ public class MenuAddActivity extends NewActivity {
             }
         });
 
+        binding.loadMenuImageButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.loadMenuImageButton.setCornerRadius(15);
         //메뉴 이미지 불러오기 버튼
         binding.loadMenuImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,6 +195,8 @@ public class MenuAddActivity extends NewActivity {
             }
         });
 
+        binding.optionAddButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.optionAddButton.setCornerRadius(15);
         //옵션 추가하는 버튼 기능 설정
         binding.optionAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,6 +249,8 @@ public class MenuAddActivity extends NewActivity {
             }
         });
 
+        binding.optionRemoveButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.optionRemoveButton.setCornerRadius(15);
         //옵션 삭제하는 버튼 기능 설정
         binding.optionRemoveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -316,6 +323,8 @@ public class MenuAddActivity extends NewActivity {
             }
         });
 
+        binding.menuSubmitButton.setButtonColor(getResources().getColor(R.color.buttonColor));
+        binding.menuSubmitButton.setCornerRadius(15);
         binding.menuSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

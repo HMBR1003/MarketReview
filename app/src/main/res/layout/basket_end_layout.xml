@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center|center_vertical"
                 android:text="메뉴 추가하러 가기"
+                android:textColor="#fff"
                 sl:scale_textsize="45"
                 sl:scale_height="140"
                 sl:scale_width="1000" />
