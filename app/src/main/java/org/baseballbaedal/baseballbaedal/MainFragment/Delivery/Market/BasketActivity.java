@@ -167,14 +167,14 @@ public class BasketActivity extends NewActivity {
                     Toast.makeText(BasketActivity.this, "주문하시는 금액이 최소 주문 금액보다 작습니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("isBasket", true);
-                    intent.putExtra("basketCount",basketCount);
-                    for(int i=0; i<basketCount; i++){
-                        intent.putExtra("basketPrice"+i,minHapPriceText[i].getText().toString());
-                        intent.putExtra("menuName"+i,menuNameView[i].getText().toString());
+//                    intent.putExtra("basketCount", basketCount);
+                    for (int i = 0; i < basketCount; i++) {
+//                        intent.putExtra("basketPrice" + i, minHapPriceText[i].getText().toString());
+//                        intent.putExtra("menuName"+i,menuNameView[i].getText().toString());
                     }
-                    intent.putExtra("totalPrice",hapPriceText.getText().toString());
+//                    intent.putExtra("totalPrice", hapPriceText.getText().toString());
                     startActivity(intent);
                 }
             }
@@ -182,8 +182,9 @@ public class BasketActivity extends NewActivity {
     }
 
     public void init() {
+        basketCount = 0;
         basketBinding.basketLayout.removeAllViews();
-
+        hapPriceText.setText("0원");
         shared = getSharedPreferences("basket", MODE_PRIVATE);
 
         userID = shared.getString("marketId", "");
@@ -193,12 +194,13 @@ public class BasketActivity extends NewActivity {
         for (int i = 0; i < BASKET_MAX_LENGTH; i++) {
             menuKey[i] = shared.getString("menuKey" + i, null);
             menuAmount[i] = shared.getInt("menuAmount" + i, 13);
-            menuName[i] = shared.getString("menuName"+i,null);
+            menuName[i] = shared.getString("menuName" + i, null);
             option1checked[i] = shared.getBoolean("option1checked" + i, false);
             option2checked[i] = shared.getBoolean("option2checked" + i, false);
             option3checked[i] = shared.getBoolean("option3checked" + i, false);
             option4checked[i] = shared.getBoolean("option4checked" + i, false);
             option5checked[i] = shared.getBoolean("option5checked" + i, false);
+
         }
         emptyCheck();
 
@@ -288,21 +290,22 @@ public class BasketActivity extends NewActivity {
             shared.edit().remove("marketId").apply();
             shared.edit().remove("marketName").apply();
             shared.edit().remove("minPrice").apply();
+            shared.edit().remove("totalPrice").apply();
         }
         return isEmpty;
     }
 
-    public void alertDialog(final int num) {
+    public void alertDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("이 항목을 삭제하시겠습니까?")
                 .setCancelable(false)
                 .setNegativeButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        basketBinding.basketLayout.removeView(view[num]);
-                        int mPrice = Integer.parseInt(minHapPriceText[num].getText().toString().replaceAll(",", ""));
-                        totalPrice = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원", "")) - mPrice;
-                        hapPriceText.setText(numToWon(totalPrice) + "원");
+//                        basketBinding.basketLayout.removeView(view[position]);
+
+//                        int mPrice = Integer.parseInt(minHapPriceText[position].getText().toString().replaceAll(",", "").replaceAll("원", ""));
+//                        int totalPrice2 = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원", "")) - mPrice;
 //                        shared.edit().remove("menuKey" + num).apply();
 //                        shared.edit().remove("menuAmount" + num).apply();
 //                        shared.edit().remove("option1checked" + num).apply();
@@ -313,14 +316,22 @@ public class BasketActivity extends NewActivity {
 
                         int index = shared.getInt("basketCount", 0);
 //                        shared.edit().putInt("basketCount",0).apply();
-                        for (int i = num; shared.getString("menuKey" + (i + 1), null) != null; i++) {
+                        for (int i = position; shared.getString("menuKey" + (i + 1), null) != null; i++) {
                             shared.edit().putString("menuKey" + i, shared.getString("menuKey" + (i + 1), null)).apply();
+                            shared.edit().putString("menuName" + i, shared.getString("menuName" + (i + 1), null)).apply();
                             shared.edit().putInt("menuAmount" + i, shared.getInt("menuAmount" + (i + 1), 0)).apply();
                             shared.edit().putBoolean("option1checked" + i, shared.getBoolean("option1checked" + (i + 1), false)).apply();
                             shared.edit().putBoolean("option2checked" + i, shared.getBoolean("option2checked" + (i + 1), false)).apply();
                             shared.edit().putBoolean("option3checked" + i, shared.getBoolean("option3checked" + (i + 1), false)).apply();
                             shared.edit().putBoolean("option4checked" + i, shared.getBoolean("option4checked" + (i + 1), false)).apply();
                             shared.edit().putBoolean("option5checked" + i, shared.getBoolean("option5checked" + (i + 1), false)).apply();
+                            shared.edit().putString("option1Name" + i, shared.getString("option1Name" + (i + 1), null)).apply();
+                            shared.edit().putString("option2Name" + i, shared.getString("option2Name" + (i + 1), null)).apply();
+                            shared.edit().putString("option3Name" + i, shared.getString("option3Name" + (i + 1), null)).apply();
+                            shared.edit().putString("option4Name" + i, shared.getString("option4Name" + (i + 1), null)).apply();
+                            shared.edit().putString("option5Name" + i, shared.getString("option5Name" + (i + 1), null)).apply();
+                            shared.edit().putString("basketPrice" + i, shared.getString("basketPrice" + (i + 1), null)).apply();
+
 //                            editor = shared.edit();
 //                            editor.putString("menuKey" + (i - 1), shared.getString("menuKey" + i, null));
 //                            editor.putInt("menuAmount" + (i - 1), shared.getInt("menuAmount" + i, 0));
@@ -333,15 +344,27 @@ public class BasketActivity extends NewActivity {
                         }
                         shared.edit().putInt("basketCount", index - 1).apply();
                         shared.edit().remove("menuKey" + (index - 1)).apply();
+                        shared.edit().remove("menuName" + (index - 1)).apply();
                         shared.edit().remove("menuAmount" + (index - 1)).apply();
                         shared.edit().remove("option1checked" + (index - 1)).apply();
                         shared.edit().remove("option2checked" + (index - 1)).apply();
                         shared.edit().remove("option3checked" + (index - 1)).apply();
                         shared.edit().remove("option4checked" + (index - 1)).apply();
                         shared.edit().remove("option5checked" + (index - 1)).apply();
-
+                        shared.edit().remove("option1Name" + (index - 1)).apply();
+                        shared.edit().remove("option2Name" + (index - 1)).apply();
+                        shared.edit().remove("option3Name" + (index - 1)).apply();
+                        shared.edit().remove("option4Name" + (index - 1)).apply();
+                        shared.edit().remove("option5Name" + (index - 1)).apply();
+                        shared.edit().remove("basketPrice" + (index - 1)).apply();
+                        basketCount--;
                         Toast.makeText(BasketActivity.this, "삭제하였습니다.", Toast.LENGTH_SHORT).show();
-                        emptyCheck();
+                        if (!emptyCheck()) {
+                            totalPrice = 0;
+                            init();
+//                            hapPriceText.setText(numToWon(totalPrice2) + "원");
+//                            shared.edit().putString("totalPrice", numToWon(totalPrice2) + "원").apply();
+                        }
                     }
                 })
                 .setPositiveButton("취소", new DialogInterface.OnClickListener() {
@@ -364,7 +387,7 @@ public class BasketActivity extends NewActivity {
         closeButton[basketCount].setOnClickListener(closeListener);
         closeButton[basketCount].setTag(basketCount);
         menuPriceText[basketCount] = (TextView) view[basketCount].findViewById(R.id.menuPriceText); //메뉴가격
-        menuPriceText[basketCount].setText(numToWon(Integer.parseInt(menuList.menuPrice)));
+        menuPriceText[basketCount].setText(numToWon(Integer.parseInt(menuList.menuPrice)) + "원");
         menuNameView[basketCount] = (TextView) view[basketCount].findViewById(R.id.menuName);   //메뉴이름
         menuNameView[basketCount].setText(menuList.menuName);
         imageView[basketCount] = (ImageView) view[basketCount].findViewById(R.id.imageView);    //메뉴이미지
@@ -431,12 +454,14 @@ public class BasketActivity extends NewActivity {
         }
 
 
-        minHapPriceText[basketCount].setText(numToWon(p * amount));
+        minHapPriceText[basketCount].setText(numToWon(p * amount)+"원");
+//        shared.edit().putString("basketPrice" + basketCount, numToWon(p * amount)+"원").apply();
         minHapPriceText[basketCount].setTag(p);
 
         int price = p * amount;    //소계
         totalPrice = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원", "")) + price;   //합계금액
         hapPriceText.setText(numToWon(totalPrice) + "원");
+        shared.edit().putString("totalPrice", numToWon(totalPrice) + "원").apply();
 
         optionText[basketCount] = (TextView) view[basketCount].findViewById(R.id.optionText);   //옵션텍스트
 
@@ -467,13 +492,15 @@ public class BasketActivity extends NewActivity {
 
     public void updatePrice(int position, int amount, boolean type) {
         int price = (int) minHapPriceText[position].getTag();
-        minHapPriceText[position].setText(numToWon(price * amount));
+        minHapPriceText[position].setText(numToWon(price * amount) + "원");
+        shared.edit().putString("basketPrice" + position, numToWon(price * amount) + "원").apply();
         if (type) {   //플러스
             totalPrice = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원", "")) + price;
         } else {       //마이너스
             totalPrice = Integer.parseInt(hapPriceText.getText().toString().replaceAll(",", "").replaceAll("원", "")) - price;
         }
         hapPriceText.setText(numToWon(totalPrice) + "원");
+        shared.edit().putString("totalPrice", numToWon(totalPrice) + "원").apply();
         shared.edit().putInt("menuAmount" + position, amount).apply();
     }
 

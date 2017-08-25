@@ -320,7 +320,7 @@ public class MenuInfoActivity extends NewActivity {
                                         editor.putString("option3Name0", option3Name);
                                         editor.putString("option4Name0", option4Name);
                                         editor.putString("option5Name0", option5Name);
-
+                                        editor.putString("basketPrice0", numToWon(totalPrice) + "원").apply();
                                         editor.putInt("basketCount", 1);
                                         editor.commit();
                                         Toast.makeText(MenuInfoActivity.this, "장바구니에 담았습니다.", Toast.LENGTH_SHORT).show();
@@ -393,6 +393,7 @@ public class MenuInfoActivity extends NewActivity {
                                         editor.putString("option3Name" + index, option3Name);
                                         editor.putString("option4Name" + index, option4Name);
                                         editor.putString("option5Name" + index, option5Name);
+                                        editor.putString("basketPrice" + index, numToWon(totalPrice) + "원").apply();
                                         editor.putInt("basketCount", index + 1);
                                         editor.commit();
                                     }
@@ -426,6 +427,7 @@ public class MenuInfoActivity extends NewActivity {
                             editor.putString("option3Name0",option3Name);
                             editor.putString("option4Name0",option4Name);
                             editor.putString("option5Name0",option5Name);
+                            editor.putString("basketPrice0", numToWon(totalPrice) + "원").apply();
                             editor.putInt("basketCount", 1);
                             editor.commit();
 
@@ -456,7 +458,6 @@ public class MenuInfoActivity extends NewActivity {
                             Toast.makeText(MenuInfoActivity.this, "주문하시는 금액이 최소 주문 금액보다 작습니다.", Toast.LENGTH_SHORT).show();
                         } else {
                             Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             intent.putExtra("isBasket", false);
                             intent.putExtra("marketId", marketId);
                             intent.putExtra("menuName", menuName);

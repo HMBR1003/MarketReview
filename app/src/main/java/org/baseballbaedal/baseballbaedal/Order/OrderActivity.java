@@ -34,6 +34,15 @@ public class OrderActivity extends NewActivity {
     boolean isSetSeat = false;
     String marketId;
 
+    Intent intent;
+
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        this.intent = intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +89,7 @@ public class OrderActivity extends NewActivity {
                 break;
         }
 
-        Intent intent = getIntent();
+        intent = getIntent();
         //즉시주문
         if (!intent.getBooleanExtra("isBasket", false)) {
             marketId = intent.getStringExtra("marketId");
@@ -134,9 +143,13 @@ public class OrderActivity extends NewActivity {
 
         //장바구니
         else {
-            int basketCount = intent.getIntExtra("basketCount", 1);
-            String totalPrice = intent.getStringExtra("totalPrice");
             SharedPreferences shared = getSharedPreferences("basket", MODE_PRIVATE);
+
+            int basketCount = shared.getInt("basketCount",1);
+            //intent.getIntExtra("basketCount", 1);
+            String totalPrice = shared.getString("totalPrice","");
+            //intent.getStringExtra("totalPrice");
+
 
 //            String[] menuKey = new String[basketCount];
 //            String[] menuName = new String[basketCount];
@@ -174,8 +187,8 @@ public class OrderActivity extends NewActivity {
                 LinearLayout linearLayout = new LinearLayout(this);
                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.order_item, linearLayout, false);
-                ((TextView) viewGroup.findViewById(R.id.menuName)).setText(  intent.getStringExtra("menuName"+i) + " X " + shared.getInt("menuAmount" + i, 1));
-                ((TextView) viewGroup.findViewById(R.id.menuPrice)).setText(intent.getStringExtra("basketPrice" + i));
+                ((TextView) viewGroup.findViewById(R.id.menuName)).setText(/* intent.getStringExtra("menuName"+i)*/shared.getString("menuName"+i,"") + " X " + shared.getInt("menuAmount" + i, 1));
+                ((TextView) viewGroup.findViewById(R.id.menuPrice)).setText(shared.getString("basketPrice"+i,""));
 
                 boolean optionExist = false;
                 String options = "";

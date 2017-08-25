@@ -73,7 +73,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:scaleType="fitXY"
-                    android:src="@drawable/aa"
                     sl:scale_height="670"
                     sl:scale_top="190"
                     sl:scale_width="670" />

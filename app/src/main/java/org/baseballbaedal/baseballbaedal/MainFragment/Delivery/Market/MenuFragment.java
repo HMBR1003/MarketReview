@@ -283,7 +283,7 @@ public class MenuFragment extends ScrollTabHolderFragment {
                 intent.putExtra("marketName",marketName);
                 intent.putExtra("marketId",marketId);
                 intent.putExtra("minPrice",minPrice);
-                intent.putExtra("menuNameView", adapter.getInfo(position).menuName);
+                intent.putExtra("menuName", adapter.getInfo(position).menuName);
                 intent.putExtra("menuExplain", adapter.getInfo(position).menuExplain);
                 intent.putExtra("menuPrice",adapter.getInfo(position).menuPrice);
                 intent.putExtra("menuKey", adapter.getMenuKey(position));
