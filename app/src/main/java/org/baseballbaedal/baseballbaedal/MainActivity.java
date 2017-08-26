@@ -820,6 +820,7 @@ public class MainActivity extends NewActivity
 
         navigationTabBar.setModels(models);
         navigationTabBar.setViewPager(viewPager, 0);
+        navigationTabBar.setTypeface("BMJUA_ttf.ttf");
         navigationTabBar.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {

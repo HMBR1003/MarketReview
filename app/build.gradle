@@ -22,6 +22,7 @@ android {
     }
 }
 dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -50,7 +51,7 @@ dependencies {
     compile 'in.srain.cube:grid-view-with-header-footer:1.0.12'
     testCompile 'junit:junit:4.12'
     compile 'com.facebook.stetho:stetho:1.5.0'
-    //글꼴 관련 라이브러리. 렌더링 문제로 주석처리
+//    글꼴 관련 라이브러리. 렌더링 문제로 주석처리
 //    compile 'com.tsengvn:typekit:1.0.1'
     compile 'com.ssomai:android.scalablelayout:2.1.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'

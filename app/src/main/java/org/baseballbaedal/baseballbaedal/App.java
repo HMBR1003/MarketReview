@@ -18,8 +18,9 @@ public class App extends Application {
 
         Stetho.initializeWithDefaults(this);
 
-
+//
 //        Typekit.getInstance()
-//                .add("CUSTOM",Typekit.createFromAsset(this, "BMDOHYEON_ttf.ttf"));
+//                .addBold(Typekit.createFromAsset(this, "BMJUA_ttf.ttf"))
+//                .addNormal(Typekit.createFromAsset(this, "BMJUA_ttf.ttf"));
     }
 }

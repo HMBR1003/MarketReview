@@ -320,6 +320,11 @@ public class MenuInfoActivity extends NewActivity {
                                         editor.putString("option3Name0", option3Name);
                                         editor.putString("option4Name0", option4Name);
                                         editor.putString("option5Name0", option5Name);
+                                        editor.putString("option1Price0", numToWon(option1Price)+"원");
+                                        editor.putString("option2Price0", numToWon(option2Price)+"원");
+                                        editor.putString("option3Price0", numToWon(option3Price)+"원");
+                                        editor.putString("option4Price0", numToWon(option4Price)+"원");
+                                        editor.putString("option5Price0", numToWon(option5Price)+"원");
                                         editor.putString("basketPrice0", numToWon(totalPrice) + "원").apply();
                                         editor.putInt("basketCount", 1);
                                         editor.commit();
@@ -371,7 +376,10 @@ public class MenuInfoActivity extends NewActivity {
 
                                             if (option1checked == option1Checked && option2checked == option2Checked && option3checked == option3Checked && option4checked == option4Checked && option5checked == option5Checked) {
                                                 menuAmount = shared.getInt("menuAmount" + i, 1);
-                                                editor.putInt("menuAmount" + i, menuAmount + 1);
+                                                editor.putInt("menuAmount" + i, menuAmount + foodCount);
+                                                int price = Integer.parseInt(shared.getString("basketPrice"+i,"0원").toString().replaceAll(",", "").replaceAll("원", ""));
+                                                price +=totalPrice;
+                                                editor.putString("basketPrice" + i, numToWon(price) + "원");
                                                 editor.commit();
                                                 isExist = true;
                                                 break;
@@ -393,6 +401,11 @@ public class MenuInfoActivity extends NewActivity {
                                         editor.putString("option3Name" + index, option3Name);
                                         editor.putString("option4Name" + index, option4Name);
                                         editor.putString("option5Name" + index, option5Name);
+                                        editor.putString("option1Price"+ index, numToWon(option1Price)+"원");
+                                        editor.putString("option2Price"+ index, numToWon(option2Price)+"원");
+                                        editor.putString("option3Price"+ index, numToWon(option3Price)+"원");
+                                        editor.putString("option4Price"+ index, numToWon(option4Price)+"원");
+                                        editor.putString("option5Price"+ index, numToWon(option5Price)+"원");
                                         editor.putString("basketPrice" + index, numToWon(totalPrice) + "원").apply();
                                         editor.putInt("basketCount", index + 1);
                                         editor.commit();
@@ -427,6 +440,11 @@ public class MenuInfoActivity extends NewActivity {
                             editor.putString("option3Name0",option3Name);
                             editor.putString("option4Name0",option4Name);
                             editor.putString("option5Name0",option5Name);
+                            editor.putString("option1Price0", numToWon(option1Price)+"원");
+                            editor.putString("option2Price0", numToWon(option2Price)+"원");
+                            editor.putString("option3Price0", numToWon(option3Price)+"원");
+                            editor.putString("option4Price0", numToWon(option4Price)+"원");
+                            editor.putString("option5Price0", numToWon(option5Price)+"원");
                             editor.putString("basketPrice0", numToWon(totalPrice) + "원").apply();
                             editor.putInt("basketCount", 1);
                             editor.commit();
@@ -465,18 +483,23 @@ public class MenuInfoActivity extends NewActivity {
                             intent.putExtra("menuAmount", foodCount);
                             if (option1Checked) {
                                 intent.putExtra("option1Name", option1Name);
+                                intent.putExtra("option1Price", option1Price);
                             }
                             if (option2Checked) {
                                 intent.putExtra("option2Name", option2Name);
+                                intent.putExtra("option2Price", option2Price);
                             }
                             if (option3Checked) {
                                 intent.putExtra("option3Name", option3Name);
+                                intent.putExtra("option3Price", option3Price);
                             }
                             if (option4Checked) {
                                 intent.putExtra("option4Name", option4Name);
+                                intent.putExtra("option4Price", option4Price);
                             }
                             if (option5Checked) {
                                 intent.putExtra("option5Name", option5Name);
+                                intent.putExtra("option5Price", option5Price);
                             }
                             startActivity(intent);
                         }

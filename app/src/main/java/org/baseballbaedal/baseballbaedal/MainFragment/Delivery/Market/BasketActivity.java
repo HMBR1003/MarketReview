@@ -287,10 +287,7 @@ public class BasketActivity extends NewActivity {
         if (isEmpty) {
             basketBinding.commonContainer.setVisibility(View.GONE);
             basketBinding.emptyContainer.setVisibility(View.VISIBLE);
-            shared.edit().remove("marketId").apply();
-            shared.edit().remove("marketName").apply();
-            shared.edit().remove("minPrice").apply();
-            shared.edit().remove("totalPrice").apply();
+            shared.edit().clear().apply();
         }
         return isEmpty;
     }
@@ -330,6 +327,11 @@ public class BasketActivity extends NewActivity {
                             shared.edit().putString("option3Name" + i, shared.getString("option3Name" + (i + 1), null)).apply();
                             shared.edit().putString("option4Name" + i, shared.getString("option4Name" + (i + 1), null)).apply();
                             shared.edit().putString("option5Name" + i, shared.getString("option5Name" + (i + 1), null)).apply();
+                            shared.edit().putString("option1Price" + i, shared.getString("option1Price" + (i + 1), null)).apply();
+                            shared.edit().putString("option2Price" + i, shared.getString("option2Price" + (i + 1), null)).apply();
+                            shared.edit().putString("option3Price" + i, shared.getString("option3Price" + (i + 1), null)).apply();
+                            shared.edit().putString("option4Price" + i, shared.getString("option4Price" + (i + 1), null)).apply();
+                            shared.edit().putString("option5Price" + i, shared.getString("option5Price" + (i + 1), null)).apply();
                             shared.edit().putString("basketPrice" + i, shared.getString("basketPrice" + (i + 1), null)).apply();
 
 //                            editor = shared.edit();
@@ -356,6 +358,11 @@ public class BasketActivity extends NewActivity {
                         shared.edit().remove("option3Name" + (index - 1)).apply();
                         shared.edit().remove("option4Name" + (index - 1)).apply();
                         shared.edit().remove("option5Name" + (index - 1)).apply();
+                        shared.edit().remove("option1Price" + (index - 1)).apply();
+                        shared.edit().remove("option2Price" + (index - 1)).apply();
+                        shared.edit().remove("option3Price" + (index - 1)).apply();
+                        shared.edit().remove("option4Price" + (index - 1)).apply();
+                        shared.edit().remove("option5Price" + (index - 1)).apply();
                         shared.edit().remove("basketPrice" + (index - 1)).apply();
                         basketCount--;
                         Toast.makeText(BasketActivity.this, "삭제하였습니다.", Toast.LENGTH_SHORT).show();

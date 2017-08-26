@@ -1,5 +1,6 @@
 package org.baseballbaedal.baseballbaedal;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ssomai.android.scalablelayout.ScalableLayout;
+//import com.tsengvn.typekit.TypekitContextWrapper;
 
 import org.w3c.dom.Text;
 
@@ -20,14 +22,13 @@ import org.w3c.dom.Text;
 
 public class NewActivity extends AppCompatActivity {
 
-    android.support.v7.widget.Toolbar toolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    public void setToolbar(android.support.v7.widget.Toolbar toolbar, String title, int color,boolean isBack){
+    public void setToolbar(android.support.v7.widget.Toolbar toolbar, String title, int color, boolean isBack) {
         //타이틀 설정
         toolbar.setTitle(title);
         //타이틀 색 설정
@@ -35,31 +36,30 @@ public class NewActivity extends AppCompatActivity {
         //툴바 붙이기
         setSupportActionBar(toolbar);
         //뒤로가기 버튼 만들기
-        if(isBack) {
+        if (isBack) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
     }
 
-    public View getToolbar(String title, boolean isBack){
-        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+    public View getToolbar(String title, boolean isBack) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.custom_actionbar, null);
 
         //타이틀 설정
-        ((TextView)view.findViewById(R.id.title)).setText(title);
+        ((TextView) view.findViewById(R.id.title)).setText(title);
 
         //뒤로가기 버튼 만들기
-        if(isBack) {
+        if (isBack) {
             (view.findViewById(R.id.btnBack)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onBackPressed();
                 }
             });
-        }
-        else{
+        } else {
             (view.findViewById(R.id.btnBack)).setVisibility(View.GONE);
-            ((ScalableLayout)view.findViewById(R.id.titleScal)).moveChildView((view.findViewById(R.id.title)),50,0);
+            ((ScalableLayout) view.findViewById(R.id.titleScal)).moveChildView((view.findViewById(R.id.title)), 50, 0);
         }
         return view;
     }
@@ -75,7 +75,8 @@ public class NewActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //    @Override
+//
+//    @Override
 //    protected void attachBaseContext(Context newBase) {
 //        //글꼴 설정하기 위한 구문
 //        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));

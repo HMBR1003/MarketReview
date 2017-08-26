@@ -1,11 +1,15 @@
 package org.baseballbaedal.baseballbaedal.Order;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +18,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.baseballbaedal.baseballbaedal.NewActivity;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityOrderBinding;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.zip.Inflater;
 
 import static org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.BasketActivity.BASKET_MAX_LENGTH;
@@ -33,10 +42,16 @@ public class OrderActivity extends NewActivity {
     int colCheck;
     boolean isSetSeat = false;
     String marketId;
-
     Intent intent;
+    AlertDialog orderDialog;
 
-
+    String block = null;
+    String row = null;
+    String seatNum = null;
+    String seat;
+    int basketCount;
+    boolean isBasket;
+    SharedPreferences shared;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -59,30 +74,39 @@ public class OrderActivity extends NewActivity {
         switch (colCheck) {
             case 0:
                 orderBinding.stadiumText.setText("잠실 야구장(두산,LG)");
+                orderBinding.seatContainerJamsil.setVisibility(View.VISIBLE);
                 break;
             case 1:
                 orderBinding.stadiumText.setText("고척 스카이돔(넥센)");
+                orderBinding.seatContainerEtc.setVisibility(View.VISIBLE);
                 break;
             case 2:
                 orderBinding.stadiumText.setText("SK 행복드림구장");
+                orderBinding.seatContainerEtc.setVisibility(View.VISIBLE);
                 break;
             case 3:
                 orderBinding.stadiumText.setText("한화 이글스파크");
+                orderBinding.seatContainerEtc.setVisibility(View.VISIBLE);
                 break;
             case 4:
                 orderBinding.stadiumText.setText("삼성 라이온즈파크");
+                orderBinding.seatContainerEtc.setVisibility(View.VISIBLE);
                 break;
             case 5:
                 orderBinding.stadiumText.setText("기아 챔피언스필드");
+                orderBinding.seatContainerEtc.setVisibility(View.VISIBLE);
                 break;
             case 6:
                 orderBinding.stadiumText.setText("사직 야구장(롯데)");
+                orderBinding.seatContainerEtc.setVisibility(View.VISIBLE);
                 break;
             case 7:
                 orderBinding.stadiumText.setText("KT 위즈파크");
+                orderBinding.seatContainerEtc.setVisibility(View.VISIBLE);
                 break;
             case 8:
                 orderBinding.stadiumText.setText("마산 야구장(NC)");
+                orderBinding.seatContainerEtc.setVisibility(View.VISIBLE);
                 break;
             default:
                 orderBinding.stadiumText.setText("선택된 야구장이 없습니다.");
@@ -90,8 +114,9 @@ public class OrderActivity extends NewActivity {
         }
 
         intent = getIntent();
+        isBasket = intent.getBooleanExtra("isBasket", false);
         //즉시주문
-        if (!intent.getBooleanExtra("isBasket", false)) {
+        if (!isBasket) {
             marketId = intent.getStringExtra("marketId");
             String menuPrice = intent.getStringExtra("menuPrice");
             String menuName = intent.getStringExtra("menuName");
@@ -143,11 +168,11 @@ public class OrderActivity extends NewActivity {
 
         //장바구니
         else {
-            SharedPreferences shared = getSharedPreferences("basket", MODE_PRIVATE);
+            shared = getSharedPreferences("basket", MODE_PRIVATE);
 
-            int basketCount = shared.getInt("basketCount",1);
+            basketCount = shared.getInt("basketCount", 1);
             //intent.getIntExtra("basketCount", 1);
-            String totalPrice = shared.getString("totalPrice","");
+            String totalPrice = shared.getString("totalPrice", "");
             //intent.getStringExtra("totalPrice");
 
 
@@ -187,8 +212,8 @@ public class OrderActivity extends NewActivity {
                 LinearLayout linearLayout = new LinearLayout(this);
                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.order_item, linearLayout, false);
-                ((TextView) viewGroup.findViewById(R.id.menuName)).setText(/* intent.getStringExtra("menuName"+i)*/shared.getString("menuName"+i,"") + " X " + shared.getInt("menuAmount" + i, 1));
-                ((TextView) viewGroup.findViewById(R.id.menuPrice)).setText(shared.getString("basketPrice"+i,""));
+                ((TextView) viewGroup.findViewById(R.id.menuName)).setText(/* intent.getStringExtra("menuName"+i)*/shared.getString("menuName" + i, "") + " X " + shared.getInt("menuAmount" + i, 1));
+                ((TextView) viewGroup.findViewById(R.id.menuPrice)).setText(shared.getString("basketPrice" + i, ""));
 
                 boolean optionExist = false;
                 String options = "";
@@ -222,7 +247,6 @@ public class OrderActivity extends NewActivity {
                 orderBinding.orderContainer.addView(viewGroup);
             }
             orderBinding.finalPrice.setText(totalPrice);
-
 
 
 //            LinearLayout linearLayout = new LinearLayout(this);
@@ -269,8 +293,7 @@ public class OrderActivity extends NewActivity {
     public void OnClicked(View v) {
         switch (v.getId()) {
             case R.id.seatButton://좌석선택
-                Intent intent;
-                //야구장에 따라 좌석선택창 띄우기 (미구현)
+//                //야구장에 따라 좌석선택창 띄우기 (미구현)
 //                switch(colCheck){
 //                    case 0:
 //                        intent = new Intent(getApplicationContext(), SeatSelectActivity.class);
@@ -311,23 +334,119 @@ public class OrderActivity extends NewActivity {
 //                    default:
 //                        Toast.makeText(this, "야구장을 선택하여 주십시오.", Toast.LENGTH_SHORT).show();
 //                }
+                Intent intent;
                 intent = new Intent(getApplicationContext(), SeatSelectActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_SEATSELECT);
                 break;
             case R.id.orderButton://주문완료
-                if (isSetSeat && orderBinding.telEdit.length() > 0) {
+                if ((isSetSeat || (orderBinding.blockNum.length() > 0 && orderBinding.rowNum.length() > 0 && orderBinding.seatNum.length() > 0)) && orderBinding.telEdit.length() > 0) {
                     switch (buying) {
-                        case 1:
-                            Toast.makeText(this, "카드결제", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 2:
-                            Toast.makeText(this, "현금결제", Toast.LENGTH_SHORT).show();
+                        case 0:
+                            Toast.makeText(this, "결제방식을 선택해 주세요", Toast.LENGTH_SHORT).show();
                             break;
                         default:
-                            Toast.makeText(this, "결제방식 선택하셈", Toast.LENGTH_SHORT).show();
+                            if (colCheck != 0) {
+                                block = orderBinding.blockNum.getText().toString();
+                                row = orderBinding.rowNum.getText().toString();
+                                seatNum = orderBinding.seatNum.getText().toString();
+                                seat = "블럭 : " + block + "\n열 : " + row + "\n좌석 : " + seatNum;
+                            }
+                            AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
+                            builder.setTitle("주문 확인");
+                            builder.setMessage("이대로 주문하시겠습니까?\n좌석이 맞는 지 한번 더 확인해주세요\n" + seat);
+                            builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //데이터베이스 참조
+                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("order").push();
+
+                                    //좌석 정보 넣기
+                                    ref.child("row").setValue(row);
+                                    ref.child("seatNum").setValue(seatNum);
+                                    ref.child("block").setValue(block);
+
+                                    //아이디 넣기
+                                    ref.child("marketId").setValue(marketId);
+                                    ref.child("userId").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                                    //주문 정보 넣기
+                                    //장바구니 주문
+                                    if (isBasket) {
+                                        ref.child("count").setValue(basketCount);
+                                        ref.child("totalPrice").setValue(shared.getString("totalPrice", "0원"));
+                                        for (int i = 0; i < basketCount; i++) {
+                                            ref.child("menuName" + i).setValue(shared.getString("menuName" + i, ""));
+                                            ref.child("menuAmount" + i).setValue(shared.getInt("menuAmount" + i, 1));
+                                            ref.child("basketPrice" + i).setValue(shared.getString("basketPrice" + i, ""));
+                                            if (shared.getBoolean("option1checked" + i, false)) {
+                                                ref.child("option1Name" + i).setValue(shared.getString("option1Name" + i, null));
+                                                ref.child("option1Price" + i).setValue(shared.getString("option1Price" + i, null));
+                                            }
+                                            if (shared.getBoolean("option2checked" + i, false)) {
+                                                ref.child("option2Name" + i).setValue(shared.getString("option2Name" + i, null));
+                                                ref.child("option2Price" + i).setValue(shared.getString("option2Price" + i, null));
+                                            }
+                                            if (shared.getBoolean("option3checked" + i, false)) {
+                                                ref.child("option3Name" + i).setValue(shared.getString("option3Name" + i, null));
+                                                ref.child("option3Price" + i).setValue(shared.getString("option3Price" + i, null));
+                                            }
+                                            if (shared.getBoolean("option4checked" + i, false)) {
+                                                ref.child("option4Name" + i).setValue(shared.getString("option4Name" + i, null));
+                                                ref.child("option4Price" + i).setValue(shared.getString("option4Price" + i, null));
+                                            }
+                                            if (shared.getBoolean("option5checked" + i, false)) {
+                                                ref.child("option5Name" + i).setValue(shared.getString("option5Name" + i, null));
+                                                ref.child("option5Price" + i).setValue(shared.getString("option5Price" + i, null));
+                                            }
+
+
+                                        }
+                                    }
+                                    //즉시 주문
+                                    else{
+
+                                    }
+                                    if(buying==1){
+                                        ref.child("pay").setValue("카드 결제");
+                                    }
+                                    else if(buying==2){
+                                        ref.child("pay").setValue("현금 결제");
+                                    }
+
+                                    ref.child("userName").setValue(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                                    ref.child("userTel").setValue(orderBinding.telEdit.getText().toString());
+                                    ref.child("userMemo").setValue(orderBinding.memoEdit.getText().toString());
+                                    ref.child("date").setValue(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
+
+                                    shared.edit().clear().apply();
+                                    Toast.makeText(getApplicationContext(), "주문이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+                            });
+                            builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                            orderDialog = builder.create();
+                            orderDialog.setCancelable(false);
+                            orderDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+                                @Override
+                                public boolean onKey(DialogInterface arg0, int keyCode,
+                                                     KeyEvent event) {
+                                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                                        orderDialog.dismiss();
+                                    }
+                                    return true;
+                                }
+                            });
+                            orderDialog.show();
+
+                            break;
                     }
-                } else if (!isSetSeat) {
-                    Toast.makeText(this, "좌석을 선택해 주세요", Toast.LENGTH_SHORT).show();
+                } else if (!(isSetSeat || (orderBinding.blockNum.length() > 0 && orderBinding.rowNum.length() > 0 && orderBinding.seatNum.length() > 0))) {
+                    Toast.makeText(this, "좌석을 선택하거나 입력해 주세요", Toast.LENGTH_SHORT).show();
                 } else if (orderBinding.telEdit.length() == 0) {
                     Toast.makeText(this, "핸드폰 번호를 입력해 주세요", Toast.LENGTH_SHORT).show();
                 }
@@ -355,7 +474,9 @@ public class OrderActivity extends NewActivity {
         switch (requestCode) {
             case REQUEST_CODE_SEATSELECT:
                 if (resultCode == RESULT_OK) {
-                    String seat = data.getStringExtra("seat");
+                    seat = data.getStringExtra("seat");
+                    row = data.getStringExtra("row");
+                    seatNum = data.getStringExtra("seatNum");
                     int blockNum = data.getIntExtra("numBlock", 0);
                     String blockString = data.getStringExtra("stringBlock");
                     orderBinding.seatText.setText(seat);
@@ -678,6 +799,8 @@ public class OrderActivity extends NewActivity {
                                 imageGlide(R.drawable.seat422);
                                 break;
                         }
+
+                        block = blockNum + "";
                     } else {
                         if (blockString.equals("PREMIUM")) {
                             imageGlide(R.drawable.jampremium);
@@ -686,6 +809,8 @@ public class OrderActivity extends NewActivity {
                         } else if (blockString.equals("3루 EXCITING")) {
                             imageGlide(R.drawable.jamexciting3);
                         }
+
+                        block = blockString;
                     }
                 }
         }

@@ -547,8 +547,8 @@ public class SeatSelectActivity extends NewActivity {
 
 
     //좌석확인 다이알로그
-    public void alertDialog(final String block, String raw, String num, final boolean isNum) {
-        final String seatString = "블럭:" + block + "\n열:" + raw + "\n좌석:" + num;
+    public void alertDialog(final String block, final String row, final String num, final boolean isNum) {
+        final String seatString = "블럭 : " + block + "\n열 : " + raw + "\n좌석 : " + num;
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle("좌석확인");
         dialogBuilder.setMessage("좌석이 맞는지 확인하여 주십시오.\n" + seatString)
@@ -558,6 +558,8 @@ public class SeatSelectActivity extends NewActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
                         intent.putExtra("seat", seatString);
+                        intent.putExtra("row",row);
+                        intent.putExtra("seatNum",num);
                         if(isNum) {
                             intent.putExtra("numBlock", Integer.parseInt(block));
                         }

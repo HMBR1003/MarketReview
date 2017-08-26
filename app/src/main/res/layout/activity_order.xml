@@ -16,6 +16,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:orientation="vertical">
 
                 <com.ssomai.android.scalablelayout.ScalableLayout
@@ -72,89 +74,17 @@
 
 
                 <com.ssomai.android.scalablelayout.ScalableLayout
-                    android:id="@+id/seatContainerJamsil"
+                    android:id="@+id/seatContainerEtc"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    sl:scale_base_height="400"
-                    sl:scale_base_width="1080">
-
-                    <ImageView
-                        android:id="@+id/seatImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/black_teduri"
-                        android:scaleType="fitXY"
-                        sl:scale_height="360"
-                        sl:scale_left="30"
-                        sl:scale_top="20"
-                        sl:scale_width="360" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:text="좌석 정보"
-                        android:textColor="@color/black"
-                        sl:scale_height="90"
-                        sl:scale_left="450"
-                        sl:scale_textsize="60"
-                        sl:scale_top="60"
-                        sl:scale_width="500" />
-
-                    <TextView
-                        android:id="@+id/seatText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="좌석을 선택해주세요"
-                        android:textColor="@color/red"
-                        sl:scale_height="250"
-                        sl:scale_left="450"
-                        sl:scale_textsize="50"
-                        sl:scale_top="150"
-                        sl:scale_width="500" />
-                </com.ssomai.android.scalablelayout.ScalableLayout>
-
-                <com.ssomai.android.scalablelayout.ScalableLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    sl:scale_base_height="270"
-                    sl:scale_base_width="1080">
-
-                    <ImageView
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:id="@+id/seatButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:onClick="OnClicked"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/seat_select"
-                        sl:scale_height="80"
-                        sl:scale_left="45"
-                        sl:scale_top="10"
-                        sl:scale_width="330" />
-
-                    <View
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/backgroundColor"
-                        sl:scale_height="80"
-                        sl:scale_top="190"
-                        sl:scale_width="1080" />
-
-                </com.ssomai.android.scalablelayout.ScalableLayout>
-
-                <com.ssomai.android.scalablelayout.ScalableLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    sl:scale_base_height="500"
+                    sl:scale_base_height="560"
                     sl:scale_base_width="1080">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="주문자 정보"
+                        android:text="좌석 정보"
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         sl:scale_height="90"
@@ -167,7 +97,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:text="연락처 : "
+                        android:text="블럭 : "
                         android:textColor="@color/darkgray"
                         sl:scale_height="140"
                         sl:scale_left="30"
@@ -176,11 +106,11 @@
                         sl:scale_width="280" />
 
                     <EditText
-                        android:id="@+id/telEdit"
+                        android:id="@+id/blockNum"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:hint="핸드폰 번호를 입력해주세요"
-                        android:inputType="number"
+                        android:hint="블럭을 입력해주세요"
+                        android:inputType="text"
                         android:textColor="@color/darkgray"
                         sl:scale_height="140"
                         sl:scale_left="310"
@@ -192,7 +122,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:text="요청 사항 : "
+                        android:text="열 : "
                         android:textColor="@color/darkgray"
                         sl:scale_height="140"
                         sl:scale_left="30"
@@ -201,10 +131,10 @@
                         sl:scale_width="280" />
 
                     <EditText
-                        android:id="@+id/memoEdit"
+                        android:id="@+id/rowNum"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:hint="요청사항을 입력해주세요"
+                        android:hint="열 번호를 입력해주세요"
                         android:inputType="number"
                         android:textColor="@color/darkgray"
                         sl:scale_height="140"
@@ -213,12 +143,173 @@
                         sl:scale_top="260"
                         sl:scale_width="750" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="좌석 번호 : "
+                        android:textColor="@color/darkgray"
+                        sl:scale_height="140"
+                        sl:scale_left="30"
+                        sl:scale_textsize="60"
+                        sl:scale_top="400"
+                        sl:scale_width="280" />
+
+                    <EditText
+                        android:id="@+id/seatNum"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:hint="좌석 번호를 입력해주세요"
+                        android:inputType="number"
+                        android:textColor="@color/darkgray"
+                        sl:scale_height="140"
+                        sl:scale_left="310"
+                        sl:scale_textsize="60"
+                        sl:scale_top="400"
+                        sl:scale_width="750" />
+
+                </com.ssomai.android.scalablelayout.ScalableLayout>
+
+
+                    <com.ssomai.android.scalablelayout.ScalableLayout
+                        android:visibility="gone"
+                        android:id="@+id/seatContainerJamsil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        sl:scale_base_height="590"
+                        sl:scale_base_width="1080">
+
+                        <ImageView
+                            android:id="@+id/seatImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/black_teduri"
+                            android:scaleType="fitXY"
+                            sl:scale_height="360"
+                            sl:scale_left="30"
+                            sl:scale_top="20"
+                            sl:scale_width="360" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="좌석 정보"
+                            android:textColor="@color/black"
+                            sl:scale_height="90"
+                            sl:scale_left="450"
+                            sl:scale_textsize="70"
+                            sl:scale_top="50"
+                            sl:scale_width="500" />
+
+                        <TextView
+                            android:id="@+id/seatText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="좌석을 선택해주세요"
+                            android:textColor="@color/red"
+                            sl:scale_height="250"
+                            sl:scale_left="450"
+                            sl:scale_textsize="50"
+                            sl:scale_top="150"
+                            sl:scale_width="500" />
+
+                        <ImageView
+                            android:id="@+id/seatButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:onClick="OnClicked"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/seat_select"
+                            sl:scale_height="80"
+                            sl:scale_left="45"
+                            sl:scale_top="410"
+                            sl:scale_width="330" />
+
+
+                    </com.ssomai.android.scalablelayout.ScalableLayout>
+
+                <com.ssomai.android.scalablelayout.ScalableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    sl:scale_base_height="580"
+                    sl:scale_base_width="1080">
+
                     <View
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@color/backgroundColor"
                         sl:scale_height="80"
-                        sl:scale_top="420"
+                        sl:scale_width="1080" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="주문자 정보"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        sl:scale_height="90"
+                        sl:scale_left="30"
+                        sl:scale_textsize="70"
+                        sl:scale_top="100"
+                        sl:scale_width="600" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="연락처 : "
+                        android:textColor="@color/darkgray"
+                        sl:scale_height="140"
+                        sl:scale_left="30"
+                        sl:scale_textsize="60"
+                        sl:scale_top="200"
+                        sl:scale_width="280" />
+
+                    <EditText
+                        android:id="@+id/telEdit"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:hint="핸드폰 번호를 입력해주세요"
+                        android:inputType="phone"
+                        android:textColor="@color/darkgray"
+                        sl:scale_height="140"
+                        sl:scale_left="310"
+                        sl:scale_textsize="60"
+                        sl:scale_top="200"
+                        sl:scale_width="750" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="요청 사항 : "
+                        android:textColor="@color/darkgray"
+                        sl:scale_height="140"
+                        sl:scale_left="30"
+                        sl:scale_textsize="60"
+                        sl:scale_top="340"
+                        sl:scale_width="280" />
+
+                    <EditText
+                        android:id="@+id/memoEdit"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:hint="요청사항을 입력해주세요"
+                        android:inputType="text"
+                        android:textColor="@color/darkgray"
+                        sl:scale_height="140"
+                        sl:scale_left="310"
+                        sl:scale_textsize="60"
+                        sl:scale_top="340"
+                        sl:scale_width="750" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/backgroundColor"
+                        sl:scale_height="80"
+                        sl:scale_top="500"
                         sl:scale_width="1080" />
                 </com.ssomai.android.scalablelayout.ScalableLayout>
 
