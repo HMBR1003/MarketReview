@@ -10,91 +10,153 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:id="@+id/chickenContainer"
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:gravity="center">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="15" />
 
                 <ImageView
                     android:id="@+id/chickenButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="70"
                     android:scaleType="fitXY" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="15" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/pizzaContainer"
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:gravity="center">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="31" />
+
                 <ImageView
                     android:id="@+id/pizzaButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="38"
                     android:scaleType="fitXY" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="31" />
             </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:id="@+id/hamContainer"
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:gravity="center">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="31"
+                    android:layout_height="match_parent"/>
+
                 <ImageView
                     android:id="@+id/hamButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="38"
                     android:layout_height="wrap_content"
                     android:scaleType="fitXY" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="31"
+                    android:layout_height="match_parent"/>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/footContainer"
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:gravity="center">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="31"
+                    android:layout_height="match_parent"/>
+
                 <ImageView
                     android:id="@+id/footButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="38"
                     android:layout_height="wrap_content"
                     android:scaleType="fitXY" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="31"
+                    android:layout_height="match_parent"/>
             </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:id="@+id/etcContainer"
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:gravity="center">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="31"
+                    android:layout_height="match_parent"/>
+
                 <ImageView
                     android:id="@+id/etcButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="38"
                     android:layout_height="wrap_content"
                     android:scaleType="fitXY" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="31"
+                    android:layout_height="match_parent"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:gravity="center">
 
             </LinearLayout>
@@ -113,71 +175,71 @@
 
 
         <!--<ImageButton-->
-            <!--android:id="@+id/footButton"-->
-            <!--android:layout_width="130dp"-->
-            <!--android:layout_height="130dp"-->
-            <!--android:layout_marginLeft="43dp"-->
-            <!--android:layout_marginStart="43dp"-->
-            <!--android:layout_marginTop="52dp"-->
-            <!--android:background="@android:color/transparent"-->
-            <!--android:scaleType="fitXY"-->
-            <!--app:layout_constraintLeft_toRightOf="@+id/hamButton"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/pizzaButton"-->
-            <!--app:srcCompat="@drawable/aa" />-->
+        <!--android:id="@+id/footButton"-->
+        <!--android:layout_width="130dp"-->
+        <!--android:layout_height="130dp"-->
+        <!--android:layout_marginLeft="43dp"-->
+        <!--android:layout_marginStart="43dp"-->
+        <!--android:layout_marginTop="52dp"-->
+        <!--android:background="@android:color/transparent"-->
+        <!--android:scaleType="fitXY"-->
+        <!--app:layout_constraintLeft_toRightOf="@+id/hamButton"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/pizzaButton"-->
+        <!--app:srcCompat="@drawable/aa" />-->
 
         <!--<ImageButton-->
-            <!--android:id="@+id/etcButton"-->
-            <!--android:layout_width="130dp"-->
-            <!--android:layout_height="130dp"-->
-            <!--android:layout_marginLeft="16dp"-->
-            <!--android:layout_marginStart="16dp"-->
-            <!--android:layout_marginTop="33dp"-->
-            <!--android:background="@android:color/transparent"-->
-            <!--android:scaleType="fitXY"-->
-            <!--app:layout_constraintLeft_toLeftOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/hamButton"-->
-            <!--app:srcCompat="@drawable/aa" />-->
+        <!--android:id="@+id/etcButton"-->
+        <!--android:layout_width="130dp"-->
+        <!--android:layout_height="130dp"-->
+        <!--android:layout_marginLeft="16dp"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginTop="33dp"-->
+        <!--android:background="@android:color/transparent"-->
+        <!--android:scaleType="fitXY"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/hamButton"-->
+        <!--app:srcCompat="@drawable/aa" />-->
 
         <!--<ImageButton-->
-            <!--android:id="@+id/hamButton"-->
-            <!--android:layout_width="130dp"-->
-            <!--android:layout_height="130dp"-->
-            <!--android:layout_marginLeft="34dp"-->
-            <!--android:layout_marginStart="34dp"-->
-            <!--android:layout_marginTop="28dp"-->
-            <!--android:background="@android:color/transparent"-->
+        <!--android:id="@+id/hamButton"-->
+        <!--android:layout_width="130dp"-->
+        <!--android:layout_height="130dp"-->
+        <!--android:layout_marginLeft="34dp"-->
+        <!--android:layout_marginStart="34dp"-->
+        <!--android:layout_marginTop="28dp"-->
+        <!--android:background="@android:color/transparent"-->
 
-            <!--android:scaleType="fitXY"-->
-            <!--app:layout_constraintLeft_toLeftOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/chickenButton"-->
-            <!--app:srcCompat="@drawable/aa" />-->
-
-        <!--<ImageButton-->
-            <!--android:id="@+id/pizzaButton"-->
-            <!--android:layout_width="130dp"-->
-            <!--android:layout_height="130dp"-->
-            <!--android:layout_marginLeft="43dp"-->
-            <!--android:layout_marginStart="43dp"-->
-            <!--android:layout_marginTop="71dp"-->
-            <!--android:background="@android:color/transparent"-->
-
-            <!--android:scaleType="fitXY"-->
-            <!--app:layout_constraintLeft_toRightOf="@+id/chickenButton"-->
-            <!--app:layout_constraintTop_toTopOf="parent"-->
-            <!--app:srcCompat="@drawable/aa" />-->
+        <!--android:scaleType="fitXY"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/chickenButton"-->
+        <!--app:srcCompat="@drawable/aa" />-->
 
         <!--<ImageButton-->
-            <!--android:id="@+id/chickenButton"-->
-            <!--android:layout_width="130dp"-->
-            <!--android:layout_height="130dp"-->
-            <!--android:layout_marginLeft="46dp"-->
-            <!--android:layout_marginStart="46dp"-->
-            <!--android:layout_marginTop="82dp"-->
-            <!--android:background="@android:color/transparent"-->
+        <!--android:id="@+id/pizzaButton"-->
+        <!--android:layout_width="130dp"-->
+        <!--android:layout_height="130dp"-->
+        <!--android:layout_marginLeft="43dp"-->
+        <!--android:layout_marginStart="43dp"-->
+        <!--android:layout_marginTop="71dp"-->
+        <!--android:background="@android:color/transparent"-->
 
-            <!--android:scaleType="fitXY"-->
-            <!--app:layout_constraintLeft_toLeftOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent"-->
-            <!--app:srcCompat="@drawable/aa" />-->
+        <!--android:scaleType="fitXY"-->
+        <!--app:layout_constraintLeft_toRightOf="@+id/chickenButton"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:srcCompat="@drawable/aa" />-->
+
+        <!--<ImageButton-->
+        <!--android:id="@+id/chickenButton"-->
+        <!--android:layout_width="130dp"-->
+        <!--android:layout_height="130dp"-->
+        <!--android:layout_marginLeft="46dp"-->
+        <!--android:layout_marginStart="46dp"-->
+        <!--android:layout_marginTop="82dp"-->
+        <!--android:background="@android:color/transparent"-->
+
+        <!--android:scaleType="fitXY"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:srcCompat="@drawable/aa" />-->
     </LinearLayout>
 </layout>

@@ -17,12 +17,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.baseballbaedal.baseballbaedal.NewActivity;
+import org.baseballbaedal.baseballbaedal.PushUtil;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityOrderBinding;
 
@@ -42,6 +47,7 @@ public class OrderActivity extends NewActivity {
     int colCheck;
     boolean isSetSeat = false;
     String marketId;
+    String pushToken;
     Intent intent;
     AlertDialog orderDialog;
 
@@ -67,6 +73,8 @@ public class OrderActivity extends NewActivity {
 
         orderBinding.orderButton.setButtonColor(getResources().getColor(R.color.buttonColor));
         orderBinding.orderButton.setCornerRadius(15);
+
+        shared = getSharedPreferences("basket", MODE_PRIVATE);
 
         //현재 선택된 야구장 데이터 가져오기
         SharedPreferences colCheckpref = getSharedPreferences("selectedCol", MODE_PRIVATE);
@@ -168,8 +176,7 @@ public class OrderActivity extends NewActivity {
 
         //장바구니
         else {
-            shared = getSharedPreferences("basket", MODE_PRIVATE);
-
+            marketId = shared.getString("marketId", "");
             basketCount = shared.getInt("basketCount", 1);
             //intent.getIntExtra("basketCount", 1);
             String totalPrice = shared.getString("totalPrice", "");
@@ -287,6 +294,18 @@ public class OrderActivity extends NewActivity {
 //
 //            orderBinding.orderContainer.addView(viewGroup);
         }
+        FirebaseDatabase.getInstance().getReference().child("users").child(marketId).child("pushToken").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                pushToken = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(OrderActivity.this, "푸쉬토큰 받아오기 실패", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
 
     }
 
@@ -403,13 +422,12 @@ public class OrderActivity extends NewActivity {
                                         }
                                     }
                                     //즉시 주문
-                                    else{
+                                    else {
 
                                     }
-                                    if(buying==1){
+                                    if (buying == 1) {
                                         ref.child("pay").setValue("카드 결제");
-                                    }
-                                    else if(buying==2){
+                                    } else if (buying == 2) {
                                         ref.child("pay").setValue("현금 결제");
                                     }
 
@@ -420,6 +438,7 @@ public class OrderActivity extends NewActivity {
 
                                     shared.edit().clear().apply();
                                     Toast.makeText(getApplicationContext(), "주문이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                                    PushUtil.getInstance().send("주문 알림", "뿌우우", "0", pushToken, Volley.newRequestQueue(getApplicationContext()));
                                     finish();
                                 }
                             });
@@ -452,6 +471,11 @@ public class OrderActivity extends NewActivity {
                 }
                 break;
             case R.id.cardBuyText:  //카드결제
+
+                //푸쉬 테스트
+                PushUtil.getInstance().send("주문 알림", "뿌우우", "0", pushToken,
+                        Volley.newRequestQueue(getApplicationContext()));
+
                 orderBinding.moneyBuyText.setBackgroundResource(R.color.white);
                 orderBinding.cardBuyText.setBackgroundResource(R.color.buttonColor);
                 orderBinding.cardBuyText.setTextColor(getResources().getColor(R.color.white));

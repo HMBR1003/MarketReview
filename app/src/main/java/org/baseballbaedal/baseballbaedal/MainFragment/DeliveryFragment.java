@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -44,9 +45,6 @@ public class DeliveryFragment extends Fragment {
 
     private FragmentDeliveryBinding binding;
     MainActivity mainActivity;
-    int height;
-    int width;
-    int containerHeight;
     int imageWidth;
 //    @Override
 //    public void onAttach(Context context) {
@@ -61,41 +59,37 @@ public class DeliveryFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        init();
-        BusProvider.getInstance().register(this);
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        init();
+//        BusProvider.getInstance().register(this);
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        BusProvider.getInstance().unregister(this);
+//    }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        BusProvider.getInstance().unregister(this);
-    }
+//    public void init() {
+//        binding.chickenContainer.setLayoutParams(new LinearLayout.LayoutParams(0, containerHeight, 1));
+//        binding.pizzaContainer.setLayoutParams(new LinearLayout.LayoutParams(0, containerHeight, 1));
+//        binding.footContainer.setLayoutParams(new LinearLayout.LayoutParams(0, containerHeight, 1));
+//        binding.hamContainer.setLayoutParams(new LinearLayout.LayoutParams(0, containerHeight, 1));
+//        binding.etcContainer.setLayoutParams(new LinearLayout.LayoutParams(0, containerHeight, 1));
+//
 
-    public void init() {
-        binding.chickenContainer.setLayoutParams(new LinearLayout.LayoutParams(0, containerHeight, 1));
-        binding.pizzaContainer.setLayoutParams(new LinearLayout.LayoutParams(0, containerHeight, 1));
-        binding.footContainer.setLayoutParams(new LinearLayout.LayoutParams(0, containerHeight, 1));
-        binding.hamContainer.setLayoutParams(new LinearLayout.LayoutParams(0, containerHeight, 1));
-        binding.etcContainer.setLayoutParams(new LinearLayout.LayoutParams(0, containerHeight, 1));
+//    }
 
-        binding.chickenButton.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageWidth));
-        binding.pizzaButton.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageWidth));
-        binding.footButton.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageWidth));
-        binding.hamButton.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageWidth));
-        binding.etcButton.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageWidth));
-    }
-
-    @Subscribe
-    public void onPushEvent(HeightEvent heightEvent) {
-        height = heightEvent.getHeight();
-        width = heightEvent.getWidth();
-        containerHeight = height / 3;
-        imageWidth = (width / 100) * 37;
-        init();
-    }
+//    @Subscribe
+//    public void onPushEvent(HeightEvent heightEvent) {
+//        height = heightEvent.getHeight();
+//        width = heightEvent.getWidth();
+//        containerHeight = height / 3;
+//        imageWidth = (width / 100) * 37;
+//        init();
+//    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -129,6 +123,25 @@ public class DeliveryFragment extends Fragment {
         Glide.with(this)
                 .load(R.drawable.etc_button1)
                 .into(binding.etcButton);
+
+        binding.chickenButton.measure(View.MeasureSpec.AT_MOST, View.MeasureSpec.AT_MOST);
+        imageWidth = binding.chickenButton.getMeasuredWidth();
+        Log.d("가로",imageWidth+"");
+        ViewTreeObserver vto = binding.chickenButton.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @SuppressWarnings("deprecation")
+            @Override
+            public void onGlobalLayout() {
+                ViewTreeObserver obs = binding.chickenButton.getViewTreeObserver();
+                imageWidth = binding.chickenButton.getWidth();
+                binding.chickenButton.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageWidth));
+                binding.pizzaButton.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageWidth));
+                binding.footButton.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageWidth));
+                binding.hamButton.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageWidth));
+                binding.etcButton.setLayoutParams(new LinearLayout.LayoutParams(imageWidth, imageWidth));
+                obs.removeGlobalOnLayoutListener(this);
+            }
+        });
     }
 
     public class TouchListener implements View.OnTouchListener {

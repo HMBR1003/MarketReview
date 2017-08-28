@@ -89,8 +89,10 @@ public class MainActivity extends NewActivity
     public static final int BUSINESS_SIGNUP_REQUEST = 200;
     public static final int SELECT_COL = 300;
     public static final int CHANGE_COL = 400;
+    public static int orderPushNumber = 0;
     static int pushCount = 0;
     static int loginCount = 0;
+    static int orderCount = 0;
     HomeFragment homeFragment;
     DeliveryFragment deliveryFragment;
     TakeoutFragment takeoutFragment;
@@ -125,37 +127,6 @@ public class MainActivity extends NewActivity
 
     SharedPreferences pref; //최초실행 체크 변수
 
-
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (fragmentHeight == 0) {
-            int fullHeight;
-            int fullWidth;
-            int bottomHeight;
-            int topHeight = 72;
-            int toolbarHeight;
-            bottomHeight = navigationTabBar.getHeight();
-
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            fullHeight = displayMetrics.heightPixels;// 세로
-            fullWidth = displayMetrics.widthPixels;
-
-            int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-            if (resourceId > 0) {
-                topHeight = getResources().getDimensionPixelSize(resourceId);
-            }
-
-            View view = findViewById(R.id.mainActionBar);
-            toolbarHeight = view.getHeight();
-
-            fragmentHeight = fullHeight - bottomHeight - topHeight - toolbarHeight;
-            Log.d("높이",fragmentHeight+"");
-            BusProvider.getInstance().post(new HeightEvent(fragmentHeight,fullWidth));
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -628,8 +599,8 @@ public class MainActivity extends NewActivity
         pushCount = 0;
         loginCount = 0;
         setBadge();
-        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        nm.cancelAll();
+//        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//        nm.cancel(9999);
 
         //유저 객체를 가져옴
         user = mAuth.getCurrentUser();
@@ -667,6 +638,32 @@ public class MainActivity extends NewActivity
             sp.edit().clear().apply();
             mAuth.addAuthStateListener(mAuthListener);
             setLeftMenu();
+        }
+
+        if (fragmentHeight == 0) {
+            int fullHeight;
+            int fullWidth;
+            int bottomHeight;
+            int topHeight = 72;
+            int toolbarHeight;
+            bottomHeight = navigationTabBar.getHeight();
+
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            fullHeight = displayMetrics.heightPixels;// 세로
+            fullWidth = displayMetrics.widthPixels;
+
+            int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                topHeight = getResources().getDimensionPixelSize(resourceId);
+            }
+
+            View view = findViewById(R.id.mainActionBar);
+            toolbarHeight = view.getHeight();
+
+            fragmentHeight = fullHeight - bottomHeight - topHeight - toolbarHeight;
+            Log.d("높이",fragmentHeight+"");
+            BusProvider.getInstance().post(new HeightEvent(fragmentHeight,fullWidth));
         }
     }
 

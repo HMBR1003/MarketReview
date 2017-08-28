@@ -13,5 +13,4 @@ public class MarketList {
     public int handleFood;          //푸드 핸들 - 치킨 1, 피자 2, 햄버거 3, 족발 4, 테이크아웃 5, 기타 6
     public int selectedCol;         //소속 경기장
     public String minPrice;         //주문 최소 가격
-
 }

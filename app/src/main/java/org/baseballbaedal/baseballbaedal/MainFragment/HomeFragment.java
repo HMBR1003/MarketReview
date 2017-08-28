@@ -52,18 +52,18 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        init();
-        BusProvider.getInstance().register(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        BusProvider.getInstance().unregister(this);
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        init();
+//        BusProvider.getInstance().register(this);
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        BusProvider.getInstance().unregister(this);
+//    }
 
     public void init() {
 
@@ -71,36 +71,36 @@ public class HomeFragment extends Fragment {
 //        binding.weatherInfoButton.setLayoutParams(new LinearLayout.LayoutParams(weatherImageWidth,weatherImageHeight));
 //        binding.takeoutButton.setLayoutParams(new LinearLayout.LayoutParams(takeoutImageWidth,takeoutimageHeight));
 
-        layoutParams = new LinearLayout.LayoutParams(deliveryImageWidth,deliveryImageHeight);
-        layoutParams.bottomMargin = bottom;
-        binding.deliveryButton.setLayoutParams(layoutParams);
-
-
-        layoutParams =new LinearLayout.LayoutParams(weatherImageWidth,weatherImageHeight);
-        layoutParams.leftMargin = leftRight;
-        binding.weatherInfoButton.setLayoutParams(layoutParams);
-
-        layoutParams = new LinearLayout.LayoutParams(takeoutImageWidth,takeoutimageHeight);
-        layoutParams.rightMargin = leftRight;
-        binding.takeoutButton.setLayoutParams(layoutParams);
+//        layoutParams = new LinearLayout.LayoutParams(deliveryImageWidth,deliveryImageHeight);
+//        layoutParams.bottomMargin = bottom;
+//        binding.deliveryButton.setLayoutParams(layoutParams);
+//
+//
+//        layoutParams =new LinearLayout.LayoutParams(weatherImageWidth,weatherImageHeight);
+//        layoutParams.leftMargin = leftRight;
+//        binding.weatherInfoButton.setLayoutParams(layoutParams);
+//
+//        layoutParams = new LinearLayout.LayoutParams(takeoutImageWidth,takeoutimageHeight);
+//        layoutParams.rightMargin = leftRight;
+//        binding.takeoutButton.setLayoutParams(layoutParams);
 
     }
 
     @Subscribe
     public void onPushEvent(HeightEvent heightEvent) {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        height = displayMetrics.heightPixels;
-        width = displayMetrics.widthPixels;
-
-        deliveryImageHeight = (int)((height/1920)*660);
-        deliveryImageWidth = (int)((width/1080)*965);
-        takeoutimageHeight = (int)((height/1920)*650);
-        takeoutImageWidth = (int)((width/1080)*539);
-        weatherImageHeight = (int)((height/1920)*650);
-        weatherImageWidth = (int)((width/1080)*398);
-        bottom = (int)((height/1920)*28);
-        leftRight = (int)((width/1080)*14);
+//        DisplayMetrics displayMetrics = new DisplayMetrics();
+//        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//        height = displayMetrics.heightPixels;
+//        width = displayMetrics.widthPixels;
+//
+//        deliveryImageHeight = (int)((height/1920)*660);
+//        deliveryImageWidth = (int)((width/1080)*965);
+//        takeoutimageHeight = (int)((height/1920)*650);
+//        takeoutImageWidth = (int)((width/1080)*539);
+//        weatherImageHeight = (int)((height/1920)*650);
+//        weatherImageWidth = (int)((width/1080)*398);
+//        bottom = (int)((height/1920)*28);
+//        leftRight = (int)((width/1080)*14);
         init();
     }
     @Override
@@ -139,5 +139,31 @@ public class HomeFragment extends Fragment {
                 viewPager.setCurrentItem(3);
             }
         });
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        height = displayMetrics.heightPixels;
+        width = displayMetrics.widthPixels;
+
+        deliveryImageHeight = (int)((height/1920)*660);
+        deliveryImageWidth = (int)((width/1080)*965);
+        takeoutimageHeight = (int)((height/1920)*650);
+        takeoutImageWidth = (int)((width/1080)*539);
+        weatherImageHeight = (int)((height/1920)*650);
+        weatherImageWidth = (int)((width/1080)*398);
+        bottom = (int)((height/1920)*28);
+        leftRight = (int)((width/1080)*14);
+
+        layoutParams = new LinearLayout.LayoutParams(deliveryImageWidth,deliveryImageHeight);
+        layoutParams.bottomMargin = bottom;
+        binding.deliveryButton.setLayoutParams(layoutParams);
+
+        layoutParams =new LinearLayout.LayoutParams(weatherImageWidth,weatherImageHeight);
+        layoutParams.leftMargin = leftRight;
+        binding.weatherInfoButton.setLayoutParams(layoutParams);
+
+        layoutParams = new LinearLayout.LayoutParams(takeoutImageWidth,takeoutimageHeight);
+        layoutParams.rightMargin = leftRight;
+        binding.takeoutButton.setLayoutParams(layoutParams);
     }
 }
