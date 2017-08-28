@@ -1,5 +1,10 @@
 package org.baseballbaedal.baseballbaedal;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -12,6 +17,34 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     private static final String TAG = "MyIID";
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        registerRestartAlarm(true);
+        Log.d("서비스 실행","아이디서비스 실행됨");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        registerRestartAlarm(true);
+        Log.d("서비스 실행","아이디디서비스 중지됨");
+    }
+
+    public void registerRestartAlarm(boolean isOn) {
+        Intent intent = new Intent(MyFirebaseInstanceIDService.this, RestartReceiver.class);
+        intent.setAction(RestartReceiver.ID_RESTART_SERVICE);
+        PendingIntent sender = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
+
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        if (isOn) {
+            am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 1000, 60000, sender);
+        } else {
+            am.cancel(sender);
+        }
+
+        Log.d("서비스 실행","아이디 리시버 알람 실행");
+    }
     @Override
     public void onTokenRefresh() {
         Log.d(TAG, "onTokenRefresh() 호출됨.");

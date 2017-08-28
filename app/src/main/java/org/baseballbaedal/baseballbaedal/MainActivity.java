@@ -3,6 +3,7 @@ package org.baseballbaedal.baseballbaedal;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -103,7 +104,7 @@ public class MainActivity extends NewActivity
     long backTime;
     int colCheck = -1;
 
-
+    NotificationManager notificationManager;
     NavigationTabBar navigationTabBar;
     ActivityMainBinding mainBinding;
     TextView userEmail;
@@ -134,12 +135,20 @@ public class MainActivity extends NewActivity
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        Intent serviceIntent1 = new Intent(this, MyFirebaseMessagingService.class);
+        Intent serviceIntent2 = new Intent(this, MyFirebaseInstanceIDService.class);
+        startService(serviceIntent1);
+        startService(serviceIntent2);
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         homeFragment = new HomeFragment();
         deliveryFragment = new DeliveryFragment();
         takeoutFragment = new TakeoutFragment();
         weatherFragment = new WeatherFragment();
 
+        int time = (int)(System.currentTimeMillis()/1000);
+        Log.d("시간",System.currentTimeMillis()+"");
+        Log.d("시간",time+"");
 
         //구글 로그인 API 관련 작업
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -393,6 +402,13 @@ public class MainActivity extends NewActivity
                         myRef.child("users").child(uid).child("isLogin").setValue(0);
                         //로그아웃 실행
                         MainActivity.singOut();
+                        try {
+                            notificationManager.cancelAll();
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        pushCount = 0;
                         Toast.makeText(MainActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -595,12 +611,16 @@ public class MainActivity extends NewActivity
                 break;
         }
 
-        //푸쉬 관련
-        pushCount = 0;
+        //푸쉬 및 뱃지 관련
         loginCount = 0;
         setBadge();
-//        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//        nm.cancel(9999);
+        try {
+            notificationManager.cancel(9999);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         //유저 객체를 가져옴
         user = mAuth.getCurrentUser();
@@ -618,6 +638,13 @@ public class MainActivity extends NewActivity
                     if (dataSnapshot.getValue() != null && !dataSnapshot.getValue(String.class).equals(FirebaseInstanceId.getInstance().getToken())) {
                         //로그아웃 후에
                         MainActivity.singOut();
+                        try {
+                            notificationManager.cancelAll();
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        pushCount = 0;
                         //인증 상태 리스너를 추가
                         mAuth.addAuthStateListener(mAuthListener);
                         setLeftMenu();
