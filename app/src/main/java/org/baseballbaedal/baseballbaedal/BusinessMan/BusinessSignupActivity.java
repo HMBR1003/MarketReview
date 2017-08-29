@@ -523,6 +523,18 @@ public class BusinessSignupActivity extends NewActivity {
         //데이터 불러오는 중이라고 알림창 띄우기
         dialog = new SpotsDialog(BusinessSignupActivity.this, "데이터를 불러오는 중입니다...", R.style.ProgressBar);
         dialog.setCancelable(false);
+        //뒤로가기 키 눌렀을 때는 사라지게 하기
+        dialog.setOnKeyListener(new Dialog.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface arg0, int keyCode,
+                                 KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    dialog.dismiss();
+                    finish();
+                }
+                return true;
+            }
+        });
         dialog.show();
 
         //데이터베이스 초기화

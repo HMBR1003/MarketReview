@@ -146,9 +146,9 @@ public class MainActivity extends NewActivity
         takeoutFragment = new TakeoutFragment();
         weatherFragment = new WeatherFragment();
 
-        int time = (int)(System.currentTimeMillis()/1000);
-        Log.d("시간",System.currentTimeMillis()+"");
-        Log.d("시간",time+"");
+        int time = (int) (System.currentTimeMillis() / 1000);
+        Log.d("시간", System.currentTimeMillis() + "");
+        Log.d("시간", time + "");
 
         //구글 로그인 API 관련 작업
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -404,8 +404,7 @@ public class MainActivity extends NewActivity
                         MainActivity.singOut();
                         try {
                             notificationManager.cancelAll();
-                        }
-                        catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                         pushCount = 0;
@@ -430,9 +429,9 @@ public class MainActivity extends NewActivity
             if (user == null) {
                 pleaseLogin();
             } else {
-                if(isBusiness!=2) {
+                if (isBusiness != 2) {
                     Intent intent = new Intent(this, BasketActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP|FLAG_ACTIVITY_NO_HISTORY);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_NO_HISTORY);
                     startActivity(intent);
                 }
             }
@@ -528,7 +527,7 @@ public class MainActivity extends NewActivity
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, "구글 관련 서비스를 설정해주세요", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "구글 플레이 서비스를 업데이트 해주세요", Toast.LENGTH_SHORT).show();
     }
 
     //프래그먼트 어댑터
@@ -616,8 +615,7 @@ public class MainActivity extends NewActivity
         setBadge();
         try {
             notificationManager.cancel(9999);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -640,8 +638,7 @@ public class MainActivity extends NewActivity
                         MainActivity.singOut();
                         try {
                             notificationManager.cancelAll();
-                        }
-                        catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                         pushCount = 0;
@@ -689,8 +686,8 @@ public class MainActivity extends NewActivity
             toolbarHeight = view.getHeight();
 
             fragmentHeight = fullHeight - bottomHeight - topHeight - toolbarHeight;
-            Log.d("높이",fragmentHeight+"");
-            BusProvider.getInstance().post(new HeightEvent(fragmentHeight,fullWidth));
+            Log.d("높이", fragmentHeight + "");
+            BusProvider.getInstance().post(new HeightEvent(fragmentHeight, fullWidth));
         }
     }
 
@@ -738,7 +735,30 @@ public class MainActivity extends NewActivity
     @Override
     protected void onNewIntent(Intent intent) {
         if (intent != null) {
-            processIntent(intent);
+            if (intent.getBooleanExtra("isOrder", false)) {
+                //제출 확인 안내 메세지 띄우기
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("안내");
+                builder.setMessage("주문이 완료되었습니다.\n 주문내역을 보시겠습니까?");
+                //확인 버튼설정 및 버튼을 눌렀을 때 동작 설정
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //TODO
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.setCancelable(false);
+                dialog.show();
+            } else {
+                processIntent(intent);
+            }
         }
         super.onNewIntent(intent);
     }
@@ -807,7 +827,7 @@ public class MainActivity extends NewActivity
 
         navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb_horizontal);
         navigationTabBar.setBgColor(Color.WHITE);
-        navigationTabBar.setInactiveColor(Color.rgb(116,212,159));
+        navigationTabBar.setInactiveColor(Color.rgb(116, 212, 159));
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(

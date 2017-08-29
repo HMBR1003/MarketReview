@@ -1,6 +1,8 @@
 package org.baseballbaedal.baseballbaedal;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -204,8 +207,25 @@ public class LoginActivity extends NewActivity implements
 //                Toast.makeText(LoginActivity.this, "페이스북 계정 연결 성공", Toast.LENGTH_SHORT).show();
                         dialog = new SpotsDialog(LoginActivity.this,"로그인 중입니다...",R.style.ProgressBar);
                         dialog.setCancelable(false);
+                        //뒤로가기 키 눌렀을 때는 사라지게 하기
+                        dialog.setOnKeyListener(new Dialog.OnKeyListener() {
+                            @Override
+                            public boolean onKey(DialogInterface arg0, int keyCode,
+                                                 KeyEvent event) {
+                                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                                    dialog.dismiss();
+                                    setResult(RESULT_CANCELED);
+                                    finish();
+                                }
+                                return true;
+                            }
+                        });
                         dialog.show();
-                        handleFacebookAccessToken(loginResult.getAccessToken());
+                        try {
+                            handleFacebookAccessToken(loginResult.getAccessToken());
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                     @Override
                     public void onCancel() {
@@ -323,8 +343,26 @@ public class LoginActivity extends NewActivity implements
 //                Toast.makeText(LoginActivity.this, "구글 계정 연결 성공", Toast.LENGTH_SHORT).show();
                 dialog = new SpotsDialog(LoginActivity.this,"로그인 중입니다...",R.style.ProgressBar);
                 dialog.setCancelable(false);
+                //뒤로가기 키 눌렀을 때는 사라지게 하기
+                dialog.setOnKeyListener(new Dialog.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface arg0, int keyCode,
+                                         KeyEvent event) {
+                        if (keyCode == KeyEvent.KEYCODE_BACK) {
+                            dialog.dismiss();
+                            setResult(RESULT_CANCELED);
+                            finish();
+                        }
+                        return true;
+                    }
+                });
                 dialog.show();
-                firebaseAuthWithGoogle(acct);
+                try {
+                    firebaseAuthWithGoogle(acct);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
             } else {
                 // Signed out, show unauthenticated UI.
                 Toast.makeText(LoginActivity.this, "구글 계정 연결 실패", Toast.LENGTH_SHORT).show();
@@ -378,7 +416,7 @@ public class LoginActivity extends NewActivity implements
 
                                 //이전에 로그인한 기기에 푸쉬알림을 보내 강제 로그아웃시킨다
                                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                                PushUtil.getInstance().send("", user.getEmail(), "1", dataSnapshot.getValue(String.class), queue);
+                                PushUtil.getInstance().send("", user.getEmail(),"", "1", dataSnapshot.getValue(String.class), queue);
                             }
                                 //그 후 데이터베이스에 로그인 상태와 현재 로그인한 기기의 토큰을 등록
                                 myRef.child("users").child(uid).child("isLogin").setValue(1);

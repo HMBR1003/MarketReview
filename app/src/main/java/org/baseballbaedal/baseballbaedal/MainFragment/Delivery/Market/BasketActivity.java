@@ -181,6 +181,14 @@ public class BasketActivity extends NewActivity {
         });
     }
 
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == ORDER_BASKET && resultCode == RESULT_OK) {
+//            emptyCheck();
+//        }
+//    }
+
     public void init() {
         basketCount = 0;
         basketBinding.basketLayout.removeAllViews();

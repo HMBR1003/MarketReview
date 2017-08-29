@@ -33,7 +33,7 @@ public enum PushUtil {
 //    }
 
     //푸쉬 메세지 발송 기능 함수
-    public void send(String title, String content, String type, String regId, RequestQueue queue) {
+    public void send(String title, String content1,String content2, String type, String regId, RequestQueue queue) {
 
         JSONObject requestData = new JSONObject();
 
@@ -42,7 +42,8 @@ public enum PushUtil {
 
             JSONObject dataObj = new JSONObject();
             dataObj.put("title", title);
-            dataObj.put("content", content);
+            dataObj.put("content1", content1);
+            dataObj.put("content2", content2);
             dataObj.put("type", type);
             requestData.put("data", dataObj);
 

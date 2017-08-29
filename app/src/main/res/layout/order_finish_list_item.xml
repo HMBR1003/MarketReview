@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sl="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.ssomai.android.scalablelayout.ScalableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        sl:scale_base_width="1080"
+        sl:scale_base_height="310">
+
+        <TextView
+            android:id="@+id/orderState"
+            android:textColor="@color/black"
+            android:text="배달 여부"
+            android:gravity="center|end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            sl:scale_height="80"
+            sl:scale_top="10"
+            sl:scale_left="820"
+            sl:scale_textsize="50"
+            sl:scale_width="240"/>
+
+        <TextView
+            android:textColor="@color/black"
+            android:text="주문 시각"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            sl:scale_height="80"
+            sl:scale_top="50"
+            sl:scale_left="15"
+            sl:scale_textsize="50"
+            sl:scale_width="235"/>
+
+        <TextView
+            android:id="@+id/orderTime"
+            android:textColor="@color/darkgray"
+            android:gravity="center_vertical"
+            android:text="주문 시각"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            sl:scale_height="80"
+            sl:scale_top="50"
+            sl:scale_left="250"
+            sl:scale_textsize="40"
+            sl:scale_width="830"/>
+
+        <TextView
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            android:text="주문 메뉴"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            sl:scale_height="80"
+            sl:scale_top="130"
+            sl:scale_left="15"
+            sl:scale_textsize="50"
+            sl:scale_width="235"/>
+
+        <TextView
+            android:id="@+id/orderMenu"
+            android:textColor="@color/darkgray"
+            android:gravity="center_vertical"
+            android:text="주문 메뉴"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            sl:scale_height="80"
+            sl:scale_top="130"
+            sl:scale_left="250"
+            sl:scale_textsize="40"
+            sl:scale_width="830"/>
+
+        <TextView
+            android:id="@+id/detailButton"
+            android:textColor="@color/black"
+            android:text="주문 정보 상세보기 >"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            sl:scale_height="90"
+            sl:scale_top="210"
+            sl:scale_textsize="60"
+            sl:scale_width="1080"/>
+
+
+
+
+    </com.ssomai.android.scalablelayout.ScalableLayout>
+
+</LinearLayout>

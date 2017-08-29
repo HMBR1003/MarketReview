@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.baseballbaedal.baseballbaedal.MainActivity;
 import org.baseballbaedal.baseballbaedal.NewActivity;
 import org.baseballbaedal.baseballbaedal.PushUtil;
 import org.baseballbaedal.baseballbaedal.R;
@@ -373,6 +374,12 @@ public class OrderActivity extends NewActivity {
                             AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
                             builder.setTitle("주문 확인");
                             builder.setMessage("이대로 주문하시겠습니까?\n좌석이 맞는 지 한번 더 확인해주세요\n" + seat);
+                            builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
                             builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -390,11 +397,16 @@ public class OrderActivity extends NewActivity {
 
                                     //주문 정보 넣기
                                     //장바구니 주문
+                                    String menus="";
                                     if (isBasket) {
                                         ref.child("count").setValue(basketCount);
                                         ref.child("totalPrice").setValue(shared.getString("totalPrice", "0원"));
                                         for (int i = 0; i < basketCount; i++) {
                                             ref.child("menuName" + i).setValue(shared.getString("menuName" + i, ""));
+                                            menus += shared.getString("menuName" + i, "");
+                                            if(i!=basketCount-1) {
+                                                menus+=", ";
+                                            }
                                             ref.child("menuAmount" + i).setValue(shared.getInt("menuAmount" + i, 1));
                                             ref.child("basketPrice" + i).setValue(shared.getString("basketPrice" + i, ""));
                                             if (shared.getBoolean("option1checked" + i, false)) {
@@ -438,14 +450,11 @@ public class OrderActivity extends NewActivity {
 
                                     shared.edit().clear().apply();
                                     Toast.makeText(getApplicationContext(), "주문이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                                    PushUtil.getInstance().send("주문 알림", "뿌우우", "0", pushToken, Volley.newRequestQueue(getApplicationContext()));
-                                    finish();
-                                }
-                            });
-                            builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
+                                    PushUtil.getInstance().send("주문 알림", block+" 블럭, "+row+ " 열, "+seatNum+"번 좌석의 주문이 들어왔습니다.",block+" 블럭, "+row+ " 열, "+seatNum+"번 좌석의 주문이 들어왔습니다.\n메뉴 : "+menus, "0", pushToken, Volley.newRequestQueue(getApplicationContext()));
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    intent.putExtra("isOrder",true);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                    startActivity(intent);
                                 }
                             });
                             orderDialog = builder.create();
@@ -471,9 +480,9 @@ public class OrderActivity extends NewActivity {
                 }
                 break;
             case R.id.cardBuyText:  //카드결제
-
+//
                 //푸쉬 테스트
-                PushUtil.getInstance().send("주문 알림", "뿌우우", "0", pushToken,
+                PushUtil.getInstance().send("주문 알림", "뿌우우","", "0", pushToken,
                         Volley.newRequestQueue(getApplicationContext()));
 
                 orderBinding.moneyBuyText.setBackgroundResource(R.color.white);

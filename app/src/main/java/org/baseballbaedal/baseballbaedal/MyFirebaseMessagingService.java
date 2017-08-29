@@ -74,14 +74,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //받아온 메세지내용 추출해서 저장
         Map<String, String> data = remoteMessage.getData();
         String title = data.get("title");
-        String content = data.get("content");
+        String content1 = data.get("content1");
+        String content2 = data.get("content2");
         String type = data.get("type");
-
-        Log.v(TAG, "from : " + from + ", content : " + content);
 
         notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        sendNotification(title, content, type);
+        sendNotification(title, content1,content2, type);
         if (type.equals("1")) {
             loginCount++;
         }
@@ -105,7 +104,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
 
-    private void sendNotification(String title, String content, String type) {
+    private void sendNotification(String title, String content1,String content2, String type) {
         largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_notifications_black_24dp);
         if (type.equals("1")) {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -138,7 +137,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             Notification notification = new Notification.BigTextStyle(builder)
                     .setSummaryText("로그인 알림")
-                    .bigText("다른 기기에서 " + content + " 계정으로 로그인 하였습니다.")
+                    .bigText("다른 기기에서 " + content1 + " 계정으로 로그인 하였습니다.")
                     .build();
 
 
@@ -152,8 +151,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
             Notification.Builder builder = new Notification.Builder(this)
-                    .setContentTitle("주문 알림 제목")
-                    .setContentText("주문 내요옹")
+                    .setContentTitle(title)
+                    .setContentText(content1)
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setNumber(pushCount)
                     .setAutoCancel(false)
@@ -165,21 +164,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     .setPriority(Notification.PRIORITY_MAX);
 
             if (android.os.Build.VERSION.SDK_INT >= 24) {
-//                Notification.Builder groupBuilder = new Notification.Builder(this)
-//                        .setSmallIcon(R.mipmap.ic_launcher)
-//                        .setOngoing(true)
-//                        .setGroup("주문")
-//                        .setGroupSummary(true)
-//                        .setContentIntent(pendingIntent);
-//                builder.setGroup("주문");
-//
-//                notificationManager.notify(1111, groupBuilder.build());
+                Notification.Builder groupBuilder = new Notification.Builder(this)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setOngoing(true)
+                        .setGroup("주문")
+                        .setGroupSummary(true)
+                        .setContentIntent(pendingIntent);
+                builder.setGroup("주문");
+
+                notificationManager.notify(1111, groupBuilder.build());
 
                 builder.setSubText(MainActivity.pushCount + "");
             }
 
             Notification notification = new Notification.BigTextStyle(builder)
-                    .bigText("주문 상세 내용")
+                    .bigText(content2)
                     .build();
 
             //알림이 사라지지 않게 하기 위한 플래그
