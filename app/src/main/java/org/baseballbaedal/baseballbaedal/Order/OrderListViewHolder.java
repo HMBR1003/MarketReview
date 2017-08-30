@@ -47,7 +47,7 @@ public class OrderListViewHolder extends RecyclerView.ViewHolder {
         detailButton.setOnTouchListener(onTouchListener);
     }
 
-    public void onBindView(int data){
+    public void onBindView(OrderData data){
 
     };
 }

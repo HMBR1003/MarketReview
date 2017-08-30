@@ -5,4 +5,7 @@ package org.baseballbaedal.baseballbaedal.Order;
  */
 
 public class OrderData {
+    private String orderTime;
+    private String orderMenu;
+    private String orderState;
 }

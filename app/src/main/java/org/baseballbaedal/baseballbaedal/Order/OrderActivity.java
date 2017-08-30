@@ -446,7 +446,10 @@ public class OrderActivity extends NewActivity {
                                     ref.child("userName").setValue(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                                     ref.child("userTel").setValue(orderBinding.telEdit.getText().toString());
                                     ref.child("userMemo").setValue(orderBinding.memoEdit.getText().toString());
-                                    ref.child("date").setValue(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
+                                    ref.child("date").setValue(System.currentTimeMillis());
+//                                    ref.child("date").setValue(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
+                                    //0 주문신청 1 주문접수 2 배달완료 3 주문취소
+                                    ref.child(" ㅠ ").setValue("0");
 
                                     shared.edit().clear().apply();
                                     Toast.makeText(getApplicationContext(), "주문이 완료되었습니다.", Toast.LENGTH_SHORT).show();
