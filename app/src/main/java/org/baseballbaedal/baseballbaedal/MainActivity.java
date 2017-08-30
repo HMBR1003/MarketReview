@@ -739,7 +739,7 @@ public class MainActivity extends NewActivity
                 //제출 확인 안내 메세지 띄우기
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("안내");
-                builder.setMessage("주문이 완료되었습니다.\n 주문내역을 보시겠습니까?");
+                builder.setMessage("주문이 완료되었습니다.\n주문내역을 보시겠습니까?");
                 //확인 버튼설정 및 버튼을 눌렀을 때 동작 설정
                 builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                     @Override

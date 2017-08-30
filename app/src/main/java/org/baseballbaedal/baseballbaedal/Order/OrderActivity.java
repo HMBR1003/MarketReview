@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,12 +30,6 @@ import org.baseballbaedal.baseballbaedal.NewActivity;
 import org.baseballbaedal.baseballbaedal.PushUtil;
 import org.baseballbaedal.baseballbaedal.R;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityOrderBinding;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.zip.Inflater;
-
-import static org.baseballbaedal.baseballbaedal.MainFragment.Delivery.Market.BasketActivity.BASKET_MAX_LENGTH;
 
 
 public class OrderActivity extends NewActivity {
@@ -397,41 +390,67 @@ public class OrderActivity extends NewActivity {
 
                                     //주문 정보 넣기
                                     //장바구니 주문
-                                    String menus="";
+                                    String menus = "";
                                     if (isBasket) {
                                         ref.child("count").setValue(basketCount);
                                         ref.child("totalPrice").setValue(shared.getString("totalPrice", "0원"));
                                         for (int i = 0; i < basketCount; i++) {
-                                            ref.child("menuName" + i).setValue(shared.getString("menuName" + i, ""));
+                                            ref.child("aMenuName" + i).setValue(shared.getString("menuName" + i, ""));
                                             menus += shared.getString("menuName" + i, "");
-                                            if(i!=basketCount-1) {
-                                                menus+=", ";
+                                            if (i != basketCount - 1) {
+                                                menus += ", ";
                                             }
-                                            ref.child("menuAmount" + i).setValue(shared.getInt("menuAmount" + i, 1));
-                                            ref.child("basketPrice" + i).setValue(shared.getString("basketPrice" + i, ""));
+                                            ref.child("aMenuAmount" + i).setValue(shared.getInt("menuAmount" + i, 1));
+                                            ref.child("aBasketPrice" + i).setValue(shared.getString("basketPrice" + i, ""));
+
+                                            String options = "";
+                                            int price = 0;
                                             if (shared.getBoolean("option1checked" + i, false)) {
-                                                ref.child("option1Name" + i).setValue(shared.getString("option1Name" + i, null));
-                                                ref.child("option1Price" + i).setValue(shared.getString("option1Price" + i, null));
+                                                options += shared.getString("option1Name" + i, null) + ", ";
+                                                price += Integer.parseInt(shared.getString("option1Price" + i, null).
+                                                        replaceAll(",", "").replaceAll("원", ""));
+
                                             }
                                             if (shared.getBoolean("option2checked" + i, false)) {
-                                                ref.child("option2Name" + i).setValue(shared.getString("option2Name" + i, null));
-                                                ref.child("option2Price" + i).setValue(shared.getString("option2Price" + i, null));
+                                                options += shared.getString("option2Name" + i, null) + ", ";
+                                                price += Integer.parseInt(shared.getString("option2Price" + i, null).
+                                                        replaceAll(",", "").replaceAll("원", ""));
+
                                             }
                                             if (shared.getBoolean("option3checked" + i, false)) {
-                                                ref.child("option3Name" + i).setValue(shared.getString("option3Name" + i, null));
-                                                ref.child("option3Price" + i).setValue(shared.getString("option3Price" + i, null));
+                                                options += shared.getString("option3Name" + i, null) + ", ";
+                                                price += Integer.parseInt(shared.getString("option3Price" + i, null).
+                                                        replaceAll(",", "").replaceAll("원", ""));
+
                                             }
                                             if (shared.getBoolean("option4checked" + i, false)) {
-                                                ref.child("option4Name" + i).setValue(shared.getString("option4Name" + i, null));
-                                                ref.child("option4Price" + i).setValue(shared.getString("option4Price" + i, null));
+                                                options += shared.getString("option4Name" + i, null) + ", ";
+                                                price += Integer.parseInt(shared.getString("option4Price" + i, null).
+                                                        replaceAll(",", "").replaceAll("원", ""));
+
                                             }
                                             if (shared.getBoolean("option5checked" + i, false)) {
-                                                ref.child("option5Name" + i).setValue(shared.getString("option5Name" + i, null));
-                                                ref.child("option5Price" + i).setValue(shared.getString("option5Price" + i, null));
+                                                options += shared.getString("option5Name" + i, null) + ", ";
+                                                price += Integer.parseInt(shared.getString("option5Price" + i, null).
+                                                        replaceAll(",", "").replaceAll("원", ""));
+
                                             }
 
 
+                                            //옵션 있음
+                                            if (!options.equals("")) {
+                                                options = options.substring(0, options.length()-2);
+                                                ref.child("aIsOption" + i).setValue(true);
+                                            }
+                                            //옵션 없음
+                                            else {
+                                                ref.child("aIsOption" + i).setValue(false);
+                                            }
+
+                                            ref.child("aOptionPrice" + i).setValue(numToWon(price)+"원");
+                                            ref.child("aOptions" + i).setValue(options);
                                         }
+                                        ref.child("menus").setValue(menus);
                                     }
                                     //즉시 주문
                                     else {
@@ -447,16 +466,17 @@ public class OrderActivity extends NewActivity {
                                     ref.child("userTel").setValue(orderBinding.telEdit.getText().toString());
                                     ref.child("userMemo").setValue(orderBinding.memoEdit.getText().toString());
                                     ref.child("date").setValue(System.currentTimeMillis());
+                                    ref.child("selectedCol").setValue(colCheck);
 //                                    ref.child("date").setValue(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
                                     //0 주문신청 1 주문접수 2 배달완료 3 주문취소
-                                    ref.child(" ㅠ ").setValue("0");
+                                    ref.child("orderState").setValue("0");
 
                                     shared.edit().clear().apply();
                                     Toast.makeText(getApplicationContext(), "주문이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                                    PushUtil.getInstance().send("주문 알림", block+" 블럭, "+row+ " 열, "+seatNum+"번 좌석의 주문이 들어왔습니다.",block+" 블럭, "+row+ " 열, "+seatNum+"번 좌석의 주문이 들어왔습니다.\n메뉴 : "+menus, "0", pushToken, Volley.newRequestQueue(getApplicationContext()));
+                                    PushUtil.getInstance().send("주문 알림", block + " 블럭, " + row + " 열, " + seatNum + "번 좌석의 주문이 들어왔습니다.", block + " 블럭, " + row + " 열, " + seatNum + "번 좌석의 주문이 들어왔습니다.\n주문 메뉴 : " + menus, "0", pushToken, Volley.newRequestQueue(getApplicationContext()));
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    intent.putExtra("isOrder",true);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                    intent.putExtra("isOrder", true);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                     startActivity(intent);
                                 }
                             });
@@ -485,20 +505,20 @@ public class OrderActivity extends NewActivity {
             case R.id.cardBuyText:  //카드결제
 //
                 //푸쉬 테스트
-                PushUtil.getInstance().send("주문 알림", "뿌우우","", "0", pushToken,
+                PushUtil.getInstance().send("주문 알림", "뿌우우", "", "0", pushToken,
                         Volley.newRequestQueue(getApplicationContext()));
 
                 orderBinding.moneyBuyText.setBackgroundResource(R.color.white);
                 orderBinding.cardBuyText.setBackgroundResource(R.color.buttonColor);
                 orderBinding.cardBuyText.setTextColor(getResources().getColor(R.color.white));
-                orderBinding.moneyBuyText.setTextColor(getResources().getColor(R.color.darkgray));
+                orderBinding.moneyBuyText.setTextColor(getResources().getColor(R.color.darkGray));
                 buying = 1;
                 break;
             case R.id.moneyBuyText: //현금결제
                 orderBinding.moneyBuyText.setBackgroundResource(R.color.buttonColor);
                 orderBinding.cardBuyText.setBackgroundResource(R.color.white);
                 orderBinding.moneyBuyText.setTextColor(getResources().getColor(R.color.white));
-                orderBinding.cardBuyText.setTextColor(getResources().getColor(R.color.darkgray));
+                orderBinding.cardBuyText.setTextColor(getResources().getColor(R.color.darkGray));
                 buying = 2;
                 break;
         }
@@ -857,5 +877,33 @@ public class OrderActivity extends NewActivity {
         Glide.with(this)
                 .load(src)
                 .into(orderBinding.seatImage);
+    }
+
+    public String numToWon(int num) {
+        String tmp = num + "";
+        String won;
+        if (tmp.length() > 3) {
+            int a = tmp.length() % 3;
+            int b = tmp.length() / 3;
+            if (a != 0) {
+                String first = tmp.substring(0, a);
+                won = first;
+                for (int i = 0; i < b; i++) {
+                    won = won + "," + tmp.substring(a, a + 3);
+                    a = a + 3;
+                }
+            } else {
+                a = 3;
+                String first = tmp.substring(0, a);
+                won = first;
+                for (int i = 0; i < b - 1; i++) {
+                    won = won + "," + tmp.substring(a, a + 3);
+                    a = a + 3;
+                }
+            }
+        } else {
+            won = tmp;
+        }
+        return won;
     }
 }

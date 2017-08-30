@@ -8,7 +8,8 @@
     <color name="buttonColor">#beac9e</color>
     <color name="backgroundColor">#ece7e2</color>
     <color name="black">#000000</color>
-    <color name="darkgray">#323232</color>
+    <color name="darkGray">#323232</color>
     <color name="gray">#646464</color>
+    <color name="lightGray">#969696</color>
     <color name="white">#fff</color>
 </resources>
