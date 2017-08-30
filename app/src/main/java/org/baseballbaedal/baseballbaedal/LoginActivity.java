@@ -428,9 +428,9 @@ public class LoginActivity extends NewActivity implements
                                             //경고창을 닫고
                                             dialog.dismiss();
                                             //홈화면으로 돌아가는 작업을 한다.
-                                            intent = new Intent();
+//                                            intent = new Intent();
                                             //인텐트로 OK값을 보내고 홈 화면에서는 온액티비티리슐트로 받는다.
-                                            setResult(RESULT_OK, intent);
+                                            setResult(RESULT_OK);
                                             //창 닫기
                                             finish();
                                         }
@@ -460,9 +460,9 @@ public class LoginActivity extends NewActivity implements
                             //경고창을 닫고
                             dialog.dismiss();
                             //홈화면으로 돌아가는 작업을 한다.
-                            intent = new Intent();
+//                            intent = new Intent();
                             //인텐트로 OK값을 보내고 홈 화면에서는 온액티비티리슐트로 받는다.
-                            setResult(RESULT_OK, intent);
+                            setResult(RESULT_OK);
                             //창 닫기
                             finish();
                         }

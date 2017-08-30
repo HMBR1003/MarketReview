@@ -33,18 +33,17 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="아직 리뷰가 없습니다!"
-                        android:textSize="30dp" />
+                        android:visibility="gone"
+                        android:textSize="30dp"/>
+
+                    <ListView
+                        android:id="@+id/reviewListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none"
+                        android:background="@color/backgroundColor"/>
                 </LinearLayout>
             </LinearLayout>
-
-            <ListView
-                android:id="@+id/reviewListView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none"
-                android:visibility="gone" />
-
         </FrameLayout>
-
     </LinearLayout>
 </layout>

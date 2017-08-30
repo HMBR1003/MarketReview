@@ -135,23 +135,36 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.baseballbaedal.baseballbaedal.R;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ReviewFragment extends ScrollTabHolderFragment {
 
     private static final String ARG_POSITION = "position";
 
     private ListView reviewListView;
+    private TextView noReviewText;
 
     ReviewAdapter adapter;
 
     private int mPosition;
-    String marketId;
+    String marketID;
     ValueEventListener listener;
+    ReviewSave reviewSave;
+
+    ArrayList<MarketReviewListItem> listItem;
 
     public static Fragment newInstance(int position, String marketId) {
         ReviewFragment f = new ReviewFragment();
@@ -166,7 +179,7 @@ public class ReviewFragment extends ScrollTabHolderFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPosition = getArguments().getInt(ARG_POSITION);
-        marketId = getArguments().getString("marketId");
+        marketID = getArguments().getString("marketId");
 
 //        mListItems = new ArrayList<String>();
 //
@@ -179,27 +192,66 @@ public class ReviewFragment extends ScrollTabHolderFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_review, null);
 
-        adapter = new ReviewAdapter(getContext());
+        listItem = new ArrayList<>();
+        adapter = new ReviewAdapter(listItem);
         reviewListView = (ListView) v.findViewById(R.id.reviewListView);
-
+        noReviewText = (TextView)v.findViewById(R.id.noReviewText);
+        reviewListView.setAdapter(adapter);
         View placeHolderView = inflater.inflate(R.layout.view_header_review, reviewListView, false);
         placeHolderView.setBackgroundColor(0xFFFFFFFF);
         reviewListView.addHeaderView(placeHolderView);
 
+        reviewListView.setOnScrollListener(new OnScroll());
+        FirebaseDatabase.getInstance().getReference().child("review").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                adapter.clear();
+                boolean sw = false;
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    reviewSave = data.getValue(ReviewSave.class);
+                    if(reviewSave.marketID.equals(marketID)){
+                        String reviewID = data.getKey();
+                        adapter.addItem(reviewSave.userName,reviewSave.body,reviewSave.score,reviewID,reviewSave.imageBool,reviewSave.time);
+                        adapter.notifyDataSetChanged();
+                        sw = true;
+                    }
+                }
+                if(!sw){
+                    noReviewText.setVisibility(View.VISIBLE);
+                    reviewListView.setVisibility(View.GONE);
+                }
+                Collections.sort(listItem,comparator);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 //        View placefooterView = inflater.inflate(R.layout.view_footer_placeholder, mListView, false);
 //        placefooterView.setBackgroundColor(0xFFFFFFFF);
 //        mListView.addFooterView(placefooterView);
         return v;
     }
 
+    private Comparator<MarketReviewListItem> comparator = new Comparator<MarketReviewListItem>() {
+        @Override
+        public int compare(MarketReviewListItem o1, MarketReviewListItem o2) {
+            int sor;
+            if(Long.parseLong(o1.getTime()) < Long.parseLong(o2.getTime())){
+                sor = 1;
+            }else if(Long.parseLong(o1.getTime()) == Long.parseLong(o2.getTime())){
+                sor = 0;
+            }else{
+                sor = -1;
+            }
+            return sor;
+        }
+    };
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        reviewListView.setOnScrollListener(new OnScroll());
-        reviewListView.setAdapter(adapter);
-
 
 //        mListView.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.list_item, android.R.id.text1, mListItems));
 

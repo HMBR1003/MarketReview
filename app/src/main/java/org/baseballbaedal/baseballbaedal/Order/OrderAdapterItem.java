@@ -12,4 +12,12 @@ public class OrderAdapterItem {
         this.orderData = orderData;
         this.orderId = orderId;
     }
+
+    public OrderData getOrderData() {
+        return orderData;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
 }

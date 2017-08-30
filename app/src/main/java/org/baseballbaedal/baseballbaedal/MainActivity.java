@@ -70,6 +70,7 @@ import org.baseballbaedal.baseballbaedal.MainFragment.DeliveryFragment;
 import org.baseballbaedal.baseballbaedal.MainFragment.HomeFragment;
 import org.baseballbaedal.baseballbaedal.MainFragment.TakeoutFragment;
 import org.baseballbaedal.baseballbaedal.MainFragment.WeatherFragment;
+import org.baseballbaedal.baseballbaedal.Order.OrderListActivity;
 import org.baseballbaedal.baseballbaedal.databinding.ActivityMainBinding;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -402,6 +403,7 @@ public class MainActivity extends NewActivity
                         myRef.child("users").child(uid).child("isLogin").setValue(0);
                         //로그아웃 실행
                         MainActivity.singOut();
+                        uid=null;
                         try {
                             notificationManager.cancelAll();
                         } catch (Exception e) {
@@ -439,7 +441,15 @@ public class MainActivity extends NewActivity
             if (user == null) {
                 pleaseLogin();
             } else {
-
+                Intent intent = new Intent(this, OrderListActivity.class);
+                if(isBusiness==2) {
+                    intent.putExtra("isBusiness", true);
+                }
+                else{
+                    intent.putExtra("isBusiness", false);
+                }
+                intent.putExtra("userId", uid);
+                startActivity(intent);
             }
         } else if (id == R.id.nav_reviewManage) {  //왼쪽 슬라이드메뉴 리뷰관리 부분
             if (user == null) {
@@ -704,7 +714,7 @@ public class MainActivity extends NewActivity
         super.onActivityResult(requestCode, resultCode, data);
         //로그인 액티비티에서 로그인 성공 응답을 보내왔을 경우
         if (requestCode == LOGIN_REQUEST && resultCode == RESULT_OK) {
-
+            uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         }
         //사업자 신청 액티비티에서 성공 응답을 보내왔을 경우
         else if (requestCode == BUSINESS_SIGNUP_REQUEST && resultCode == RESULT_OK) {

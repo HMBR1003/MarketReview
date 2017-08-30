@@ -17,16 +17,16 @@ import java.util.List;
  * Created by Administrator on 2017-08-29.
  */
 
-public class OrderListAdapter extends RecyclerView.Adapter<OrderListViewHolder> implements View.OnTouchListener {
+public class OrderListAdapter extends RecyclerView.Adapter<OrderListViewHolder> implements View.OnTouchListener,OrderListViewHolder.ListItemClickListener {
 
     Context context;
-    private List<OrderData> items;
+    private List<OrderAdapterItem> items;
 
     public OrderListAdapter() {
-        items = new ArrayList<OrderData>();
+        items = new ArrayList<OrderAdapterItem>();
     }
 
-    public void add(OrderData data) {
+    public void add(OrderAdapterItem data) {
         items.add(data);
     }
 
@@ -60,9 +60,8 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListViewHolder> 
     @Override
     public OrderListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_finish_list_item, parent, false);
-
         OrderListViewHolder holder = new OrderListViewHolder(v);
-        holder.setOnTouchListener(this);
+        holder.setListener(this,this);
         return holder;
 
     }
@@ -75,11 +74,17 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListViewHolder> 
 
     @Override
     public void onBindViewHolder(OrderListViewHolder holder, int position) {
-
+        holder.onBindView(items.get(position).getOrderData());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return items.size();
+    }
+
+
+    @Override
+    public void onListItemClick(View v, int position) {
+
     }
 }
